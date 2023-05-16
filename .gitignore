@@ -30,3 +30,7 @@ doc/api/
 # Added by cargo
 
 /target
+
+
+# Misc
+.vscode/

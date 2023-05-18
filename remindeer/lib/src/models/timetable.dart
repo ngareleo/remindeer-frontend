@@ -7,7 +7,7 @@ class Timetable {
   final DateTime? lastModified;
 
   const Timetable(
-      {this.uid,
+      {required this.uid,
       this.label,
       this.description,
       this.validUntil,

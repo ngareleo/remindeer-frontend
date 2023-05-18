@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/pages/signup/components/form/password_field.dart';
 
-import '../../common/components/links/signup_link.dart';
-import 'components/username_email_field.dart';
+import '../../common/components/links/login_link.dart';
+import 'components/form/confirm_password_field.dart';
+import 'components/form/password_field.dart';
 
-class LoginPageWidget extends StatefulWidget {
-  const LoginPageWidget({Key? key}) : super(key: key);
+class SecurityPageWidget extends StatefulWidget {
+  const SecurityPageWidget({Key? key}) : super(key: key);
 
   @override
-  _LoginPageWidgetState createState() => _LoginPageWidgetState();
+  _SecurityPageWidgetState createState() => _SecurityPageWidgetState();
 }
 
-class _LoginPageWidgetState extends State<LoginPageWidget> {
+class _SecurityPageWidgetState extends State<SecurityPageWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _unfocusNode = FocusNode();
 
@@ -32,7 +32,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
       onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
@@ -42,9 +42,13 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
               color: Colors.black,
               size: 30,
             ),
-            onPressed: () {},
+            onPressed: () {
+              if (Navigator.canPop(context)) {
+                Navigator.pop(context);
+              }
+            },
           ),
-          actions: [],
+          actions: const [],
           centerTitle: false,
           elevation: 0,
         ),
@@ -52,7 +56,9 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 1,
-            decoration: const BoxDecoration(color: Colors.white),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+            ),
             child: Padding(
               padding: const EdgeInsetsDirectional.fromSTEB(10, 100, 10, 0),
               child: Column(
@@ -63,7 +69,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                   const Padding(
                     padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 40),
                     child: Text(
-                      'Sign in your account',
+                      'Security',
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         fontSize: 26,
@@ -73,14 +79,11 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: Column(
+                    child: const Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        UsernameEmailField(),
-                        const Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
-                            child: PasswordField()),
+                        PasswordField(),
+                        ConfirmPasswordField(),
                       ],
                     ),
                   ),
@@ -88,12 +91,12 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
                     child: FilledButton(
                       onPressed: () {
-                        Navigator.pushReplacementNamed(context, "/");
+                        Navigator.pushNamed(context, "/welcome");
                       },
                       child: const Text('Next'),
                     ),
                   ),
-                  const SignupLink(),
+                  const LoginLink()
                 ],
               ),
             ),

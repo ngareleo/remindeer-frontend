@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/common/components/links/login_link.dart';
 
-import 'components/form/confirm_password_field.dart';
-import 'components/form/password_field.dart';
+import '../../common/components/links/login_link.dart';
+import 'components/form/phonenumber_field.dart';
 
-class SecurityPageWidget extends StatefulWidget {
-  const SecurityPageWidget({Key? key}) : super(key: key);
+class PhoneVerificationPageWidget extends StatefulWidget {
+  const PhoneVerificationPageWidget({Key? key}) : super(key: key);
 
   @override
-  _SecurityPageWidgetState createState() => _SecurityPageWidgetState();
+  _PhoneVerificationPageWidgetState createState() =>
+      _PhoneVerificationPageWidgetState();
 }
 
-class _SecurityPageWidgetState extends State<SecurityPageWidget> {
+class _PhoneVerificationPageWidgetState
+    extends State<PhoneVerificationPageWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _unfocusNode = FocusNode();
 
@@ -56,9 +57,7 @@ class _SecurityPageWidgetState extends State<SecurityPageWidget> {
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 1,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-            ),
+            decoration: const BoxDecoration(color: Colors.white),
             child: Padding(
               padding: const EdgeInsetsDirectional.fromSTEB(10, 100, 10, 0),
               child: Column(
@@ -66,15 +65,15 @@ class _SecurityPageWidgetState extends State<SecurityPageWidget> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 40),
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 40),
                     child: Text(
-                      'Security',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 26,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      'Phone Verification',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontFamily: 'Roboto',
+                            fontSize: 26,
+                            fontWeight: FontWeight.w500,
+                          ),
                     ),
                   ),
                   SizedBox(
@@ -82,8 +81,10 @@ class _SecurityPageWidgetState extends State<SecurityPageWidget> {
                     child: const Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        PasswordField(),
-                        ConfirmPasswordField(),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 30),
+                          child: PhonenumberField(),
+                        ),
                       ],
                     ),
                   ),
@@ -91,7 +92,7 @@ class _SecurityPageWidgetState extends State<SecurityPageWidget> {
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
                     child: FilledButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, "/welcome");
+                        Navigator.pushNamed(context, '/security');
                       },
                       child: const Text('Next'),
                     ),

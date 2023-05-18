@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/pages/dashboard/components/dashboard_group_item.dart';
+
+import 'dashboard_group_item.dart';
 
 class DashboardGroupWidget extends StatefulWidget {
   const DashboardGroupWidget({Key? key}) : super(key: key);

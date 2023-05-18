@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/common/components/links/login_link.dart';
 
-import 'components/form/phonenumber_field.dart';
+import '../../common/components/links/signup_link.dart';
+import '../signup/components/form/password_field.dart';
+import 'components/username_email_field.dart';
 
-class PhoneVerificationPageWidget extends StatefulWidget {
-  const PhoneVerificationPageWidget({Key? key}) : super(key: key);
+class LoginPageWidget extends StatefulWidget {
+  const LoginPageWidget({Key? key}) : super(key: key);
 
   @override
-  _PhoneVerificationPageWidgetState createState() =>
-      _PhoneVerificationPageWidgetState();
+  _LoginPageWidgetState createState() => _LoginPageWidgetState();
 }
 
-class _PhoneVerificationPageWidgetState
-    extends State<PhoneVerificationPageWidget> {
+class _LoginPageWidgetState extends State<LoginPageWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _unfocusNode = FocusNode();
 
@@ -33,7 +32,7 @@ class _PhoneVerificationPageWidgetState
       onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).primaryColor,
         appBar: AppBar(
           backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
@@ -43,13 +42,9 @@ class _PhoneVerificationPageWidgetState
               color: Colors.black,
               size: 30,
             ),
-            onPressed: () {
-              if (Navigator.canPop(context)) {
-                Navigator.pop(context);
-              }
-            },
+            onPressed: () {},
           ),
-          actions: const [],
+          actions: [],
           centerTitle: false,
           elevation: 0,
         ),
@@ -65,26 +60,27 @@ class _PhoneVerificationPageWidgetState
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 40),
+                  const Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 40),
                     child: Text(
-                      'Phone Verification',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontFamily: 'Roboto',
-                            fontSize: 26,
-                            fontWeight: FontWeight.w500,
-                          ),
+                      'Sign in your account',
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 26,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: const Column(
+                    child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 30),
-                          child: PhonenumberField(),
-                        ),
+                        UsernameEmailField(),
+                        const Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
+                            child: PasswordField()),
                       ],
                     ),
                   ),
@@ -92,12 +88,12 @@ class _PhoneVerificationPageWidgetState
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
                     child: FilledButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/security');
+                        Navigator.pushReplacementNamed(context, "/");
                       },
                       child: const Text('Next'),
                     ),
                   ),
-                  const LoginLink()
+                  const SignupLink(),
                 ],
               ),
             ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class CalendarChooserWidget extends StatefulWidget {
   const CalendarChooserWidget({Key? key}) : super(key: key);

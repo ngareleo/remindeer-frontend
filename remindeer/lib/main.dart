@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/screens/auth.dart';
-import 'package:remindeer/screens/home.dart';
+import 'package:remindeer/src/screens/auth.dart';
+import 'package:remindeer/src/screens/home.dart';
 
 void main() {
   runApp(const MyApp());

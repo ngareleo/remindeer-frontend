@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/screens/auth.dart';
 import 'package:remindeer/screens/home.dart';
+import 'package:remindeer/pages/login/login.dart';
+import 'package:remindeer/pages/signup/personal_details.dart';
+import 'package:remindeer/pages/signup/phone_verfication.dart';
+import 'package:remindeer/pages/signup/security.dart';
+import 'package:remindeer/pages/signup/welcome_page.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  _MyApp createState() => _MyApp();
-}
-
-class _MyApp extends State<MyApp> {
-  var isLoggedIn = true;
+class AuthScreen extends StatelessWidget {
+  const AuthScreen({super.key});
 
   // This widget is the root of your application.
   @override
@@ -27,13 +20,8 @@ class _MyApp extends State<MyApp> {
           colorScheme: const ColorScheme.light(
               primary: Color(0xFF5E5ADB),
               secondary: Color(0xFFDB5A98),
-              tertiary: Color(0xFF2F2E41),
-              background: Color(0xFFF0F0F0)),
+              tertiary: Color(0xFF2F2E41)),
           useMaterial3: true,
-          navigationBarTheme: const NavigationBarThemeData(
-            backgroundColor: Color(0xFFFCFCFC),
-            indicatorColor: Color(0xFF5E5ADB),
-          ),
           textTheme: const TextTheme(
               bodyMedium: TextStyle(
                   fontSize: 14,
@@ -43,7 +31,15 @@ class _MyApp extends State<MyApp> {
                   fontSize: 12,
                   fontWeight: FontWeight.normal,
                   color: Colors.black))),
-      home: isLoggedIn ? const HomePageWidget() : const AuthScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const HomePageWidget(),
+        '/signin': (context) => const LoginPageWidget(),
+        '/signup': (context) => const PersonalDetailsPageWidget(),
+        '/phone': (context) => const PhoneVerificationPageWidget(),
+        '/security': (context) => const SecurityPageWidget(),
+        '/welcome': (context) => const WelcomePageWidget()
+      },
     );
   }
 }

@@ -31,18 +31,18 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
       onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           automaticallyImplyLeading: true,
           leading: const Icon(
             Icons.menu,
-            color: Colors.black,
+            color: Colors.white,
             size: 24,
           ),
           actions: const [
             Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
+              padding: EdgeInsetsDirectional.only(end: 10),
               child: Center(
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
@@ -51,7 +51,7 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
                   children: [
                     Icon(
                       Icons.notifications_rounded,
-                      color: Colors.black,
+                      color: Colors.white,
                       size: 24,
                     ),
                   ],
@@ -59,13 +59,9 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
               ),
             ),
           ],
-          flexibleSpace: FlexibleSpaceBar(
-            title: Text(
-              'My Library',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            centerTitle: false,
-            expandedTitleScale: 1.0,
+          title: const Text(
+            'My Library',
+            style: TextStyle(color: Colors.white, fontSize: 20),
           ),
           elevation: 0,
         ),

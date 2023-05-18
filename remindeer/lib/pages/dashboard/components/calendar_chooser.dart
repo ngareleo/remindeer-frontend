@@ -34,8 +34,8 @@ class _CalendarChooserWidgetState extends State<CalendarChooserWidget> {
         borderRadius: BorderRadius.circular(10),
         shape: BoxShape.rectangle,
       ),
-      child: Padding(
-        padding: const EdgeInsetsDirectional.fromSTEB(7, 17, 7, 17),
+      child: const Padding(
+        padding: EdgeInsetsDirectional.fromSTEB(7, 17, 7, 17),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -44,13 +44,11 @@ class _CalendarChooserWidgetState extends State<CalendarChooserWidget> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                SvgPicture.asset(
-                  'assets/images/left-chevron-icon.svg',
-                  width: 32,
-                  height: 32,
-                  fit: BoxFit.cover,
+                Icon(
+                  Icons.arrow_circle_left_outlined,
+                  color: Colors.white,
                 ),
-                const Text(
+                Text(
                   'April 2023',
                   style: TextStyle(
                     fontFamily: 'Roboto',
@@ -58,15 +56,13 @@ class _CalendarChooserWidgetState extends State<CalendarChooserWidget> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                SvgPicture.asset(
-                  'assets/images/right-chevron-icon.svg',
-                  width: 32,
-                  height: 32,
-                  fit: BoxFit.cover,
+                Icon(
+                  Icons.arrow_circle_right_outlined,
+                  color: Colors.white,
                 ),
               ],
             ),
-            const Row(
+            Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -110,7 +106,7 @@ class ActiveDateItem extends StatelessWidget {
             style: TextStyle(
               fontFamily: 'Roboto',
               color: Colors.black,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.bold,
             ),
           ),
           const Text(

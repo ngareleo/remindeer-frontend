@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../pages/semester/semester_dashboard.dart';
 
 class ResourceCardWidget extends StatefulWidget {
   const ResourceCardWidget({Key? key}) : super(key: key);
@@ -25,73 +26,85 @@ class _ResourceCardWidgetState extends State<ResourceCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: 70,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Container(
-            width: 8,
-            height: MediaQuery.of(context).size.height * 1,
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-            ),
-          ),
-          Expanded(
-            child: Container(
-              height: MediaQuery.of(context).size.height * 1,
-              decoration: BoxDecoration(
-                color: const Color(0xFFF9F9F9),
-                border: Border.all(
-                  color: Colors.white,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    const SemesterDashboardPageWidget()));
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: 70,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 10, bottom: 10),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Container(
+                width: 8,
+                height: MediaQuery.of(context).size.height * 1,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(10, 5, 10, 5),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
+              Expanded(
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 1,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF9F9F9),
+                    border: Border.all(
+                      color: Colors.white,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(10, 5, 10, 5),
+                    child: Row(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'Timetable',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        Column(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Timetable',
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              'Meal timetable',
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: 18,
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ],
                         ),
                         Text(
-                          'Meal timetable',
+                          'Last Modified 30 Min ago',
                           style: TextStyle(
                             fontFamily: 'Roboto',
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal,
+                            fontSize: 12,
                           ),
                         ),
                       ],
                     ),
-                    Text(
-                      'Last Modified 30 Min ago',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

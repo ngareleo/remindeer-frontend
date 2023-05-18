@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:remindeer/pages/my_library/my_library.dart';
 import 'package:remindeer/pages/search/search.dart';
-import '../dashboard/dashboard.dart';
+import '../pages/dashboard/dashboard.dart';
 
 class HomePageWidget extends StatefulWidget {
   const HomePageWidget({Key? key}) : super(key: key);
@@ -38,7 +38,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
           elevation: 8,
           child: const Icon(
             Icons.add,
-            color: Colors.black,
+            color: Colors.white,
             size: 24,
           ),
         ),

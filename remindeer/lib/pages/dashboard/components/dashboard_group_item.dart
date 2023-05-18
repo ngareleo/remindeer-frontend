@@ -28,19 +28,15 @@ class _DashboardGroupItemWidgetState extends State<DashboardGroupItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: 100,
-      decoration: const BoxDecoration(color: Colors.white),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
+          SizedBox(
             width: MediaQuery.of(context).size.width,
             height: 20,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-            ),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [

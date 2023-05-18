@@ -12,19 +12,19 @@ class Dashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         automaticallyImplyLeading: true,
         leading: IconButton(
           icon: const Icon(
             Icons.menu,
-            color: Colors.black,
+            color: Colors.white,
             size: 24,
           ),
           onPressed: () {},
         ),
-        title: Text(
+        title: const Text(
           'Home',
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: TextStyle(color: Colors.white),
         ),
         actions: const [
           Padding(
@@ -38,12 +38,12 @@ class Dashboard extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.notifications_rounded,
-                    color: Colors.black,
+                    color: Colors.white,
                     size: 24,
                   ),
                   Icon(
                     Icons.settings_rounded,
-                    color: Colors.black,
+                    color: Colors.white,
                     size: 24,
                   ),
                 ],
@@ -57,8 +57,8 @@ class Dashboard extends StatelessWidget {
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height * 1,
-          decoration: const BoxDecoration(
-            color: Colors.white,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
           ),
           child: Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 0),
@@ -70,7 +70,7 @@ class Dashboard extends StatelessWidget {
                   padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 12),
                   child: Material(
                     color: Colors.transparent,
-                    elevation: 10,
+                    elevation: 20,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -79,35 +79,44 @@ class Dashboard extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: const CalendarChooserWidget(),
+                      child: const Padding(
+                        padding: EdgeInsets.only(bottom: 10),
+                        child: CalendarChooserWidget(),
+                      ),
                     ),
                   ),
                 ),
                 Expanded(
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: const SingleChildScrollView(
+                    child: SingleChildScrollView(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
-                            child: DashboardGroupWidget(),
-                          ),
+                          const DashboardGroupWidget(),
                           SizedBox(
-                            width: 80,
-                            child: Divider(
-                              thickness: 1,
-                              color: Colors.black38,
+                            width: MediaQuery.of(context).size.width,
+                            child: const Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Divider(
+                                thickness: 1,
+                                color: Colors.black12,
+                              ),
                             ),
                           ),
-                          Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
-                            child: DashboardGroupWidget(),
+                          const DashboardGroupWidget(),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: const Padding(
+                              padding: EdgeInsets.all(20),
+                              child: Divider(
+                                thickness: 1,
+                                color: Colors.black12,
+                              ),
+                            ),
                           ),
+                          const DashboardGroupWidget(),
                         ],
                       ),
                     ),

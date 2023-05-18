@@ -37,10 +37,22 @@ class _MyLibrarySelectionPillGroupWidgetState
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: [
-            ChoiceChip(label: Text("All"), selected: true),
-            ChoiceChip(label: Text("Semesters"), selected: false),
-            ChoiceChip(label: Text("Assignments"), selected: false),
-            ChoiceChip(label: Text("Timetables"), selected: false),
+            Padding(
+              padding: EdgeInsets.all(5),
+              child: ChoiceChip(label: Text("All"), selected: true),
+            ),
+            Padding(
+              padding: EdgeInsets.all(5),
+              child: ChoiceChip(label: Text("Semester"), selected: false),
+            ),
+            Padding(
+              padding: EdgeInsets.all(5),
+              child: ChoiceChip(label: Text("Assignments"), selected: false),
+            ),
+            Padding(
+              padding: EdgeInsets.all(5),
+              child: ChoiceChip(label: Text("Semesters"), selected: false),
+            ),
           ],
         ),
       ),

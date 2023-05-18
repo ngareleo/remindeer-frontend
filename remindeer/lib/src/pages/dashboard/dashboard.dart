@@ -70,7 +70,7 @@ class Dashboard extends StatelessWidget {
                   padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 12),
                   child: Material(
                     color: Colors.transparent,
-                    elevation: 20,
+                    elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),

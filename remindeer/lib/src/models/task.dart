@@ -12,7 +12,7 @@ class Task {
   final DateTime? dateLastModified;
 
   const Task({
-    this.uid,
+    required this.uid,
     this.label,
     this.description,
     this.from,

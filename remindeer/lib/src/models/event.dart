@@ -12,7 +12,7 @@ class Event {
   final DateTime? lastModified;
 
   const Event(
-      {this.uid,
+      {required this.uid,
       this.description,
       this.venue,
       this.label,

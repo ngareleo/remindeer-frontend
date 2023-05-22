@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:remindeer/src/common/utils/helpers/datetime.dart';
 
 class CalendarChooserWidget extends StatefulWidget {
-  const CalendarChooserWidget({Key? key}) : super(key: key);
+  final Function? onDateChange;
+  const CalendarChooserWidget({Key? key, this.onDateChange}) : super(key: key);
 
   @override
   _CalendarChooserWidgetState createState() => _CalendarChooserWidgetState();
 }
 
 class _CalendarChooserWidgetState extends State<CalendarChooserWidget> {
+  Map<int, String> months = mapMonthToString();
+  int month = 0;
+  int day = 0;
+  int weekday = 0;
+  int year = 0;
+  Map<int, String> days = {};
+
   @override
   void setState(VoidCallback callback) {
     super.setState(callback);
@@ -15,6 +24,13 @@ class _CalendarChooserWidgetState extends State<CalendarChooserWidget> {
 
   @override
   void initState() {
+    var currentDate = DateTime.now();
+    year = currentDate.year;
+    month = currentDate.month;
+    day = currentDate.day;
+    weekday = currentDate.weekday;
+
+    
     super.initState();
   }
 
@@ -33,8 +49,8 @@ class _CalendarChooserWidgetState extends State<CalendarChooserWidget> {
         borderRadius: BorderRadius.circular(10),
         shape: BoxShape.rectangle,
       ),
-      child: const Padding(
-        padding: EdgeInsetsDirectional.fromSTEB(7, 17, 7, 17),
+      child: Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(7, 17, 7, 17),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -43,22 +59,44 @@ class _CalendarChooserWidgetState extends State<CalendarChooserWidget> {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Icon(
-                  Icons.arrow_circle_left_outlined,
-                  color: Colors.white,
+                GestureDetector(
+                  child: const Icon(
+                    Icons.arrow_circle_left_outlined,
+                    color: Colors.white,
+                  ),
+                  onTap: () => {
+                    setState(() {
+                      if (month == 0) {
+                        month = 11;
+                      } else {
+                        month--;
+                      }
+                    })
+                  },
                 ),
                 Text(
-                  'April 2023',
-                  style: TextStyle(
+                  '${months[month]} $year',
+                  style: const TextStyle(
                     fontFamily: 'Roboto',
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                Icon(
-                  Icons.arrow_circle_right_outlined,
-                  color: Colors.white,
-                ),
+                GestureDetector(
+                  child: const Icon(
+                    Icons.arrow_circle_right_outlined,
+                    color: Colors.white,
+                  ),
+                  onTap: () => {
+                    setState(() {
+                      if (month == 11) {
+                        month = 0;
+                      } else {
+                        month++;
+                      }
+                    })
+                  },
+                )
               ],
             ),
             Row(

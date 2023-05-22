@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
-
 import 'components/calendar_chooser.dart';
-import 'components/dashboard_group.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
   const Dashboard({
     super.key,
   });
+
+  @override
+  _Dashboard createState() => _Dashboard();
+}
+
+class _Dashboard extends State<Dashboard> {
+  void onChangeDate() {}
+  DateTime? viewDate;
+
+  @override
+  void initState() {
+    super.initState();
+    viewDate = DateTime.now();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,9 +91,11 @@ class Dashboard extends StatelessWidget {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.only(bottom: 10),
-                        child: CalendarChooserWidget(),
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: CalendarChooserWidget(
+                          onDateChange: onChangeDate,
+                        ),
                       ),
                     ),
                   ),
@@ -89,34 +103,34 @@ class Dashboard extends StatelessWidget {
                 Expanded(
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: SingleChildScrollView(
+                    child: const SingleChildScrollView(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          const DashboardGroupWidget(),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: const Padding(
-                              padding: EdgeInsets.all(20),
-                              child: Divider(
-                                thickness: 1,
-                                color: Colors.black12,
-                              ),
-                            ),
-                          ),
-                          const DashboardGroupWidget(),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: const Padding(
-                              padding: EdgeInsets.all(20),
-                              child: Divider(
-                                thickness: 1,
-                                color: Colors.black12,
-                              ),
-                            ),
-                          ),
-                          const DashboardGroupWidget(),
+                          // const DashboardGroupWidget(),
+                          // SizedBox(
+                          //   width: MediaQuery.of(context).size.width,
+                          //   child: const Padding(
+                          //     padding: EdgeInsets.all(20),
+                          //     child: Divider(
+                          //       thickness: 1,
+                          //       color: Colors.black12,
+                          //     ),
+                          //   ),
+                          // ),
+                          // const DashboardGroupWidget(),
+                          // SizedBox(
+                          //   width: MediaQuery.of(context).size.width,
+                          //   child: const Padding(
+                          //     padding: EdgeInsets.all(20),
+                          //     child: Divider(
+                          //       thickness: 1,
+                          //       color: Colors.black12,
+                          //     ),
+                          //   ),
+                          // ),
+                          // const DashboardGroupWidget(),
                         ],
                       ),
                     ),

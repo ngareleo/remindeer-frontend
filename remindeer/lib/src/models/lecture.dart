@@ -1,28 +1,27 @@
-enum DayOfWeek {
-  monday,
-  tuesday,
-  wednesday,
-  thursday,
-  friday,
-  saturday,
-  sunday
-}
+import 'package:remindeer/src/models/event.dart';
+import 'package:remindeer/src/models/unit.dart';
+import 'package:remindeer/src/common/utils/structs/window.dart';
+import 'package:remindeer/src/common/utils/values.dart';
 
-class Lecture {
-  final String? uid;
-  final DayOfWeek? dayOfWeek;
-  final DateTime? from;
-  final DateTime? to;
-  final String? venue;
-  final DateTime? created;
-  final DateTime? lastModified;
+class Lecture extends Event {
+  Unit? unit;
 
-  const Lecture(
-      {required this.uid,
-      this.dayOfWeek,
-      this.from,
-      this.to,
-      this.venue,
-      this.created,
-      this.lastModified});
+  Lecture({
+    required uid,
+    required this.unit,
+    String? label,
+    String? venue,
+    Window? window,
+    DateTime? repeatTo,
+    DateTime? created,
+    DateTime? lastModified,
+  }) : super(
+            uid: uid,
+            label: label ?? unit?.name ?? "untitled",
+            venue: venue,
+            window: window,
+            repeat: RepeatFrequency.weekly,
+            repeatTo: repeatTo,
+            created: created,
+            lastModified: lastModified);
 }

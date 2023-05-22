@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../common/components/links/login_link.dart';
+import '../../../common/components/links/login_link.dart';
 import 'components/form/email_field.dart';
 import 'components/form/firstname_field.dart';
 import 'components/form/lastname_field.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'components/semester_settings_page_header.dart';
-import '../../common/components/cards/member_group.dart';
-import '../../common/components/links/action_links_group.dart';
+import '../../../common/components/cards/member_group.dart';
+import '../../../common/components/links/action_links_group.dart';
 
 class SemesterSettingsPageWidget extends StatefulWidget {
   const SemesterSettingsPageWidget({Key? key}) : super(key: key);

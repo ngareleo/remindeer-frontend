@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'components/semester_page_header.dart';
-import '../../common/components/cards/resource_card.dart';
-import '../../common/components/sliding_tabs/sliding_tabs.dart';
+import '../../../common/components/cards/resource_card.dart';
+import '../../../common/components/sliding_tabs/sliding_tabs.dart';
 
 class SemesterDashboardPageWidget extends StatefulWidget {
   const SemesterDashboardPageWidget({Key? key}) : super(key: key);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../pages/dashboard/dashboard.dart';
-import '../pages/my_library/my_library.dart';
-import '../pages/search/search.dart';
+import 'pages/dashboard/dashboard.dart';
+import 'pages/my_library/my_library.dart';
+import 'pages/search/search.dart';
 
 class HomePageWidget extends StatefulWidget {
   const HomePageWidget({Key? key}) : super(key: key);

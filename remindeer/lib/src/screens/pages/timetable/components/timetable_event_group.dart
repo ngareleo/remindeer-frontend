@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/pages/timetable/components/timetable_event_card.dart';
+import 'package:remindeer/src/screens/pages/timetable/components/timetable_event_card.dart';
 
 class TimetableDayGroupWidget extends StatefulWidget {
   const TimetableDayGroupWidget({

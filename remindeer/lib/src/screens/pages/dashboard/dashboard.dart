@@ -7,17 +7,21 @@ class Dashboard extends StatefulWidget {
   });
 
   @override
-  _Dashboard createState() => _Dashboard();
+  State<StatefulWidget> createState() => _Dashboard();
 }
 
 class _Dashboard extends State<Dashboard> {
-  void onChangeDate() {}
-  DateTime? viewDate;
+  DateTime? viewDate = DateTime.now();
+  void onChangeDate(DateTime focus) {
+    debugPrint("[dashboard] Date changed to $focus");
+    setState(() {
+      viewDate = focus;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    viewDate = DateTime.now();
   }
 
   @override

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/common/utils/helpers/datetime.dart';
+import 'package:remindeer/src/common/utils/structs/date.dart';
 
 class CalendarChooserWidget extends StatefulWidget {
-  final Function? onDateChange;
-  const CalendarChooserWidget({Key? key, this.onDateChange}) : super(key: key);
+  final Function onDateChange;
+  const CalendarChooserWidget({Key? key, required this.onDateChange})
+      : super(key: key);
 
   @override
-  _CalendarChooserWidgetState createState() => _CalendarChooserWidgetState();
+  State<StatefulWidget> createState() => _CalendarChooserWidgetState();
 }
 
 class _CalendarChooserWidgetState extends State<CalendarChooserWidget> {
@@ -15,28 +17,21 @@ class _CalendarChooserWidgetState extends State<CalendarChooserWidget> {
   int day = 0;
   int weekday = 0;
   int year = 0;
-  Map<int, String> days = {};
-
-  @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-  }
+  int activeWeek = 0;
+  List<Map<int, Date>> days = [];
 
   @override
   void initState() {
+    super.initState();
     var currentDate = DateTime.now();
     year = currentDate.year;
     month = currentDate.month;
     day = currentDate.day;
     weekday = currentDate.weekday;
-
-    
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
+    days = fillWeeks(seed: currentDate);
+    activeWeek = days.indexWhere((element) {
+      return element.keys.contains(day);
+    });
   }
 
   @override
@@ -67,10 +62,12 @@ class _CalendarChooserWidgetState extends State<CalendarChooserWidget> {
                   onTap: () => {
                     setState(() {
                       if (month == 0) {
+                        year--;
                         month = 11;
                       } else {
                         month--;
                       }
+                      days = fillWeeks(seed: DateTime(year, month + 1, 0));
                     })
                   },
                 ),
@@ -91,26 +88,64 @@ class _CalendarChooserWidgetState extends State<CalendarChooserWidget> {
                     setState(() {
                       if (month == 11) {
                         month = 0;
+                        year++;
                       } else {
                         month++;
                       }
+                      days = fillWeeks(seed: DateTime(year, month + 1, 0));
                     })
                   },
                 )
               ],
             ),
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InactiveDateItem(),
-                InactiveDateItem(),
-                InactiveDateItem(),
-                ActiveDateItem(),
-                InactiveDateItem(),
-                InactiveDateItem(),
-                InactiveDateItem(),
-              ],
+            GestureDetector(
+              onHorizontalDragUpdate: (details) {
+                int sensitivity = 8;
+                if (details.delta.dx > sensitivity) {
+                  setState(() {
+                    if (activeWeek == 3) {
+                      activeWeek = 0;
+                    } else {
+                      activeWeek++;
+                    }
+                  });
+                } else if (details.delta.dx < -sensitivity) {
+                  setState(() {
+                    if (activeWeek == 0) {
+                      activeWeek = 3;
+                    } else {
+                      activeWeek--;
+                    }
+                  });
+                }
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: List.generate(7, (index) {
+                  var item = days[activeWeek].entries.elementAt(index);
+                  if (item.key == day) {
+                    return GestureDetector(
+                      child: ActiveDateItem(
+                          label: item.value.weekday,
+                          date: item.value.day.toString()),
+                      onTap: () {
+                        setState(() {});
+                      },
+                    );
+                  }
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        day = item.key;
+                      });
+                      widget.onDateChange(item.value.date);
+                    },
+                    child: InactiveDateItem(
+                        date: item.key.toString(), label: item.value.weekday),
+                  );
+                }),
+              ),
             ),
           ],
         ),
@@ -119,11 +154,15 @@ class _CalendarChooserWidgetState extends State<CalendarChooserWidget> {
   }
 }
 
-class ActiveDateItem extends StatelessWidget {
-  const ActiveDateItem({
-    super.key,
-  });
+class ActiveDateItem extends StatefulWidget {
+  const ActiveDateItem({super.key, required this.label, required this.date});
+  final String label;
+  final String date;
+  @override
+  State<StatefulWidget> createState() => _ActiveDateItem();
+}
 
+class _ActiveDateItem extends State<ActiveDateItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -138,17 +177,17 @@ class ActiveDateItem extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          const Text(
-            'W',
-            style: TextStyle(
+          Text(
+            widget.label,
+            style: const TextStyle(
               fontFamily: 'Roboto',
               color: Colors.black,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const Text(
-            '12',
-            style: TextStyle(
+          Text(
+            widget.date,
+            style: const TextStyle(
               fontFamily: 'Roboto',
               color: Colors.black,
               fontWeight: FontWeight.w500,
@@ -160,11 +199,16 @@ class ActiveDateItem extends StatelessWidget {
   }
 }
 
-class InactiveDateItem extends StatelessWidget {
-  const InactiveDateItem({
-    super.key,
-  });
+class InactiveDateItem extends StatefulWidget {
+  const InactiveDateItem({super.key, required this.date, required this.label});
+  final String label;
+  final String date;
 
+  @override
+  State<StatefulWidget> createState() => _InactiveDateItem();
+}
+
+class _InactiveDateItem extends State<InactiveDateItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -179,16 +223,16 @@ class InactiveDateItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text(
-            'S',
-            style: TextStyle(
+            widget.label,
+            style: const TextStyle(
               fontFamily: 'Roboto',
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
           ),
           Text(
-            '9',
-            style: TextStyle(
+            widget.date,
+            style: const TextStyle(
               fontFamily: 'Roboto',
               color: Colors.white,
               fontWeight: FontWeight.w500,

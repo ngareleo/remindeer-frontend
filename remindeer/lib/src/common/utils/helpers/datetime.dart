@@ -1,3 +1,5 @@
+import 'package:remindeer/src/common/utils/structs/date.dart';
+
 Map<int, String> mapMonthToString() {
   return {
     0: "Jan",
@@ -15,32 +17,29 @@ Map<int, String> mapMonthToString() {
   };
 }
 
-int getMonthLimit({required int month, required int year}) {
-  var limits = {
-    0: 31,
-    1: year % 4 == 0 ? 28 : 29,
-    2: 31,
-    3: 30,
-    4: 31,
-    5: 30,
-    6: 31,
-    7: 31,
-    8: 30,
-    9: 31,
-    10: 30,
-    11: 31,
-  };
-  return limits[month] ?? 31;
-}
+List<Map<int, Date>> fillWeeks({required DateTime seed}) {
+  var days = ['Mon', 'Tue', 'We', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-Map<int, String> fillDays({required DateTime seed}) {
-  var days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-  var map = {seed.day: days[seed.weekday]};
-  for (int i = 0; i < 15; i++) {
-    var forward = seed.add(Duration(days: i));
-    var backward = seed.subtract(Duration(days: i));
-    map.addAll({forward.day: days[forward.weekday]});
-    map.addAll({backward.day: days[backward.weekday]});
+  var firstMondayTwoWeeksAgo = seed.weekday == DateTime.monday
+      ? seed.subtract(const Duration(days: 14))
+      : seed.subtract(Duration(days: seed.weekday + 13));
+
+  var weeks = <Map<int, Date>>[];
+  for (int j = 0; j < 4; j++) {
+    var map = <int, Date>{};
+    for (int i = 0; i < 7; i++) {
+      var next = firstMondayTwoWeeksAgo.add(Duration(days: j * 7 + i));
+      map.addAll({
+        next.day: Date(
+            date: next,
+            weekday: days[next.weekday - 1],
+            year: next.year,
+            month: next.month,
+            weekdate: next.weekday,
+            day: next.day)
+      });
+    }
+    weeks.add(map);
   }
-  return map;
+  return weeks;
 }

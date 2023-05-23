@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/screens/home.dart';
 
-import '../pages/login/login.dart';
-import '../pages/signup/personal_details.dart';
-import '../pages/signup/phone_verfication.dart';
-import '../pages/signup/security.dart';
-import '../pages/signup/welcome_page.dart';
+import 'pages/login/login.dart';
+import 'pages/signup/personal_details.dart';
+import 'pages/signup/phone_verfication.dart';
+import 'pages/signup/security.dart';
+import 'pages/signup/welcome_page.dart';
 
 class AuthScreen extends StatelessWidget {
   const AuthScreen({super.key});

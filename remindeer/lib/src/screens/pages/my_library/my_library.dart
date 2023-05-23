@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'components/my_library_filter_panel.dart';
-import '../../common/components/cards/resource_card.dart';
+import '../../../common/components/cards/resource_card.dart';
 
 class MyLibraryWidget extends StatefulWidget {
   const MyLibraryWidget({Key? key}) : super(key: key);

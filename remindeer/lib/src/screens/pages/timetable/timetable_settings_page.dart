@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../common/components/cards/member_group.dart';
-import '../../common/components/links/action_links_group.dart';
+import '../../../common/components/cards/member_group.dart';
+import '../../../common/components/links/action_links_group.dart';
 import '../semester/components/semester_settings_page_header.dart';
 
 class TimetableSettingsPage extends StatefulWidget {

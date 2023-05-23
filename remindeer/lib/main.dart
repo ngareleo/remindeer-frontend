@@ -10,7 +10,7 @@ class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  _MyApp createState() => _MyApp();
+  State<StatefulWidget> createState() => _MyApp();
 }
 
 class _MyApp extends State<MyApp> {

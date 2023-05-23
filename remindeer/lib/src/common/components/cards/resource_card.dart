@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../pages/semester/semester_dashboard.dart';
+import '../../../screens/pages/semester/semester_dashboard.dart';
 
 class ResourceCardWidget extends StatefulWidget {
   const ResourceCardWidget({Key? key}) : super(key: key);

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
-import '../../common/components/links/signup_link.dart';
-import '../signup/components/form/password_field.dart';
-import 'components/username_email_field.dart';
+import '../../../common/components/links/login_link.dart';
+import 'components/form/phonenumber_field.dart';
 
-class LoginPageWidget extends StatefulWidget {
-  const LoginPageWidget({Key? key}) : super(key: key);
+class PhoneVerificationPageWidget extends StatefulWidget {
+  const PhoneVerificationPageWidget({Key? key}) : super(key: key);
 
   @override
-  _LoginPageWidgetState createState() => _LoginPageWidgetState();
+  _PhoneVerificationPageWidgetState createState() =>
+      _PhoneVerificationPageWidgetState();
 }
 
-class _LoginPageWidgetState extends State<LoginPageWidget> {
+class _PhoneVerificationPageWidgetState
+    extends State<PhoneVerificationPageWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _unfocusNode = FocusNode();
 
@@ -32,7 +33,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
       onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
       child: Scaffold(
         key: scaffoldKey,
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
@@ -42,9 +43,13 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
               color: Colors.black,
               size: 30,
             ),
-            onPressed: () {},
+            onPressed: () {
+              if (Navigator.canPop(context)) {
+                Navigator.pop(context);
+              }
+            },
           ),
-          actions: [],
+          actions: const [],
           centerTitle: false,
           elevation: 0,
         ),
@@ -60,27 +65,26 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 40),
+                  Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 40),
                     child: Text(
-                      'Sign in your account',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 26,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      'Phone Verification',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontFamily: 'Roboto',
+                            fontSize: 26,
+                            fontWeight: FontWeight.w500,
+                          ),
                     ),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: Column(
+                    child: const Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        UsernameEmailField(),
-                        const Padding(
-                            padding:
-                                EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
-                            child: PasswordField()),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 30),
+                          child: PhonenumberField(),
+                        ),
                       ],
                     ),
                   ),
@@ -88,12 +92,12 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
                     child: FilledButton(
                       onPressed: () {
-                        Navigator.pushReplacementNamed(context, "/");
+                        Navigator.pushNamed(context, '/security');
                       },
                       child: const Text('Next'),
                     ),
                   ),
-                  const SignupLink(),
+                  const LoginLink()
                 ],
               ),
             ),

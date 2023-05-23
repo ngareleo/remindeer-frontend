@@ -1,5 +1,7 @@
-on: push
 name: Analyse and run test cases
+on:
+  pull_request:
+    types: [opened, reopened]
 jobs:
   build:
     name: Build APK

@@ -7,13 +7,16 @@ import 'package:remindeer/src/common/utils/values.dart';
 class Lecture extends Event {
   Unit? unit;
   Timetable? timetable;
+  DayOfWeek dayOfWeek;
 
   Lecture({
     required uid,
     required this.unit,
     required this.timetable,
+    required this.dayOfWeek,
     String? label,
     String? venue,
+    String? descrpition,
     Window? window,
     DateTime? repeatTo,
     DateTime? created,
@@ -26,7 +29,8 @@ class Lecture extends Event {
             repeat: RepeatFrequency.weekly,
             repeatTo: repeatTo,
             created: created,
-            lastModified: lastModified);
+            lastModified: lastModified,
+            description: descrpition);
 
   @override
   dynamic toJson() {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:remindeer/src/screens/pages/dashboard/sections/todays_lectures.dart';
 import 'components/calendar_chooser.dart';
 
 class Dashboard extends StatefulWidget {
@@ -11,9 +12,8 @@ class Dashboard extends StatefulWidget {
 }
 
 class _Dashboard extends State<Dashboard> {
-  DateTime? viewDate = DateTime.now();
+  DateTime viewDate = DateTime.now();
   void onChangeDate(DateTime focus) {
-    debugPrint("[dashboard] Date changed to $focus");
     setState(() {
       viewDate = focus;
     });
@@ -107,35 +107,11 @@ class _Dashboard extends State<Dashboard> {
                 Expanded(
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: const SingleChildScrollView(
+                    child: SingleChildScrollView(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          // const DashboardGroupWidget(),
-                          // SizedBox(
-                          //   width: MediaQuery.of(context).size.width,
-                          //   child: const Padding(
-                          //     padding: EdgeInsets.all(20),
-                          //     child: Divider(
-                          //       thickness: 1,
-                          //       color: Colors.black12,
-                          //     ),
-                          //   ),
-                          // ),
-                          // const DashboardGroupWidget(),
-                          // SizedBox(
-                          //   width: MediaQuery.of(context).size.width,
-                          //   child: const Padding(
-                          //     padding: EdgeInsets.all(20),
-                          //     child: Divider(
-                          //       thickness: 1,
-                          //       color: Colors.black12,
-                          //     ),
-                          //   ),
-                          // ),
-                          // const DashboardGroupWidget(),
-                        ],
+                        children: [TodaysLecturesSection(date: viewDate)],
                       ),
                     ),
                   ),

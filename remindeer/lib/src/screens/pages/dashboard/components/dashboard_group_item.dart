@@ -1,31 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:remindeer/src/models/lecture.dart';
+import 'package:remindeer/src/screens/pages/dashboard/components/dashboard_resource_item_card.dart';
 
-import 'dashboard_resource_item_card.dart';
+class DashboardGroupItem extends StatelessWidget {
+  const DashboardGroupItem({Key? key, required this.lecture}) : super(key: key);
 
-class DashboardGroupItemWidget extends StatefulWidget {
-  const DashboardGroupItemWidget({Key? key}) : super(key: key);
-
-  @override
-  _DashboardGroupItemWidgetState createState() =>
-      _DashboardGroupItemWidgetState();
-}
-
-class _DashboardGroupItemWidgetState extends State<DashboardGroupItemWidget> {
-  @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
+  final Lecture lecture;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -40,7 +20,7 @@ class _DashboardGroupItemWidgetState extends State<DashboardGroupItemWidget> {
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
-                Text(
+                const Text(
                   'In about ',
                   style: TextStyle(
                     fontFamily: 'Roboto',
@@ -58,9 +38,9 @@ class _DashboardGroupItemWidgetState extends State<DashboardGroupItemWidget> {
               ],
             ),
           ),
-          Container(
-            child: DashboardResourceItemCardWidget(),
-          )
+          GestureDetector(
+            child: DashboardResourceItemCard(lecture: lecture),
+          ),
         ],
       ),
     );

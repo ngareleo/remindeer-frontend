@@ -1,0 +1,117 @@
+{
+    "00-l-00": {
+        "venue": "HHA",
+        "from": 700,
+        "to": 730,
+        "timetable": "00-t-01",
+        "unit": "00-u-00",
+        "repeat_to": "2023-05-05",
+        "created": "2023-05-05",
+        "last_modified": "2023-05-05",
+        "day_of_week": 0
+    },
+    "00-l-01": {
+        "venue": "HHA",
+        "from": 900,
+        "to": 1130,
+        "timetable": "00-t-01",
+        "unit": "00-u-01",
+        "repeat_to": "2023-05-05",
+        "created": "2023-05-05",
+        "last_modified": "2023-05-05",
+        "day_of_week": 0
+
+    },
+    "00-l-02": {
+        "venue": "HHA",
+        "from": 700,
+        "to": 730,
+        "timetable": "00-t-01",
+        "unit": "00-u-02",
+        "repeat_to": "2023-05-05",
+        "created": "2023-05-05",
+        "last_modified": "2023-05-05",
+        "day_of_week": 1
+    },
+    "00-l-03": {
+        "venue": "HHA",
+        "from": 1400,
+        "to": 1600,
+        "timetable": "00-t-01",
+        "unit": "00-u-03",
+        "repeat_to": "2023-05-05",
+        "created": "2023-05-05",
+        "last_modified": "2023-05-05",
+        "day_of_week": 2
+    },
+    "00-l-04": {
+        "venue": "HHA",
+        "from": 800,
+        "to": 1000,
+        "timetable": "00-t-01",
+        "unit": "00-u-04",
+        "repeat_to": "2023-05-05",
+        "created": "2023-05-05",
+        "last_modified": "2023-05-05",
+        "day_of_week": 3
+    },
+    "00-l-05": {
+        "venue": "HHA",
+        "from": 700,
+        "to": 730,
+        "timetable": "00-t-01",
+        "unit": "00-u-05",
+        "repeat_to": "2023-05-05",
+        "created": "2023-05-05",
+        "last_modified": "2023-05-05",
+        "day_of_week": 4
+    },
+    "00-l-06": {
+        "venue": "SOE2",
+        "from": 800,
+        "to": 1100,
+        "timetable": "00-t-00",
+        "description": "",
+        "unit": "00-u-06",
+        "repeat_to": "2023-05-05",
+        "created": "2023-05-05",
+        "last_modified": "2023-05-05",
+        "day_of_week": 0
+    },
+    "00-l-07": {
+        "venue": "SOE2",
+        "from": 1100,
+        "to": 1300,
+        "timetable": "00-t-00",
+        "description": "",
+        "unit": "00-u-07",
+        "repeat_to": "2023-05-05",
+        "created": "2023-05-05",
+        "last_modified": "2023-05-05",
+        "day_of_week": 0
+    },
+    "00-l-08": {
+        "venue": "SOE2",
+        "from": 900,
+        "to": 1100,
+        "timetable": "00-t-00",
+        "description": "This class is online",
+        "unit": "00-u-08",
+        "repeat_to": "2023-05-05",
+        "created": "2023-05-05",
+        "last_modified": "2023-05-05",
+        "day_of_week": 1
+    },
+    "00-l-09": {
+        "venue": "SOE2",
+        "from": 1100,
+        "to": 1300,
+        "timetable": "00-t-00",
+        "description": "",
+        "unit": "00-u-09",
+        "repeat_to": "2023-05-05",
+        "created": "2023-05-05",
+        "last_modified": "2023-05-05",
+        "day_of_week": 2
+    }
+}

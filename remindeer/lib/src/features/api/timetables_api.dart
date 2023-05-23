@@ -4,6 +4,13 @@ class TimetableAPI {
   List<Timetable> getTimetables() {
     return [
       Timetable(
+          uid: "4343",
+          label: "2022/23 Intelligent systems",
+          description: "Timetable for 2022/23 academic year",
+          validUntil: DateTime(2023, 8, 10),
+          created: DateTime.now(),
+          lastModified: DateTime.now()),
+      Timetable(
           uid: "435345",
           label: "School Timetable",
           description: "Timetable for classes",

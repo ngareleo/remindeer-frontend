@@ -1,29 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:remindeer/src/models/lecture.dart';
 
-class DashboardResourceItemCardWidget extends StatefulWidget {
-  const DashboardResourceItemCardWidget({Key? key}) : super(key: key);
+class DashboardResourceItemCard extends StatelessWidget {
+  const DashboardResourceItemCard({super.key, required this.lecture});
 
-  @override
-  _DashboardResourceItemCardWidgetState createState() =>
-      _DashboardResourceItemCardWidgetState();
-}
-
-class _DashboardResourceItemCardWidgetState
-    extends State<DashboardResourceItemCardWidget> {
-  @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  final Lecture lecture;
 
   @override
   Widget build(BuildContext context) {
@@ -43,40 +24,40 @@ class _DashboardResourceItemCardWidgetState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Simulation and Modelling',
-                style: TextStyle(
+                lecture.label ?? "",
+                style: const TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 18,
                   fontWeight: FontWeight.normal,
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'SCO312',
-                      style: TextStyle(
+                      lecture.unit?.name ?? "",
+                      style: const TextStyle(
                         fontFamily: 'Roboto',
                         color: Color(0xFF6B6B6B),
                         fontWeight: FontWeight.normal,
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(5, 0, 5, 0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(5, 0, 5, 0),
                       child: Container(
                         width: 5,
                         height: 5,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Color(0xFF6B6B6B),
                           shape: BoxShape.circle,
                         ),
                       ),
                     ),
                     Text(
-                      'Dr. Kianda Kinyua',
-                      style: TextStyle(
+                      lecture.unit?.lecturer ?? "",
+                      style: const TextStyle(
                         fontFamily: 'Roboto',
                         color: Color(0xFF6B6B6B),
                         fontWeight: FontWeight.normal,

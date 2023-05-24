@@ -1,12 +1,17 @@
+import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:remindeer/src/models/unit.dart';
-import 'package:remindeer/src/store/sample_units.dart';
 
 class UnitsAPI {
-  List<Unit> getUnits() {
-    return units;
+  Future<List<Unit>> getAllUnits() async {
+    var file = await rootBundle.loadString("assets/store/sample_lectures.json");
+    var content = Map.from(jsonDecode(file));
+    content.updateAll((key, value) => Unit.fromJson(uid: key, json: value));
+    return content.values.toList().cast();
   }
 
-  List<Unit> getWhere(String params) {
-    return [];
+  Future<Unit?> getUnit(String uid) async {
+    final units = await getAllUnits();
+    return units.where((element) => element.uid == uid).firstOrNull;
   }
 }

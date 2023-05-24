@@ -1,7 +1,7 @@
 {
     "00-u-00": {
         "name": "Simulation and Modelling",
-        "unit-code": "SCO302",
+        "unit_code": "SCO302",
         "description": "",
         "lecturer": "Mr. Muriuki",
         "created": "2023-08-10",

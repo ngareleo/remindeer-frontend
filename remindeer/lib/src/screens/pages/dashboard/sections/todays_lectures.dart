@@ -19,7 +19,14 @@ class _TodaysLecturesSectionState extends State<TodaysLecturesSection> {
   @override
   void initState() {
     super.initState();
-    lectures = api.getLecturesByDate(widget.date);
+    getLectures();
+  }
+
+  void getLectures() async {
+    var lectures = api.getLectures();
+    setState(() {
+      lectures = lectures;
+    });
   }
 
   @override

@@ -16,7 +16,6 @@ class MyApp extends StatefulWidget {
 class _MyApp extends State<MyApp> {
   var isLoggedIn = true;
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

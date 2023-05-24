@@ -1,5 +1,4 @@
 import 'package:remindeer/src/models/lecture.dart';
-import 'package:remindeer/src/store/sample_lectures.dart';
 
 class LecturesAPI {
   List<Lecture> getLectures() {

@@ -49,6 +49,6 @@ class Unit {
 
   @override
   String toString() {
-    return "[Unit] $uid $name";
+    return "[Unit] ${toJson()}";
   }
 }

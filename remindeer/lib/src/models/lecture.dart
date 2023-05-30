@@ -35,8 +35,8 @@ class Lecture extends Event {
   factory Lecture.fromJson(
       {required String uid,
       required Map<String, dynamic> json,
-      required Unit unit,
-      required Timetable timetable}) {
+      required Unit? unit,
+      required Timetable? timetable}) {
     var created = json["created"].toString();
     var lastModified = json["last_modified"].toString();
     var repeatTo = json["repeat_to"].toString();
@@ -75,6 +75,6 @@ class Lecture extends Event {
 
   @override
   String toString() {
-    return "[Lecture] $uid $label";
+    return "[Lecture] ${toJson()}";
   }
 }

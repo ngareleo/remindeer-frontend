@@ -23,9 +23,9 @@ class _TodaysLecturesSectionState extends State<TodaysLecturesSection> {
   }
 
   void getLectures() async {
-    var lectures = api.getLectures();
+    final data = await api.getAllLectures();
     setState(() {
-      lectures = lectures;
+      lectures = data;
     });
   }
 

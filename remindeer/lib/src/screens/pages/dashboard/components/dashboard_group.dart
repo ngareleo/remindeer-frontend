@@ -4,9 +4,7 @@ import 'package:remindeer/src/screens/pages/dashboard/components/dashboard_group
 
 class DashboardGroup extends StatelessWidget {
   const DashboardGroup({Key? key, required this.lectures}) : super(key: key);
-
   final List<Lecture> lectures;
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(

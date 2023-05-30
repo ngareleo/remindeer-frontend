@@ -5,11 +5,13 @@ import 'package:remindeer/src/models/timetable.dart';
 class TimetableAPI {
   Future<List<Timetable>> getTimetables() async {
     var store =
-        await rootBundle.loadString("assets/store/sample_lectures.json");
+        await rootBundle.loadString("assets/store/sample_timetables.json");
     var content = Map.from(jsonDecode(store));
-    content
-        .updateAll((key, value) => Timetable.fromJson(uid: key, json: value));
-    return content.values.toList().cast();
+    var timetables = <Timetable>[];
+    for (final entry in content.entries) {
+      timetables.add(Timetable.fromJson(uid: entry.key, json: entry.value));
+    }
+    return timetables;
   }
 
   Future<Timetable?> getTimetable(String uid) async {

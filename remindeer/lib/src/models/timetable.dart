@@ -18,7 +18,7 @@ class Timetable {
       {required String uid, required Map<String, dynamic> json}) {
     final label = json["label"].toString();
     final description = json["description"].toString();
-    final validUntil = json["valid_unit"].toString();
+    final validUntil = json["valid_until"].toString();
     final created = json["created"].toString();
     final lastModified = json["last_modified"].toString();
     return Timetable(
@@ -44,6 +44,6 @@ class Timetable {
 
   @override
   String toString() {
-    return "[Timetable] $label $uid";
+    return "[Timetable] ${toJson()}";
   }
 }

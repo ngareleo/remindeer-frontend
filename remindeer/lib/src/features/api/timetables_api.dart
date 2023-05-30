@@ -1,22 +1,21 @@
+import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:remindeer/src/models/timetable.dart';
 
 class TimetableAPI {
-  List<Timetable> getTimetables() {
-    return [
-      Timetable(
-          uid: "435345",
-          label: "School Timetable",
-          description: "Timetable for classes",
-          validUntil: DateTime(2020, 0, 0, 0, 0),
-          created: DateTime.now(),
-          lastModified: DateTime(2020, 0, 0, 0)),
-      Timetable(
-          uid: "323234",
-          label: "Meal Timetable",
-          description: "Timetable for classes",
-          validUntil: DateTime(2020, 0, 0, 0, 0),
-          created: DateTime.now(),
-          lastModified: DateTime(2020, 0, 0, 0)),
-    ];
+  Future<List<Timetable>> getTimetables() async {
+    var store =
+        await rootBundle.loadString("assets/store/sample_timetables.json");
+    var content = Map.from(jsonDecode(store));
+    var timetables = <Timetable>[];
+    for (final entry in content.entries) {
+      timetables.add(Timetable.fromJson(uid: entry.key, json: entry.value));
+    }
+    return timetables;
+  }
+
+  Future<Timetable?> getTimetable(String uid) async {
+    final timetables = await getTimetables();
+    return timetables.where((element) => element.uid == uid).firstOrNull;
   }
 }

@@ -16,7 +16,6 @@ class MyApp extends StatefulWidget {
 class _MyApp extends State<MyApp> {
   var isLoggedIn = true;
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -35,8 +34,12 @@ class _MyApp extends State<MyApp> {
             indicatorColor: Color(0xFF5E5ADB),
           ),
           textTheme: const TextTheme(
+              bodyLarge: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.black),
               bodyMedium: TextStyle(
-                  fontSize: 14,
+                  fontSize: 16,
                   fontWeight: FontWeight.normal,
                   color: Colors.black),
               bodySmall: TextStyle(

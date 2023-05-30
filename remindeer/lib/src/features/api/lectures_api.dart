@@ -1,74 +1,28 @@
+import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:remindeer/src/features/api/timetables_api.dart';
 import 'package:remindeer/src/features/api/units_api.dart';
 import 'package:remindeer/src/models/lecture.dart';
-import 'package:remindeer/src/common/utils/structs/window.dart';
 
 class LecturesAPI {
-  List<Lecture> getLectures() {
-    var units = UnitsAPI().getUnits();
-    var timetables = TimetableAPI().getTimetables();
+  Future<List<Lecture>> getAllLectures() async {
+    var store =
+        await rootBundle.loadString("assets/store/sample_lectures.json");
+    var content = Map.from(jsonDecode(store));
+    var lectures = <Lecture>[];
+    for (final entry in content.entries) {
+      var unitUid = entry.value["unit"].toString();
+      var timetableUid = entry.value["timetable"].toString();
+      final unit = await UnitsAPI().getUnit(unitUid);
+      final timetable = await TimetableAPI().getTimetable(timetableUid);
+      lectures.add(Lecture.fromJson(
+          uid: entry.key, json: entry.value, unit: unit, timetable: timetable));
+    }
+    return lectures;
+  }
 
-    return [
-      Lecture(
-          uid: "0001",
-          timetable: timetables[0],
-          unit: units[0],
-          venue: "HHA",
-          window: Window(
-            from: DateTime(0, 0, 0, 7, 0),
-            to: DateTime(0, 0, 0, 7, 0),
-          ),
-          repeatTo: DateTime(2023, 8, 12, 0, 0),
-          created: DateTime.now(),
-          lastModified: DateTime.now().subtract(const Duration(days: 20))),
-      Lecture(
-          uid: "0001",
-          timetable: timetables[0],
-          unit: units[1],
-          venue: "HHA",
-          window: Window(
-            from: DateTime(0, 0, 0, 7, 0),
-            to: DateTime(0, 0, 0, 7, 0),
-          ),
-          repeatTo: DateTime(2023, 8, 12, 0, 0),
-          created: DateTime.now(),
-          lastModified: DateTime.now().subtract(const Duration(days: 20))),
-      Lecture(
-          uid: "0001",
-          timetable: timetables[0],
-          unit: units[3],
-          venue: "HHA",
-          window: Window(
-            from: DateTime(0, 0, 0, 7, 0),
-            to: DateTime(0, 0, 0, 7, 0),
-          ),
-          repeatTo: DateTime(2023, 8, 12, 0, 0),
-          created: DateTime.now(),
-          lastModified: DateTime.now().subtract(const Duration(days: 20))),
-      Lecture(
-          uid: "0001",
-          timetable: timetables[0],
-          unit: units[4],
-          venue: "HHA",
-          window: Window(
-            from: DateTime(0, 0, 0, 7, 0),
-            to: DateTime(0, 0, 0, 7, 0),
-          ),
-          repeatTo: DateTime(2023, 8, 12, 0, 0),
-          created: DateTime.now(),
-          lastModified: DateTime.now().subtract(const Duration(days: 20))),
-      Lecture(
-          uid: "0001",
-          timetable: timetables[0],
-          unit: units[5],
-          venue: "HHA",
-          window: Window(
-            from: DateTime(0, 0, 0, 7, 0),
-            to: DateTime(0, 0, 0, 7, 0),
-          ),
-          repeatTo: DateTime(2023, 8, 12, 0, 0),
-          created: DateTime.now(),
-          lastModified: DateTime.now().subtract(const Duration(days: 20))),
-    ];
+  Future<Lecture?> getLecture(String uid) async {
+    final timetables = await getAllLectures();
+    return timetables.where((element) => element.uid == uid).firstOrNull;
   }
 }

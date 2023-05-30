@@ -7,7 +7,7 @@ class HomePageWidget extends StatefulWidget {
   const HomePageWidget({Key? key}) : super(key: key);
 
   @override
-  _HomePageWidgetState createState() => _HomePageWidgetState();
+  State<StatefulWidget> createState() => _HomePageWidgetState();
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
@@ -33,15 +33,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: Colors.white,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          elevation: 8,
-          child: const Icon(
-            Icons.add,
-            color: Colors.white,
-            size: 24,
-          ),
-        ),
         bottomNavigationBar: NavigationBar(
           destinations: const [
             NavigationDestination(

@@ -14,19 +14,36 @@ class Timetable {
       this.created,
       this.lastModified});
 
+  factory Timetable.fromJson(
+      {required String uid, required Map<String, dynamic> json}) {
+    final label = json["label"].toString();
+    final description = json["description"].toString();
+    final validUntil = json["valid_until"].toString();
+    final created = json["created"].toString();
+    final lastModified = json["last_modified"].toString();
+    return Timetable(
+        uid: uid,
+        label: label,
+        description: description,
+        validUntil: DateTime.parse(validUntil),
+        created: DateTime.parse(created),
+        lastModified: DateTime.parse(lastModified));
+  }
+
   dynamic toJson() {
     return {
-      uid: uid,
-      label: label,
-      description: description,
-      validUntil: validUntil.toString(),
-      created: created.toString(),
-      lastModified: lastModified.toString()
+      uid: {
+        "label": label,
+        "description": description,
+        "valid_until": validUntil.toString(),
+        "created": created.toString(),
+        "last_modified": lastModified.toString()
+      }
     };
   }
 
   @override
   String toString() {
-    return "[Timetable] $label $uid";
+    return "[Timetable] ${toJson()}";
   }
 }

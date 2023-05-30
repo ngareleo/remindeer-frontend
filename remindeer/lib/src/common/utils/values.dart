@@ -15,3 +15,7 @@ enum DayOfWeek {
   saturday,
   sunday
 }
+
+DayOfWeek mapToDayOfWeek(int num) {
+  return DayOfWeek.values[num];
+}

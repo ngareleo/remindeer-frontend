@@ -1,0 +1,75 @@
+{
+    "00-u-00": {
+        "name": "Simulation and Modelling",
+        "unit_code": "SCO302",
+        "description": "",
+        "lecturer": "Mr. Muriuki",
+        "created": "2023-08-10",
+        "last_modified":"2023-08-10"
+    },
+    "00-u-01": {
+        "name": "Automata Theory",
+        "unit-code": "SCO306",
+        "description": "",
+        "lecturer": "Mrs. Viola Davis",
+        "created": "2023-08-10",
+        "last_modified":"2023-08-10"
+    },
+    "00-u-03": {
+        "name": "Calculus II",
+        "unit-code": "SMA200",
+        "description": "",
+        "lecturer": "Dr.Malonza",
+        "created": "2023-08-10",
+        "last_modified":"2023-08-10"
+    },
+    "00-u-04": {
+        "name": "Entreprenuership",
+        "unit-code": "SCO310",
+        "description": "",
+        "lecturer": "Dr. Munyao",
+        "created": "2023-08-10",
+        "last_modified":"2023-08-10"
+    },
+    "00-u-05": {
+        "name": "Data Warehouse and Data Mining",
+        "unit-code": "SCO415",
+        "description": "",
+        "lecturer": "Mr. Muriuki",
+        "created": "2023-08-10",
+        "last_modified":"2023-08-10"
+    },
+    "00-u-06": {
+        "name": "Neural Networks",
+        "unit-code": "SCO411",
+        "description": "",
+        "lecturer": "Mr. Araka",
+        "created": "2023-08-10",
+        "last_modified":"2023-08-10"
+    },
+    "00-u-07": {
+        "name": "Robotics",
+        "unit-code": "SCO413",
+        "description": "",
+        "lecturer": "Mr. Duncan Kibui",
+        "created": "2023-08-10",
+        "last_modified":"2023-08-10"
+    },
+    "00-u-08": {
+        "name": "Natural Language Processing",
+        "unit-code": "SCO409",
+        "description": "",
+        "lecturer": "Mr.",
+        "created": "2023-08-10",
+        "last_modified":"2023-08-10"
+    },
+    "00-u-09": {
+        "name": "Project",
+        "unit-code": "SCO400",
+        "description": "",
+        "lecturer": "Dr. Eric Araka",
+        "created": "2023-08-10",
+        "last_modified":"2023-08-10"
+    }
+
+}

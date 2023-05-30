@@ -1,39 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:remindeer/src/models/lecture.dart';
+import 'package:remindeer/src/screens/pages/dashboard/components/dashboard_group_item.dart';
 
-import 'dashboard_group_item.dart';
-
-class DashboardGroupWidget extends StatefulWidget {
-  const DashboardGroupWidget({Key? key}) : super(key: key);
-
-  @override
-  _DashboardGroupWidgetState createState() => _DashboardGroupWidgetState();
-}
-
-class _DashboardGroupWidgetState extends State<DashboardGroupWidget> {
-  @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
+class DashboardGroup extends StatelessWidget {
+  const DashboardGroup({Key? key, required this.lectures}) : super(key: key);
+  final List<Lecture> lectures;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      child: const Column(
+      child: Column(
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
+          const Padding(
             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
             child: Text(
               'Today\'s Lectures',
@@ -48,7 +28,11 @@ class _DashboardGroupWidgetState extends State<DashboardGroupWidget> {
           Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [DashboardGroupItemWidget(), DashboardGroupItemWidget()],
+            children: List.generate(
+                lectures.length,
+                (index) => GestureDetector(
+                      child: DashboardGroupItem(lecture: lectures[index]),
+                    )),
           ),
         ],
       ),

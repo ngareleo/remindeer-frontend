@@ -7,7 +7,7 @@ import 'package:remindeer/src/common/utils/values.dart';
 class Lecture extends Event {
   Unit? unit;
   Timetable? timetable;
-  DayOfWeek dayOfWeek;
+  DaysOfWeek dayOfWeek;
 
   Lecture({
     required uid,

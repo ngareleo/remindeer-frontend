@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/common/components/forms/form_widgets/date_pick_section.dart';
-import 'package:remindeer/src/common/components/forms/form_widgets/time_interval_section.dart';
+import 'package:remindeer/src/common/utils/structs/window.dart';
+import 'package:remindeer/src/models/unit.dart';
 
 import '../links/link_to_semester.dart';
 import '../links/link_to_timetable.dart';
 import '../links/link_to_unit.dart';
+import 'form_widgets/date_pick_section.dart';
 import 'form_widgets/description_form_field.dart';
 import 'form_widgets/label_form_field.dart';
+import 'form_widgets/time_interval_section.dart';
 import 'form_widgets/type_form_field.dart';
 
 class CreateEventForm extends StatefulWidget {
@@ -17,14 +19,15 @@ class CreateEventForm extends StatefulWidget {
 }
 
 class _CreateEventFormState extends State<CreateEventForm> {
-  bool eventIsAllDay = false;
-  TimeOfDay? eventTimeStart;
-  TimeOfDay? eventTimeEnd;
   final List<DateTime?> dates = [];
   final _labelController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _venueController = TextEditingController();
+  final _semesterController = TextEditingController();
+  final _timetableController = TextEditingController();
+  final _unitController = TextEditingController();
+  // final _venueController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  Window? window;
 
   @override
   void setState(VoidCallback callback) {
@@ -69,17 +72,40 @@ class _CreateEventFormState extends State<CreateEventForm> {
                   const Divider(
                     color: Colors.black12,
                   ),
-                  TimeIntervalSection(),
+                  TimeIntervalSection(
+                    onWindowChanged:
+                        (bool allDay, TimeOfDay? from, TimeOfDay? to) {
+                      if (allDay) {
+                        window = Window(isAllDay: true);
+                      } else {
+                        if (from != null && to != null) {
+                          window = Window(
+                              isAllDay: false,
+                              from: from.hour * 100 + from.minute,
+                              to: to.hour * 100 + to.minute);
+                        }
+                      }
+                    },
+                  ),
                   const Divider(
                     color: Colors.black12,
                   ),
-                  DatePickSection(),
+                  DatePickSection(
+                    onDatesChanged: (dates) {
+                      setState(() {
+                        dates.clear();
+                        dates.addAll(dates);
+                      });
+                    },
+                  ),
                   const Divider(
                     color: Colors.black12,
                   ),
-                  LinkToUnitWidget(),
+                  LinkToUnitWidget(controller: _unitController),
                   LinkToTimetableWidget(),
-                  LinkToSemesterWidget(),
+                  LinkToSemesterWidget(
+                    controller: _semesterController,
+                  ),
                 ],
               ),
             ),

@@ -17,6 +17,11 @@ class _MyApp extends State<MyApp> {
   var isLoggedIn = true;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Remindeer',

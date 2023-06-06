@@ -4,7 +4,7 @@ import 'package:remindeer/src/models/unit.dart';
 
 class UnitsAPI {
   Future<List<Unit>> getAllUnits() async {
-    var file = await rootBundle.loadString("assets/store/sample_lectures.json");
+    var file = await rootBundle.loadString("assets/store/sample_units.json");
     var content = Map.from(jsonDecode(file));
     var units = <Unit>[];
     for (final entry in content.entries) {

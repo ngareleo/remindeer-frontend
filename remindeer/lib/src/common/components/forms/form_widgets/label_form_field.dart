@@ -15,6 +15,7 @@ class EventLabelField extends StatelessWidget {
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: TextFormField(
+          autofocus: false,
           controller: _labelController,
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -25,6 +26,8 @@ class EventLabelField extends StatelessWidget {
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
             labelText: 'Label',
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+
           ),
           style: Theme.of(context).textTheme.bodyMedium,
           keyboardType: TextInputType.text,

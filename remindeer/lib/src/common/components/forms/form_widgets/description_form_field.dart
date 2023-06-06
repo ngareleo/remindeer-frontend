@@ -15,6 +15,7 @@ class EventDescriptionField extends StatelessWidget {
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: TextFormField(
+          autofocus: false,
           controller: _descriptionController,
           validator: (value) {
             return null;
@@ -22,6 +23,7 @@ class EventDescriptionField extends StatelessWidget {
           decoration: const InputDecoration(
             labelText: 'Description',
             border: OutlineInputBorder(),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
           ),
           style: Theme.of(context).textTheme.bodyMedium,
           keyboardType: TextInputType.text,

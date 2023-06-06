@@ -1,32 +1,78 @@
-name: Test, Build and Release apk
-on: 
+name: Release
+
+on:
   push:
     tags:
-      - '*'
+      - 'v*.*.*'
+
 jobs:
-  build:
-    name: Build APK
+  release:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: "./remindeer"
+
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-java@v2
-      with:
-        distribution: 'zulu'
-        java-version: '11'
-    - uses: actions/checkout@v3
-    - uses: subosito/flutter-action@v2
-      with:
-        channel: 'stable'
-    - run: flutter pub get
-    - run: flutter test
-    - run: flutter build apk --debug --split-per-abi
-    - name: Create a Release APK
-      uses: ncipollo/release-action@v1
-      with:
-        artifacts: "build/app/outputs/apk/debug/*.apk"
-        token: ${{ secrets.TOKEN }}
+      - name: Checkout code
+        uses: actions/checkout@v2
 
+      - name: Set up Git
+        run: |
+          git config --global user.name ngareleo
+          git config --global user.email ngarimwenda@gmail.com
 
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.10.3
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk
+
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: apk
+          path: build/app/outputs/apk/release/app-release.apk
+
+      - name: Build iOS
+        run: flutter build ios
+
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ios
+          path: build/ios/iphoneos/Runner.app
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload APK
+        id: upload_apk
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/app/outputs/apk/release/app-release.apk
+          asset_name: app-release.apk
+          asset_content_type: application/vnd.android.package-archive
+
+      - name: Upload iOS
+        id: upload_ios
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/ios/iphoneos/Runner.app
+          asset_name: Runner.app
+          asset_content_type: application/octet-stream

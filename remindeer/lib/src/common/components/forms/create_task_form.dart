@@ -42,8 +42,9 @@ class _CreateTaskFormState extends State<CreateTaskForm> {
                     width: MediaQuery.of(context).size.width,
                     dropdownMenuEntries: const [
                       DropdownMenuEntry(value: 0, label: 'Regular'),
-                      DropdownMenuEntry(value: 0, label: 'Lecture')
+                      DropdownMenuEntry(value: 1, label: 'Lecture')
                     ],
+                    initialSelection: 0,
                     label: const Text('Choose the event type...'),
                   ),
                 ),

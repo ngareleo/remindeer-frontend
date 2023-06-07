@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 import 'components/timetable_event_group.dart';
 import 'components/timetable_page_header.dart';
 
-class TimetableHomePageWidget extends StatefulWidget {
-  const TimetableHomePageWidget({Key? key}) : super(key: key);
+class TimetableHomePage extends StatefulWidget {
+  const TimetableHomePage({Key? key}) : super(key: key);
 
   @override
-  _TimetableHomePageWidgetState createState() =>
-      _TimetableHomePageWidgetState();
+  State<StatefulWidget> createState() => _TimetableHomePageState();
 }
 
-class _TimetableHomePageWidgetState extends State<TimetableHomePageWidget> {
+class _TimetableHomePageState extends State<TimetableHomePage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _unfocusNode = FocusNode();
 

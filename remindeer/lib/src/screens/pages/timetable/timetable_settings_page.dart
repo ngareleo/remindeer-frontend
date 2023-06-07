@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import '../../../common/components/cards/member_group.dart';
-import '../../../common/components/links/action_links_group.dart';
+import 'package:remindeer/src/common/components/cards/member_group.dart';
+import 'package:remindeer/src/common/components/links/action_links_group.dart';
 import '../semester/components/semester_settings_page_header.dart';
 
 class TimetableSettingsPage extends StatefulWidget {
   const TimetableSettingsPage({Key? key}) : super(key: key);
 
   @override
-  _TimetableSettingsPageState createState() => _TimetableSettingsPageState();
+  State<StatefulWidget> createState() => _TimetableSettingsPageState();
 }
 
 class _TimetableSettingsPageState extends State<TimetableSettingsPage> {
@@ -33,7 +33,7 @@ class _TimetableSettingsPageState extends State<TimetableSettingsPage> {
         key: scaffoldKey,
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Color(0xFFF9F9F9),
+          backgroundColor: const Color(0xFFF9F9F9),
           automaticallyImplyLeading: false,
           leading: IconButton(
             icon: const Icon(

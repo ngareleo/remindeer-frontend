@@ -1,4 +1,4 @@
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
 import 'package:remindeer/src/models/resource.dart';
 
@@ -30,7 +30,7 @@ class Task extends Resource {
   }) : super(uid: uid, created: created, lastModified: lastModified);
 
   @override
-  Widget toResourceItem() {
+  Widget toResourceItem(BuildContext context) {
     final timeBtwn = lastModified.difference(DateTime.now());
     return ResourceCard(
       label: label,

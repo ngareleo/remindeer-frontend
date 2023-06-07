@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
 
 class ResourceCardExpanded extends StatefulWidget {
-  const ResourceCardExpanded({Key? key}) : super(key: key);
+  const ResourceCardExpanded(
+      {Key? key,
+      required this.label,
+      required this.tag,
+      required this.lastModified,
+      required this.additionalText})
+      : super(key: key);
+
+  final String label;
+  final String tag;
+  final String lastModified;
+  final String additionalText;
 
   @override
   State<StatefulWidget> createState() => _ResourceCardExpandedState();
@@ -52,10 +63,9 @@ class _ResourceCardExpandedState extends State<ResourceCardExpanded> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Timetable',
+                          widget.tag,
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    fontFamily: 'Roboto',
                                     color: Theme.of(context).primaryColor,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -64,30 +74,27 @@ class _ResourceCardExpandedState extends State<ResourceCardExpanded> {
                           padding:
                               const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
                           child: Text(
-                            'Meal timetable',
+                            widget.label,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium
                                 ?.copyWith(
-                                  fontFamily: 'Roboto',
                                   fontSize: 18,
                                   fontWeight: FontWeight.normal,
                                 ),
                           ),
                         ),
-                        const Text(
-                          'Due 13th march 2023',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
+                        Text(
+                          widget.additionalText,
+                          style: const TextStyle(
                             fontSize: 11,
                           ),
                         ),
                       ],
                     ),
-                    const Text(
-                      'Last Modified 30 Min ago',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
+                    Text(
+                      widget.lastModified,
+                      style: const TextStyle(
                         fontSize: 12,
                       ),
                     ),

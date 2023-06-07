@@ -8,5 +8,5 @@ abstract class Resource {
   const Resource(
       {required this.uid, required this.created, required this.lastModified});
 
-  Widget toResourceItem();
+  Widget toResourceItem(BuildContext context);
 }

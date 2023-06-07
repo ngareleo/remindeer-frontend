@@ -54,6 +54,11 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
   Future<void> _filterResources() async {
     final filteredResources = <Resource>[];
 
+    if (activeFilters.isEmpty) {
+      _getAllResources();
+      return;
+    }
+
     for (final filter in activeFilters) {
       switch (filter) {
         case ContentFilters.units:
@@ -74,11 +79,9 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
         case ContentFilters.tasks:
           // filteredResources.addAll(await ());
           break;
-        default:
-          _getAllResources();
-          break;
       }
     }
+
     setState(() {
       resources.clear();
       resources.addAll(filteredResources);
@@ -145,7 +148,7 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
                     mainAxisSize: MainAxisSize.max,
                     children: List.generate(resources.length, (index) {
                       final resource = resources.elementAt(index);
-                      return resource.toResourceItem();
+                      return resource.toResourceItem(context);
                     }),
                   ),
                 ),

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import '../../../screens/pages/semester/semester_dashboard.dart';
 
 class ResourceCard extends StatefulWidget {
   const ResourceCard(
       {Key? key,
       required this.label,
       required this.lastModified,
-      required this.tag})
+      required this.tag,
+      this.onTap})
       : super(key: key);
 
   final String label;
   final String lastModified;
   final String tag;
+  final Function? onTap;
 
   @override
   State<StatefulWidget> createState() => _ResourceCardState();
@@ -27,11 +28,7 @@ class _ResourceCardState extends State<ResourceCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    const SemesterDashboardPageWidget()));
+        widget.onTap!();
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -66,34 +63,36 @@ class _ResourceCardState extends State<ResourceCard> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.tag,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
-                                  ?.copyWith(
-                                    fontFamily: 'Roboto',
-                                    color: Theme.of(context).primaryColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                            ),
-                            Text(
-                              widget.label,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                    fontFamily: 'Roboto',
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                            ),
-                          ],
+                        Flexible(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.tag,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      fontFamily: 'Roboto',
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                              Text(
+                                widget.label,
+                                overflow: TextOverflow.fade,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      fontFamily: 'Roboto',
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                              ),
+                            ],
+                          ),
                         ),
                         Text(
                           widget.lastModified,

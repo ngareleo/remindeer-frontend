@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
 import 'package:remindeer/src/models/resource.dart';
+import 'package:remindeer/src/screens/pages/timetable/timetable_main_page.dart';
 
 class Timetable extends Resource {
   final _name = "timetable";
@@ -53,12 +55,18 @@ class Timetable extends Resource {
   }
 
   @override
-  Widget toResourceItem() {
+  Widget toResourceItem(
+    BuildContext context,
+  ) {
     final timeBtwn = lastModified.difference(DateTime.now());
     return ResourceCard(
       label: label,
       tag: _displayName,
       lastModified: timeBtwn.toString(),
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const TimetableHomePage()));
+      },
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
+import 'package:remindeer/src/screens/pages/semester/semester_dashboard.dart';
 
 import 'resource.dart';
 
@@ -62,9 +63,18 @@ class Semester extends Resource {
   }
 
   @override
-  Widget toResourceItem() {
+  Widget toResourceItem(BuildContext context) {
     final timeBtwn = lastModified.difference(DateTime.now());
     return ResourceCard(
-        label: name, lastModified: timeBtwn.toString(), tag: _displayName);
+      label: name,
+      lastModified: timeBtwn.toString(),
+      tag: _displayName,
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const SemesterDashboardPage()));
+      },
+    );
   }
 }

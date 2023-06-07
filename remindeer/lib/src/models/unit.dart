@@ -58,12 +58,13 @@ class Unit extends Resource {
   }
 
   @override
-  Widget toResourceItem() {
+  Widget toResourceItem(BuildContext context) {
     final timeBtwn = lastModified.difference(DateTime.now());
     return ResourceCard(
       label: name,
       tag: _displayName,
       lastModified: timeBtwn.toString(),
+      onTap: () {},
     );
   }
 }

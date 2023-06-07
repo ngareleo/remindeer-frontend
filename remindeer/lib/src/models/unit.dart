@@ -1,6 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:remindeer/src/common/components/cards/resource_card.dart';
 import 'package:remindeer/src/models/resource.dart';
 
 class Unit extends Resource {
+  final _name = "unit";
+  final _displayName = "Unit";
+
   final String name;
   final String unitCode;
   final String? description;
@@ -50,5 +55,15 @@ class Unit extends Resource {
   @override
   String toString() {
     return "[Unit] ${toJson()}";
+  }
+
+  @override
+  Widget toResourceItem() {
+    final timeBtwn = lastModified.difference(DateTime.now());
+    return ResourceCard(
+      label: name,
+      tag: _displayName,
+      lastModified: timeBtwn.toString(),
+    );
   }
 }

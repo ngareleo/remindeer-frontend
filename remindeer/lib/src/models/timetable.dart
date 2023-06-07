@@ -1,6 +1,11 @@
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:remindeer/src/common/components/cards/resource_card.dart';
 import 'package:remindeer/src/models/resource.dart';
 
 class Timetable extends Resource {
+  final _name = "timetable";
+  final _displayName = "Timetable";
+
   final String label;
   final String? description;
   final DateTime? validUntil;
@@ -45,5 +50,15 @@ class Timetable extends Resource {
   @override
   String toString() {
     return "[Timetable] ${toJson()}";
+  }
+
+  @override
+  Widget toResourceItem() {
+    final timeBtwn = lastModified.difference(DateTime.now());
+    return ResourceCard(
+      label: label,
+      tag: _displayName,
+      lastModified: timeBtwn.toString(),
+    );
   }
 }

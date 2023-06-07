@@ -99,20 +99,11 @@ class _SemesterDashboardPageWidgetState
                     child: const SlidingTabsWidget(),
                   ),
                 ),
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width,
-                  child: Column(
+                  child: const Column(
                     mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
-                        child: ResourceCardWidget(),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
-                        child: ResourceCardWidget(),
-                      ),
-                    ],
+                    children: [],
                   ),
                 ),
               ],

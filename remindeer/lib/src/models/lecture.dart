@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:remindeer/src/common/components/cards/resource_card.dart';
 import 'package:remindeer/src/models/event.dart';
 import 'package:remindeer/src/models/timetable.dart';
 import 'package:remindeer/src/models/unit.dart';
@@ -38,13 +40,13 @@ class Lecture extends Event {
       required Map<String, dynamic> json,
       required Unit? unit,
       required Timetable? timetable}) {
-    var created = json["created"].toString();
-    var lastModified = json["last_modified"].toString();
-    var repeatTo = json["repeat_to"].toString();
-    var from = json["from"].toString();
-    var to = json["to"].toString();
-    var dayOfWeek = json["day_of_week"].toString();
-    var venue = json["venue"].toString();
+    final created = json["created"].toString();
+    final lastModified = json["last_modified"].toString();
+    final repeatTo = json["repeat_to"].toString();
+    final from = json["from"].toString();
+    final to = json["to"].toString();
+    final dayOfWeek = json["day_of_week"].toString();
+    final venue = json["venue"].toString();
     return Lecture(
         uid: uid,
         unit: unit,
@@ -77,5 +79,13 @@ class Lecture extends Event {
   @override
   String toString() {
     return "[Lecture] ${toJson()}";
+  }
+
+  Widget toResourceCard() {
+    return ResourceCard(
+      label: label,
+      tag: "Lecture",
+      lastModified: lastModified.toString(),
+    );
   }
 }

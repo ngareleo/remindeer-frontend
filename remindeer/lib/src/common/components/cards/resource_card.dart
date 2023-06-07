@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 import '../../../screens/pages/semester/semester_dashboard.dart';
 
-class ResourceCardWidget extends StatefulWidget {
-  const ResourceCardWidget({Key? key}) : super(key: key);
+class ResourceCard extends StatefulWidget {
+  const ResourceCard(
+      {Key? key,
+      required this.label,
+      required this.lastModified,
+      required this.tag})
+      : super(key: key);
+
+  final String label;
+  final String lastModified;
+  final String tag;
 
   @override
-  State<StatefulWidget> createState() => _ResourceCardWidgetState();
+  State<StatefulWidget> createState() => _ResourceCardState();
 }
 
-class _ResourceCardWidgetState extends State<ResourceCardWidget> {
+class _ResourceCardState extends State<ResourceCard> {
   @override
   void initState() {
     super.initState();
@@ -63,7 +72,7 @@ class _ResourceCardWidgetState extends State<ResourceCardWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Timetable',
+                              widget.tag,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall
@@ -74,7 +83,7 @@ class _ResourceCardWidgetState extends State<ResourceCardWidget> {
                                   ),
                             ),
                             Text(
-                              'Meal timetable',
+                              widget.label,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
@@ -86,9 +95,9 @@ class _ResourceCardWidgetState extends State<ResourceCardWidget> {
                             ),
                           ],
                         ),
-                        const Text(
-                          'Last Modified 30 Min ago',
-                          style: TextStyle(
+                        Text(
+                          widget.lastModified,
+                          style: const TextStyle(
                             fontFamily: 'Roboto',
                             fontSize: 12,
                           ),

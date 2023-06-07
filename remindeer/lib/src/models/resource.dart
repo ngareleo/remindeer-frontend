@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 abstract class Resource {
   final String uid;
   final DateTime created;
@@ -5,4 +7,6 @@ abstract class Resource {
 
   const Resource(
       {required this.uid, required this.created, required this.lastModified});
+
+  Widget toResourceItem();
 }

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/models/event.dart';
+import 'package:remindeer/src/models/lecture.dart';
 import 'package:remindeer/src/models/semester.dart';
 import 'package:remindeer/src/models/task.dart';
 import 'package:remindeer/src/models/timetable.dart';
 import 'package:remindeer/src/models/unit.dart';
 
 enum ContentFilters {
-  semester("Semester", Semester),
-  timetable("Timetable", Timetable),
+  semesters("Semester", Semester),
+  timetables("Timetable", Timetable),
   events("Events", Event),
   tasks("Tasks", Task),
+  lectures("Lectures", Lecture),
   units("Units", Unit);
 
   const ContentFilters(this.label, this.representingClass);
@@ -18,7 +20,10 @@ enum ContentFilters {
 }
 
 class MyLibrarySelectionPillGroup extends StatefulWidget {
-  const MyLibrarySelectionPillGroup({Key? key}) : super(key: key);
+  const MyLibrarySelectionPillGroup({Key? key, required this.onFilterChange})
+      : super(key: key);
+
+  final Function onFilterChange;
 
   @override
   State<StatefulWidget> createState() => _MyLibrarySelectionPillGroupState();
@@ -50,6 +55,7 @@ class _MyLibrarySelectionPillGroupState
             setState(() {
               inactiveFilters.add(activeFilters.elementAt(index));
               activeFilters.remove(activeFilters.elementAt(index));
+              widget.onFilterChange(activeFilters.toList());
             });
           },
         ),
@@ -66,6 +72,7 @@ class _MyLibrarySelectionPillGroupState
             setState(() {
               activeFilters.add(inactiveFilters.elementAt(index));
               inactiveFilters.remove(inactiveFilters.elementAt(index));
+              widget.onFilterChange(activeFilters.toList());
             });
           },
         ),

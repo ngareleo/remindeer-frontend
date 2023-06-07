@@ -5,8 +5,7 @@ class SemesterPageLinksGroupWidget extends StatefulWidget {
   const SemesterPageLinksGroupWidget({Key? key}) : super(key: key);
 
   @override
-  _SemesterPageLinksGroupWidgetState createState() =>
-      _SemesterPageLinksGroupWidgetState();
+  State<StatefulWidget> createState() => _SemesterPageLinksGroupWidgetState();
 }
 
 class _SemesterPageLinksGroupWidgetState
@@ -29,8 +28,8 @@ class _SemesterPageLinksGroupWidgetState
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
-      child: Container(
+      padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+      child: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: const Column(
           mainAxisSize: MainAxisSize.max,

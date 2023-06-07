@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:remindeer/src/models/timetable.dart';
 
 class TimetableAPI {
-  Future<List<Timetable>> getTimetables() async {
+  Future<List<Timetable>> getAllTimetables() async {
     var store =
         await rootBundle.loadString("assets/store/sample_timetables.json");
     var content = Map.from(jsonDecode(store));
@@ -15,7 +15,7 @@ class TimetableAPI {
   }
 
   Future<Timetable?> getTimetable(String uid) async {
-    final timetables = await getTimetables();
+    final timetables = await getAllTimetables();
     return timetables.where((element) => element.uid == uid).firstOrNull;
   }
 }

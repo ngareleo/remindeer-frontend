@@ -11,7 +11,7 @@ class SemesterPageLinkWidget extends StatefulWidget {
   final Widget? icon;
 
   @override
-  _SemesterPageLinkWidgetState createState() => _SemesterPageLinkWidgetState();
+  State<StatefulWidget> createState() => _SemesterPageLinkWidgetState();
 }
 
 class _SemesterPageLinkWidgetState extends State<SemesterPageLinkWidget> {
@@ -34,14 +34,14 @@ class _SemesterPageLinkWidgetState extends State<SemesterPageLinkWidget> {
   Widget build(BuildContext context) {
     return Container(
       height: 40,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
       ),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
+            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
             child: widget.icon!,
           ),
           Text(

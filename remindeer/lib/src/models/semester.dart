@@ -1,18 +1,57 @@
 class Semester {
-  final String? uid;
-  final String? name;
+  final String uid;
+  final String name;
   final String? descrption;
   final DateTime? from;
   final DateTime? to;
-  final DateTime? created;
-  final DateTime? lastModified;
+  final DateTime created;
+  final DateTime lastModified;
 
   const Semester(
       {required this.uid,
-      this.name,
+      required this.name,
       this.descrption,
       this.from,
       this.to,
-      this.created,
-      this.lastModified});
+      required this.created,
+      required this.lastModified});
+
+  factory Semester.fromJson({
+    required String uid,
+    required Map<String, dynamic> json,
+  }) {
+    var created = json["created"].toString();
+    var lastModified = json["last_modified"].toString();
+    var from = json["from"].toString();
+    var to = json["to"].toString();
+    var name = json["name"].toString();
+    var descrption = json["description"].toString();
+
+    return Semester(
+        uid: uid,
+        name: name,
+        descrption: descrption,
+        from: DateTime.parse(from),
+        to: DateTime.parse(to),
+        created: DateTime.parse(created),
+        lastModified: DateTime.parse(lastModified));
+  }
+
+  dynamic toJson() {
+    return {
+      uid: {
+        "name": name,
+        "description": descrption,
+        "from": from.toString(),
+        "to": to.toString(),
+        "created": created.toString(),
+        "last_modified": lastModified.toString(),
+      }
+    };
+  }
+
+  @override
+  String toString() {
+    return "[Semester] ${toJson()}";
+  }
 }

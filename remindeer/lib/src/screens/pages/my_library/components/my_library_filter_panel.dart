@@ -1,32 +1,77 @@
 import 'package:flutter/material.dart';
+import 'package:remindeer/src/models/event.dart';
+import 'package:remindeer/src/models/semester.dart';
+import 'package:remindeer/src/models/task.dart';
+import 'package:remindeer/src/models/timetable.dart';
+import 'package:remindeer/src/models/unit.dart';
 
-class MyLibrarySelectionPillGroupWidget extends StatefulWidget {
-  const MyLibrarySelectionPillGroupWidget({Key? key}) : super(key: key);
+enum ContentFilters {
+  semester("Semester", Semester),
+  timetable("Timetable", Timetable),
+  events("Events", Event),
+  tasks("Tasks", Task),
+  units("Units", Unit);
 
-  @override
-  _MyLibrarySelectionPillGroupWidgetState createState() =>
-      _MyLibrarySelectionPillGroupWidgetState();
+  const ContentFilters(this.label, this.representingClass);
+  final String label;
+  final Type representingClass;
 }
 
-class _MyLibrarySelectionPillGroupWidgetState
-    extends State<MyLibrarySelectionPillGroupWidget> {
+class MyLibrarySelectionPillGroup extends StatefulWidget {
+  const MyLibrarySelectionPillGroup({Key? key}) : super(key: key);
+
   @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-  }
+  State<StatefulWidget> createState() => _MyLibrarySelectionPillGroupState();
+}
+
+class _MyLibrarySelectionPillGroupState
+    extends State<MyLibrarySelectionPillGroup> {
+  final activeFilters = <ContentFilters>{};
+  final inactiveFilters = <ContentFilters>{};
 
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
+    inactiveFilters.addAll(ContentFilters.values);
   }
 
   @override
   Widget build(BuildContext context) {
+    final filterChips = List.generate(activeFilters.length, (index) {
+      return Padding(
+        padding: const EdgeInsets.only(right: 4),
+        child: ActionChip(
+          avatar: const Icon(Icons.close_rounded),
+          label: Text(
+            activeFilters.elementAt(index).label,
+          ),
+          padding: const EdgeInsets.all(2),
+          onPressed: () {
+            setState(() {
+              inactiveFilters.add(activeFilters.elementAt(index));
+              activeFilters.remove(activeFilters.elementAt(index));
+            });
+          },
+        ),
+      );
+    });
+
+    filterChips.addAll(List.generate(inactiveFilters.length, (index) {
+      return Padding(
+        padding: const EdgeInsets.only(right: 4),
+        child: ActionChip(
+          label: Text(inactiveFilters.elementAt(index).label),
+          padding: const EdgeInsets.all(2),
+          onPressed: () {
+            setState(() {
+              activeFilters.add(inactiveFilters.elementAt(index));
+              inactiveFilters.remove(inactiveFilters.elementAt(index));
+            });
+          },
+        ),
+      );
+    }));
+
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: const BoxDecoration(
@@ -34,26 +79,11 @@ class _MyLibrarySelectionPillGroupWidgetState
       ),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Padding(
-              padding: EdgeInsets.all(5),
-              child: ChoiceChip(label: Text("All"), selected: true),
-            ),
-            Padding(
-              padding: EdgeInsets.all(5),
-              child: ChoiceChip(label: Text("Semester"), selected: false),
-            ),
-            Padding(
-              padding: EdgeInsets.all(5),
-              child: ChoiceChip(label: Text("Assignments"), selected: false),
-            ),
-            Padding(
-              padding: EdgeInsets.all(5),
-              child: ChoiceChip(label: Text("Semesters"), selected: false),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(2),
+          child: Row(
+            children: filterChips,
+          ),
         ),
       ),
     );

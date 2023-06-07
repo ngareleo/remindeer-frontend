@@ -1,18 +1,18 @@
-class Timetable {
-  final String uid;
+import 'package:remindeer/src/models/resource.dart';
+
+class Timetable extends Resource {
   final String label;
   final String? description;
   final DateTime? validUntil;
-  final DateTime created;
-  final DateTime lastModified;
 
   const Timetable(
-      {required this.uid,
+      {required String uid,
       required this.label,
       this.description,
       this.validUntil,
-      required this.created,
-      required this.lastModified});
+      required DateTime created,
+      required DateTime lastModified})
+      : super(uid: uid, created: created, lastModified: lastModified);
 
   factory Timetable.fromJson(
       {required String uid, required Map<String, dynamic> json}) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:remindeer/src/common/theme/app_theme.dart';
 import 'package:remindeer/src/screens/auth.dart';
 import 'package:remindeer/src/screens/home.dart';
 
@@ -26,31 +27,7 @@ class _MyApp extends State<MyApp> {
     return MaterialApp(
       title: 'Remindeer',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          primaryColor: const Color(0xFF5E5ADB),
-          colorScheme: const ColorScheme.light(
-              primary: Color(0xFF5E5ADB),
-              secondary: Color(0xFFDB5A98),
-              tertiary: Color(0xFF2F2E41),
-              background: Color(0xFFF0F0F0)),
-          useMaterial3: true,
-          navigationBarTheme: const NavigationBarThemeData(
-            backgroundColor: Color(0xFFFCFCFC),
-            indicatorColor: Color(0xFF5E5ADB),
-          ),
-          textTheme: const TextTheme(
-              bodyLarge: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.normal,
-                  color: Colors.black),
-              bodyMedium: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.normal,
-                  color: Colors.black),
-              bodySmall: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.normal,
-                  color: Colors.black))),
+      theme: appTheme,
       home: isLoggedIn ? const HomePageWidget() : const AuthScreen(),
     );
   }

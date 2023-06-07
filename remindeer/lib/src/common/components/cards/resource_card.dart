@@ -5,23 +5,13 @@ class ResourceCardWidget extends StatefulWidget {
   const ResourceCardWidget({Key? key}) : super(key: key);
 
   @override
-  _ResourceCardWidgetState createState() => _ResourceCardWidgetState();
+  State<StatefulWidget> createState() => _ResourceCardWidgetState();
 }
 
 class _ResourceCardWidgetState extends State<ResourceCardWidget> {
   @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-  }
-
-  @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override
@@ -36,7 +26,7 @@ class _ResourceCardWidgetState extends State<ResourceCardWidget> {
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: 70,
+        height: 90,
         decoration: const BoxDecoration(
           color: Colors.white,
         ),
@@ -74,23 +64,29 @@ class _ResourceCardWidgetState extends State<ResourceCardWidget> {
                           children: [
                             Text(
                               'Timetable',
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    fontFamily: 'Roboto',
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                             ),
                             Text(
                               'Meal timetable',
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontSize: 18,
-                                fontWeight: FontWeight.normal,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    fontFamily: 'Roboto',
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.normal,
+                                  ),
                             ),
                           ],
                         ),
-                        Text(
+                        const Text(
                           'Last Modified 30 Min ago',
                           style: TextStyle(
                             fontFamily: 'Roboto',

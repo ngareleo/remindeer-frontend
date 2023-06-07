@@ -1,20 +1,18 @@
 import 'package:remindeer/src/common/utils/structs/window.dart';
 import 'package:remindeer/src/common/utils/values.dart';
+import 'package:remindeer/src/models/resource.dart';
 
-class Event {
-  final String? uid;
+class Event extends Resource {
   final String? venue;
-  final String? label;
+  final String label;
   final String? description;
   final Window? window;
   final RepeatFrequency? repeat;
   final DateTime? repeatTo;
   final DateTime? eventDate;
-  final DateTime? created;
-  final DateTime? lastModified;
 
   const Event(
-      {required this.uid,
+      {required uid,
       required this.label,
       this.description,
       this.venue,
@@ -22,8 +20,9 @@ class Event {
       this.repeatTo,
       this.eventDate,
       this.repeat,
-      this.created,
-      this.lastModified});
+      required DateTime created,
+      required DateTime lastModified})
+      : super(uid: uid, created: created, lastModified: lastModified);
 
   dynamic toJson() {
     return {

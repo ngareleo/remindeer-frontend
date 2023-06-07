@@ -7,7 +7,7 @@ class MyLibraryWidget extends StatefulWidget {
   const MyLibraryWidget({Key? key}) : super(key: key);
 
   @override
-  _MyLibraryWidgetState createState() => _MyLibraryWidgetState();
+  State<StatefulWidget> createState() => _MyLibraryWidgetState();
 }
 
 class _MyLibraryWidgetState extends State<MyLibraryWidget> {
@@ -73,7 +73,7 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                MyLibrarySelectionPillGroupWidget(),
+                MyLibrarySelectionPillGroup(),
                 Divider(
                   thickness: 1,
                   color: Colors.black12,

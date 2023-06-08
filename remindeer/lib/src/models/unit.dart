@@ -1,20 +1,25 @@
-class Unit {
-  final String uid;
+import 'package:flutter/material.dart';
+import 'package:remindeer/src/common/components/cards/resource_card.dart';
+import 'package:remindeer/src/models/resource.dart';
+
+class Unit extends Resource {
+  final _name = "unit";
+  final _displayName = "Unit";
+
   final String name;
   final String unitCode;
   final String? description;
   final String lecturer;
-  final DateTime created;
-  final DateTime lastModified;
 
   const Unit(
-      {required this.uid,
+      {required String uid,
       required this.name,
       required this.unitCode,
       this.description,
       required this.lecturer,
-      required this.created,
-      required this.lastModified});
+      required DateTime created,
+      required DateTime lastModified})
+      : super(uid: uid, created: created, lastModified: lastModified);
 
   factory Unit.fromJson(
       {required String uid, required Map<String, dynamic> json}) {
@@ -50,5 +55,16 @@ class Unit {
   @override
   String toString() {
     return "[Unit] ${toJson()}";
+  }
+
+  @override
+  Widget toResourceItem(BuildContext context) {
+    final timeBtwn = lastModified.difference(DateTime.now());
+    return ResourceCard(
+      label: name,
+      tag: _displayName,
+      lastModified: timeBtwn.toString(),
+      onTap: () {},
+    );
   }
 }

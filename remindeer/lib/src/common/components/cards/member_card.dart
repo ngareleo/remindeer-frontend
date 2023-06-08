@@ -4,23 +4,13 @@ class MemberCardWidget extends StatefulWidget {
   const MemberCardWidget({Key? key}) : super(key: key);
 
   @override
-  _MemberCardWidgetState createState() => _MemberCardWidgetState();
+  State<StatefulWidget> createState() => _MemberCardWidgetState();
 }
 
 class _MemberCardWidgetState extends State<MemberCardWidget> {
   @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-  }
-
-  @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override

@@ -1,6 +1,12 @@
-class Task {
-  final String? uid;
-  final String? label;
+import 'package:flutter/material.dart';
+import 'package:remindeer/src/common/components/cards/resource_card.dart';
+import 'package:remindeer/src/models/resource.dart';
+
+class Task extends Resource {
+  final _name = "task";
+  final _displayName = "Task";
+
+  final String label;
   final String? venue;
   final String? description;
   final DateTime? from;
@@ -8,12 +14,10 @@ class Task {
   final bool? repeat;
   final int? repeatTo;
   final DateTime? due;
-  final DateTime? created;
-  final DateTime? dateLastModified;
 
   const Task({
-    required this.uid,
-    this.label,
+    required String uid,
+    required this.label,
     this.description,
     this.from,
     this.to,
@@ -21,7 +25,17 @@ class Task {
     this.due,
     this.repeat,
     this.repeatTo,
-    this.created,
-    this.dateLastModified,
-  });
+    required DateTime created,
+    required DateTime lastModified,
+  }) : super(uid: uid, created: created, lastModified: lastModified);
+
+  @override
+  Widget toResourceItem(BuildContext context) {
+    final timeBtwn = lastModified.difference(DateTime.now());
+    return ResourceCard(
+      label: label,
+      tag: _displayName,
+      lastModified: timeBtwn.toString(),
+    );
+  }
 }

@@ -48,6 +48,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               currentPageIndex = index;
             });
           },
+          
         ),
         body: <Widget>[
           const Dashboard(),

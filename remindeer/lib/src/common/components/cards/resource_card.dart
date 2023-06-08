@@ -1,42 +1,38 @@
 import 'package:flutter/material.dart';
-import '../../../screens/pages/semester/semester_dashboard.dart';
 
-class ResourceCardWidget extends StatefulWidget {
-  const ResourceCardWidget({Key? key}) : super(key: key);
+class ResourceCard extends StatefulWidget {
+  const ResourceCard(
+      {Key? key,
+      required this.label,
+      required this.lastModified,
+      required this.tag,
+      this.onTap})
+      : super(key: key);
+
+  final String label;
+  final String lastModified;
+  final String tag;
+  final Function? onTap;
 
   @override
-  _ResourceCardWidgetState createState() => _ResourceCardWidgetState();
+  State<StatefulWidget> createState() => _ResourceCardState();
 }
 
-class _ResourceCardWidgetState extends State<ResourceCardWidget> {
-  @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-  }
-
+class _ResourceCardState extends State<ResourceCard> {
   @override
   void initState() {
     super.initState();
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    const SemesterDashboardPageWidget()));
+        widget.onTap!();
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: 70,
+        height: 90,
         decoration: const BoxDecoration(
           color: Colors.white,
         ),
@@ -67,32 +63,40 @@ class _ResourceCardWidgetState extends State<ResourceCardWidget> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Timetable',
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.bold,
+                        Flexible(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.tag,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      fontFamily: 'Roboto',
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                               ),
-                            ),
-                            Text(
-                              'Meal timetable',
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontSize: 18,
-                                fontWeight: FontWeight.normal,
+                              Text(
+                                widget.label,
+                                overflow: TextOverflow.fade,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      fontFamily: 'Roboto',
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.normal,
+                                    ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                         Text(
-                          'Last Modified 30 Min ago',
-                          style: TextStyle(
+                          widget.lastModified,
+                          style: const TextStyle(
                             fontFamily: 'Roboto',
                             fontSize: 12,
                           ),

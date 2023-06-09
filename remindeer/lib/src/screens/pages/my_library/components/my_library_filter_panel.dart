@@ -31,48 +31,45 @@ class MyLibrarySelectionPillGroup extends StatefulWidget {
 
 class _MyLibrarySelectionPillGroupState
     extends State<MyLibrarySelectionPillGroup> {
-  final activeFilters = <ContentFilters>{};
-  final inactiveFilters = <ContentFilters>{};
+  final filters = <ContentFilters>{};
 
   @override
   void initState() {
     super.initState();
-    inactiveFilters.addAll(ContentFilters.values);
   }
 
   @override
   Widget build(BuildContext context) {
-    final filterChips = List.generate(activeFilters.length, (index) {
+    final others = ContentFilters.values.toSet().difference(filters);
+    final filterChips = List.generate(filters.length, (index) {
       return Padding(
         padding: const EdgeInsets.only(right: 4),
         child: ActionChip(
           avatar: const Icon(Icons.close_rounded),
           label: Text(
-            activeFilters.elementAt(index).label,
+            filters.elementAt(index).label,
           ),
           padding: const EdgeInsets.all(2),
           onPressed: () {
             setState(() {
-              inactiveFilters.add(activeFilters.elementAt(index));
-              activeFilters.remove(activeFilters.elementAt(index));
-              widget.onFilterChange(activeFilters.toList());
+              filters.remove(filters.elementAt(index));
+              widget.onFilterChange(filters.toList());
             });
           },
         ),
       );
     });
 
-    filterChips.addAll(List.generate(inactiveFilters.length, (index) {
+    filterChips.addAll(List.generate(others.length, (index) {
       return Padding(
         padding: const EdgeInsets.only(right: 4),
         child: ActionChip(
-          label: Text(inactiveFilters.elementAt(index).label),
+          label: Text(others.elementAt(index).label),
           padding: const EdgeInsets.all(2),
           onPressed: () {
             setState(() {
-              activeFilters.add(inactiveFilters.elementAt(index));
-              inactiveFilters.remove(inactiveFilters.elementAt(index));
-              widget.onFilterChange(activeFilters.toList());
+              filters.add(others.elementAt(index));
+              widget.onFilterChange(filters.toList());
             });
           },
         ),

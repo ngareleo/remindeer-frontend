@@ -21,7 +21,7 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
   final tasksApi = TaskAPI();
   final lecturesAPI = LecturesAPI();
 
-  final activeFilters = ContentFilters.values.toSet();
+  final filters = ContentFilters.values.toSet();
   final resources = <Resource>{};
 
   @override
@@ -32,8 +32,8 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
 
   void _onFilterChange(List<ContentFilters> filters) {
     setState(() {
-      activeFilters.clear();
-      activeFilters.addAll(filters);
+      filters.clear();
+      filters.addAll(filters);
     });
     _filterResources();
   }
@@ -43,7 +43,6 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
     final semesters = await semestersApi.getAllSemesters();
     final timetables = await timetablesApi.getAllTimetables();
 
-    debugPrint("Inside _getTaskResources()");
     setState(() {
       resources.addAll(units);
       resources.addAll(semesters);
@@ -52,14 +51,14 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
   }
 
   Future<void> _filterResources() async {
-    final filteredResources = <Resource>[];
+    final filteredResources = <Resource>{};
 
-    if (activeFilters.isEmpty) {
+    if (filters.isEmpty) {
       _getAllResources();
       return;
     }
 
-    for (final filter in activeFilters) {
+    for (final filter in filters) {
       switch (filter) {
         case ContentFilters.units:
           filteredResources.addAll(await unitsApi.getAllUnits());
@@ -86,8 +85,6 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
       resources.clear();
       resources.addAll(filteredResources);
     });
-
-    debugPrint('Filtered resources: ${resources.length}');
   }
 
   @override

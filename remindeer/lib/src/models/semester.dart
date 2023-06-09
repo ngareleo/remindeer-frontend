@@ -5,8 +5,8 @@ import 'package:remindeer/src/screens/pages/semester/semester_dashboard.dart';
 import 'resource.dart';
 
 class Semester extends Resource {
-  final _name = "semester";
-  final _displayName = "Semester";
+  static const _name = "semester";
+  static const _displayName = "Semester";
 
   final String name;
   final String? descrption;

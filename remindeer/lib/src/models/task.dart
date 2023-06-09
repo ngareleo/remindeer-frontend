@@ -3,8 +3,8 @@ import 'package:remindeer/src/common/components/cards/resource_card.dart';
 import 'package:remindeer/src/models/resource.dart';
 
 class Task extends Resource {
-  final _name = "task";
-  final _displayName = "Task";
+  static const _name = "task";
+  static const _displayName = "Task";
 
   final String label;
   final String? venue;

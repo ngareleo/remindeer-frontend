@@ -6,8 +6,8 @@ import 'package:remindeer/src/models/resource.dart';
 import 'package:remindeer/src/screens/pages/my_library/my_library.dart';
 
 class Event extends Resource {
-  final _name = "event";
-  final _displayName = "Event";
+  static const _name = "event";
+  static const _displayName = "Event";
 
   final String? venue;
   final String label;

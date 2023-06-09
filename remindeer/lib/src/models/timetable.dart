@@ -5,8 +5,8 @@ import 'package:remindeer/src/models/resource.dart';
 import 'package:remindeer/src/screens/pages/timetable/timetable_main_page.dart';
 
 class Timetable extends Resource {
-  final _name = "timetable";
-  final _displayName = "Timetable";
+  static const _name = "timetable";
+  static const _displayName = "Timetable";
 
   final String label;
   final String? description;

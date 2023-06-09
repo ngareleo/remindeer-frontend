@@ -3,8 +3,8 @@ import 'package:remindeer/src/common/components/cards/resource_card.dart';
 import 'package:remindeer/src/models/resource.dart';
 
 class Unit extends Resource {
-  final _name = "unit";
-  final _displayName = "Unit";
+  static const _name = "unit";
+  static const _displayName = "Unit";
 
   final String name;
   final String unitCode;

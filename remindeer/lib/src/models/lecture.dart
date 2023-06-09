@@ -7,6 +7,9 @@ import 'package:remindeer/src/common/utils/structs/window.dart';
 import 'package:remindeer/src/common/utils/values.dart';
 
 class Lecture extends Event {
+  static const _name = "lecture";
+  static const _displayName = "Lecture";
+
   Unit? unit;
   Timetable? timetable;
   DaysOfWeek dayOfWeek;
@@ -84,7 +87,7 @@ class Lecture extends Event {
   Widget toResourceCard() {
     return ResourceCard(
       label: label,
-      tag: "Lecture",
+      tag: _displayName,
       lastModified: lastModified.toString(),
     );
   }

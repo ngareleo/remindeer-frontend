@@ -13,8 +13,8 @@ class TodaysLecturesSection extends StatefulWidget {
 }
 
 class _TodaysLecturesSectionState extends State<TodaysLecturesSection> {
-  final LecturesAPI api = LecturesAPI();
-  List<Lecture> lectures = [];
+  final api = LecturesAPI();
+  final lectures = <Lecture>[];
 
   @override
   void initState() {
@@ -24,9 +24,7 @@ class _TodaysLecturesSectionState extends State<TodaysLecturesSection> {
 
   void getLectures() async {
     final data = await api.getAllLectures();
-    setState(() {
-      lectures = data;
-    });
+    setState(() => lectures.addAll(data));
   }
 
   @override

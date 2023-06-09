@@ -91,12 +91,10 @@ class _CreateEventFormState extends State<CreateEventForm> {
                     color: Colors.black12,
                   ),
                   DatePickSection(
-                    onDatesChanged: (dates) {
-                      setState(() {
-                        dates.clear();
-                        dates.addAll(dates);
-                      });
-                    },
+                    onDatesChanged: (dates) => setState(() {
+                      dates.clear();
+                      dates.addAll(dates);
+                    }),
                   ),
                   const Divider(
                     color: Colors.black12,

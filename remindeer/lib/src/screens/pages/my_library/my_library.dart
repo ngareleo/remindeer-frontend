@@ -21,7 +21,7 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
   final tasksApi = TaskAPI();
   final lecturesAPI = LecturesAPI();
 
-  final filters = ContentFilters.values.toSet();
+  final activeFilters = ContentFilters.values.toSet();
   final resources = <Resource>{};
 
   @override
@@ -30,10 +30,10 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
     _filterResources();
   }
 
-  void _onFilterChange(List<ContentFilters> filters) {
+  void _onFilterChange(Set<ContentFilters> filters) {
     setState(() {
-      filters.clear();
-      filters.addAll(filters);
+      activeFilters.clear();
+      activeFilters.addAll(filters);
     });
     _filterResources();
   }
@@ -53,12 +53,12 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
   Future<void> _filterResources() async {
     final filteredResources = <Resource>{};
 
-    if (filters.isEmpty) {
+    if (activeFilters.isEmpty) {
       _getAllResources();
       return;
     }
 
-    for (final filter in filters) {
+    for (final filter in activeFilters) {
       switch (filter) {
         case ContentFilters.units:
           filteredResources.addAll(await unitsApi.getAllUnits());
@@ -143,10 +143,10 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
-                    children: List.generate(resources.length, (index) {
-                      final resource = resources.elementAt(index);
-                      return resource.toResourceItem(context);
-                    }),
+                    children: List.generate(
+                        resources.length,
+                        (index) =>
+                            resources.elementAt(index).toResourceItem(context)),
                   ),
                 ),
               ),

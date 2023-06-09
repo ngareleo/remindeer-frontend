@@ -41,6 +41,8 @@ class _MyLibrarySelectionPillGroupState
   @override
   Widget build(BuildContext context) {
     final others = ContentFilters.values.toSet().difference(filters);
+
+    // active action chips
     final filterChips = List.generate(filters.length, (index) {
       return Padding(
         padding: const EdgeInsets.only(right: 4),
@@ -51,15 +53,14 @@ class _MyLibrarySelectionPillGroupState
           ),
           padding: const EdgeInsets.all(2),
           onPressed: () {
-            setState(() {
-              filters.remove(filters.elementAt(index));
-              widget.onFilterChange(filters.toList());
-            });
+            setState(() => filters.remove(filters.elementAt(index)));
+            widget.onFilterChange(filters);
           },
         ),
       );
     });
 
+    // inactive action chips
     filterChips.addAll(List.generate(others.length, (index) {
       return Padding(
         padding: const EdgeInsets.only(right: 4),
@@ -67,10 +68,8 @@ class _MyLibrarySelectionPillGroupState
           label: Text(others.elementAt(index).label),
           padding: const EdgeInsets.all(2),
           onPressed: () {
-            setState(() {
-              filters.add(others.elementAt(index));
-              widget.onFilterChange(filters.toList());
-            });
+            setState(() => filters.add(others.elementAt(index)));
+            widget.onFilterChange(filters);
           },
         ),
       );

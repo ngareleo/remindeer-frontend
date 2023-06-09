@@ -35,9 +35,7 @@ class _LinkToSemester extends State<LinkToSemesterWidget> {
     return selectedSemester != null
         ? ActionChip(
             onPressed: () {
-              setState(() {
-                selectedSemester = null;
-              });
+              setState(() => selectedSemester = null);
               widget.controller.text = "";
             },
             label: Text((selectedSemester?.name)!),

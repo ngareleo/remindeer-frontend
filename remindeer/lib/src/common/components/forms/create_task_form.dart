@@ -11,11 +11,6 @@ class _CreateTaskFormState extends State<CreateTaskForm> {
   bool eventIsAllDay = false;
 
   @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -101,9 +96,7 @@ class _CreateTaskFormState extends State<CreateTaskForm> {
                           Switch(
                               value: eventIsAllDay,
                               onChanged: (bool value) {
-                                setState(() {
-                                  eventIsAllDay = value;
-                                });
+                                setState(() => eventIsAllDay = value);
                               })
                         ],
                       ),

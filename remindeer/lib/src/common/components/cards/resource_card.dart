@@ -20,16 +20,9 @@ class ResourceCard extends StatefulWidget {
 
 class _ResourceCardState extends State<ResourceCard> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        widget.onTap!();
-      },
+      onTap: () => widget.onTap!(),
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: 90,

@@ -12,13 +12,13 @@ class CalendarChooserWidget extends StatefulWidget {
 }
 
 class _CalendarChooserWidgetState extends State<CalendarChooserWidget> {
-  Map<int, String> months = mapMonthToString();
-  int month = 0;
-  int day = 0;
-  int weekday = 0;
-  int year = 0;
-  int activeWeek = 0;
-  List<Map<int, Date>> days = [];
+  final months = mapMonthToString();
+  var month = 0;
+  var day = 0;
+  var weekday = 0;
+  var year = 0;
+  var activeWeek = 0;
+  final days = <Map<int, Date>>[];
 
   @override
   void initState() {
@@ -28,10 +28,8 @@ class _CalendarChooserWidgetState extends State<CalendarChooserWidget> {
     month = currentDate.month;
     day = currentDate.day;
     weekday = currentDate.weekday;
-    days = fillWeeks(seed: currentDate);
-    activeWeek = days.indexWhere((element) {
-      return element.keys.contains(day);
-    });
+    days.addAll(fillWeeks(seed: currentDate));
+    activeWeek = days.indexWhere((element) => element.keys.contains(day));
   }
 
   @override
@@ -67,7 +65,9 @@ class _CalendarChooserWidgetState extends State<CalendarChooserWidget> {
                       } else {
                         month--;
                       }
-                      days = fillWeeks(seed: DateTime(year, month + 1, 0));
+                      days.clear();
+                      days.addAll(
+                          fillWeeks(seed: DateTime(year, month + 1, 0)));
                     })
                   },
                 ),
@@ -92,7 +92,9 @@ class _CalendarChooserWidgetState extends State<CalendarChooserWidget> {
                       } else {
                         month++;
                       }
-                      days = fillWeeks(seed: DateTime(year, month + 1, 0));
+                      days.clear();
+                      days.addAll(
+                          fillWeeks(seed: DateTime(year, month + 1, 0)));
                     })
                   },
                 )

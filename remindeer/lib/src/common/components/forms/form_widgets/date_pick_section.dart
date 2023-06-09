@@ -35,9 +35,7 @@ class _DatePickSectionState extends State<DatePickSection> {
                   label: Text(
                       "${DaysOfWeek.values[index].value}, ${MonthsOfYear.values[index].value} ${date?.year}"),
                   onPressed: () {
-                    setState(() {
-                      dates.removeAt(index);
-                    });
+                    setState(() => dates.removeAt(index));
                     widget.onDatesChanged(dates);
                   },
                 ),
@@ -51,9 +49,7 @@ class _DatePickSectionState extends State<DatePickSection> {
                   initialDate: DateTime.now(),
                   firstDate: DateTime.now(),
                   lastDate: DateTime(21000));
-              setState(() {
-                dates.add(temp);
-              });
+              setState(() => dates.add(temp));
               widget.onDatesChanged(dates);
             },
             child: const Row(mainAxisSize: MainAxisSize.min, children: [

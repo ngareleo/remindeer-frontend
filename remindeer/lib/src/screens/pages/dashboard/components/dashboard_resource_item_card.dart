@@ -24,7 +24,7 @@ class DashboardResourceItemCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                lecture.label ?? "",
+                lecture.label,
                 style: const TextStyle(
                   fontFamily: 'Roboto',
                   fontSize: 18,

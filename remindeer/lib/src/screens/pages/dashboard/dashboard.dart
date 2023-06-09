@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/common/components/forms/create_event_form.dart';
 import 'package:remindeer/src/common/components/forms/create_task_form.dart';
-import 'package:remindeer/src/common/theme/bottom_sheet_button_styles.dart';
 import 'package:remindeer/src/screens/pages/dashboard/sections/todays_lectures.dart';
 import 'components/calendar_chooser.dart';
 
@@ -15,16 +14,9 @@ class Dashboard extends StatefulWidget {
 }
 
 class _Dashboard extends State<Dashboard> {
-  DateTime viewDate = DateTime.now();
+  var viewDate = DateTime.now();
   void onChangeDate(DateTime focus) {
-    setState(() {
-      viewDate = focus;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
+    setState(() => viewDate = focus);
   }
 
   @override

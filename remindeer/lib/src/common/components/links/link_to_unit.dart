@@ -55,9 +55,8 @@ class _LinkToUnitWidget extends State<LinkToUnitWidget> {
                             units.length,
                             (index) => SimpleDialogOption(
                                   onPressed: () {
-                                    setState(() {
-                                      selectedUnit = units[index].name;
-                                    });
+                                    setState(
+                                        () => selectedUnit = units[index].name);
                                     widget.controller.text = units[index].uid;
                                     Navigator.pop(context);
                                   },

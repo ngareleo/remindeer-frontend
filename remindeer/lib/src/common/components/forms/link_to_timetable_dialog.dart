@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/features/api/semesters_api.dart';
 import 'package:remindeer/src/features/api/timetables_api.dart';
 import 'package:remindeer/src/models/semester.dart';
 import 'package:remindeer/src/models/timetable.dart';
@@ -96,19 +95,13 @@ class _LinkToTimetableDialogState extends State<LinkToTimetableDialog> {
                       from != null
                           ? ActionChip(
                               label: Text(from.toString()),
-                              onPressed: () {
-                                setState(() {
-                                  to = null;
-                                });
-                              })
+                              onPressed: () => setState(() => to = null))
                           : OutlinedButton(
                               onPressed: () async {
                                 final time = await showTimePicker(
                                     context: context,
                                     initialTime: TimeOfDay.now());
-                                setState(() {
-                                  from = time;
-                                });
+                                setState(() => from = time);
                               },
                               child: const Text('From'),
                             ),
@@ -135,9 +128,7 @@ class _LinkToTimetableDialogState extends State<LinkToTimetableDialog> {
                                 final time = await showTimePicker(
                                     context: context,
                                     initialTime: TimeOfDay.now());
-                                setState(() {
-                                  to = time;
-                                });
+                                setState(() => to = time);
                               },
                               child: const Text('To'),
                             ),
@@ -176,9 +167,7 @@ class _LinkToTimetableDialogState extends State<LinkToTimetableDialog> {
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
                     child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
+                      onPressed: () => Navigator.pop(context),
                       child: const Text('Cancel'),
                     ),
                   ),

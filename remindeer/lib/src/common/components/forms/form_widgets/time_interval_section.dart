@@ -44,9 +44,7 @@ class _TimeIntervalSectionState extends State<TimeIntervalSection> {
               Switch(
                   value: eventIsAllDay,
                   onChanged: (bool value) {
-                    setState(() {
-                      eventIsAllDay = value;
-                    });
+                    setState(() => eventIsAllDay = value);
                     widget.onWindowChanged(
                         eventIsAllDay, eventTimeStart, eventTimeEnd);
                   })
@@ -73,9 +71,7 @@ class _TimeIntervalSectionState extends State<TimeIntervalSection> {
                   : () async {
                       final time = await showTimePicker(
                           context: context, initialTime: TimeOfDay.now());
-                      setState(() {
-                        eventTimeEnd = time!;
-                      });
+                      setState(() => eventTimeEnd = time!);
                       widget.onWindowChanged(
                           eventIsAllDay, eventTimeStart, eventTimeEnd);
                     },

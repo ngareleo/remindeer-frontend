@@ -14,7 +14,7 @@ To get started with Remindeer, simply follow these steps:
 
 1. **Installation**: Clone this repository to your local machine.
 ```bash
-git clone [https://github.com/remindeer-app/remindeer.git](https://github.com/ngareleo/remindeer-frontend.git)
+git clone https://github.com/ngareleo/remindeer-frontend.git
 ```
 
 2. **Setup**: Install the necessary dependencies.

@@ -73,7 +73,13 @@ class Semester extends Resource {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => const SemesterDashboardPage()));
+                builder: (context) => SemesterDashboardPage(
+                      semester: Semester(
+                          uid: uid,
+                          name: name,
+                          created: created,
+                          lastModified: lastModified),
+                    )));
       },
     );
   }

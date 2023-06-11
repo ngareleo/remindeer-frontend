@@ -16,12 +16,19 @@ final appTheme = ThemeData(
       iconTheme: MaterialStateProperty.resolveWith(getBottomNavigationColor),
     ),
     textTheme: const TextTheme(
-        bodyLarge: TextStyle(
-            fontSize: 18, fontWeight: FontWeight.normal, color: Colors.black),
-        bodyMedium: TextStyle(
-            fontSize: 16, fontWeight: FontWeight.normal, color: Colors.black),
-        bodySmall: TextStyle(
-            fontSize: 12, fontWeight: FontWeight.normal, color: Colors.black)));
+      bodyLarge: TextStyle(
+          fontSize: 18, fontWeight: FontWeight.normal, color: Colors.black),
+      bodyMedium: TextStyle(
+          fontSize: 16, fontWeight: FontWeight.normal, color: Colors.black),
+      bodySmall: TextStyle(
+          fontSize: 12, fontWeight: FontWeight.normal, color: Colors.black),
+      headlineMedium: TextStyle(
+          fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black),
+      headlineLarge: TextStyle(
+          fontSize: 24, fontWeight: FontWeight.w600, color: Colors.black),
+      headlineSmall: TextStyle(
+          fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
+    ));
 
 IconThemeData getBottomNavigationColor(Set<MaterialState> states) {
   const Set<MaterialState> interactiveStates = <MaterialState>{

@@ -2,66 +2,46 @@ import 'package:flutter/material.dart';
 
 import 'components/create_semester_form.dart';
 
-class NewSemesterPageWidget extends StatefulWidget {
-  const NewSemesterPageWidget({Key? key}) : super(key: key);
+class NewSemesterPage extends StatefulWidget {
+  const NewSemesterPage({Key? key}) : super(key: key);
 
   @override
-  _NewSemesterPageWidgetState createState() => _NewSemesterPageWidgetState();
+  State<StatefulWidget> createState() => _NewSemesterPageState();
 }
 
-class _NewSemesterPageWidgetState extends State<NewSemesterPageWidget> {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _unfocusNode.dispose();
-    super.dispose();
-  }
-
+class _NewSemesterPageState extends State<NewSemesterPage> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
-      child: Scaffold(
-        key: scaffoldKey,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back_rounded,
-              color: Colors.black,
-              size: 30,
-            ),
-            onPressed: () {},
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_rounded,
+            color: Colors.black,
+            size: 30,
           ),
-          title: Text(
-            'Semester',
-            style: TextStyle(
-              fontFamily: 'Roboto',
-              color: Colors.black,
-              fontSize: 18,
-            ),
-          ),
-          actions: [],
-          centerTitle: false,
-          elevation: 1,
+          onPressed: () {},
         ),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(2, 0, 0, 0),
-            child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 1,
-                child: const CreateSemesterFormWidget()),
-          ),
+        title: const Text('Semester',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            )),
+        actions: const [],
+        centerTitle: false,
+        elevation: 1,
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(2, 0, 0, 0),
+          child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 1,
+              child: const CreateSemesterForm()),
         ),
       ),
     );

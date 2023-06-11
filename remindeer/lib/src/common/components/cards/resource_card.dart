@@ -61,16 +61,17 @@ class _ResourceCardState extends State<ResourceCard> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                widget.tag,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      fontFamily: 'Roboto',
-                                      color: Theme.of(context).primaryColor,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                              Flexible(
+                                child: Text(
+                                  widget.tag,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: Theme.of(context).primaryColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
                               ),
                               Text(
                                 widget.label,
@@ -79,18 +80,19 @@ class _ResourceCardState extends State<ResourceCard> {
                                     .textTheme
                                     .bodyMedium
                                     ?.copyWith(
-                                      fontFamily: 'Roboto',
-                                      fontSize: 17,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.normal,
                                     ),
                               ),
                             ],
                           ),
                         ),
+                        const Spacer(
+                          flex: 1,
+                        ),
                         Text(
                           widget.lastModified,
                           style: const TextStyle(
-                            fontFamily: 'Roboto',
                             fontSize: 12,
                           ),
                         ),

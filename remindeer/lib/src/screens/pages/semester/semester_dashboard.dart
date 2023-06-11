@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/common/components/sliding_tabs/sliding_tabs.dart';
+import 'package:remindeer/src/models/semester.dart';
 import 'components/semester_page_header.dart';
 
 class SemesterDashboardPage extends StatefulWidget {
-  const SemesterDashboardPage({Key? key}) : super(key: key);
+  const SemesterDashboardPage({Key? key, required this.semester})
+      : super(key: key);
+
+  final Semester semester;
 
   @override
   State<StatefulWidget> createState() => _SemesterDashboardPageState();
 }
 
 class _SemesterDashboardPageState extends State<SemesterDashboardPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,13 +32,12 @@ class _SemesterDashboardPageState extends State<SemesterDashboardPage> {
         title: const Text(
           'Semester',
           style: TextStyle(
-            fontFamily: 'Roboto',
             color: Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
         ),
-        actions: [],
+        actions: const [],
         centerTitle: false,
         elevation: 0,
       ),
@@ -78,7 +71,10 @@ class _SemesterDashboardPageState extends State<SemesterDashboardPage> {
                       end: const AlignmentDirectional(1, 0),
                     ),
                   ),
-                  child: const SemesterPageHeaderWidget(),
+                  child: SemesterPageHeader(
+                    email: '',
+                    label: widget.semester.name,
+                  ),
                 ),
               ),
               Padding(

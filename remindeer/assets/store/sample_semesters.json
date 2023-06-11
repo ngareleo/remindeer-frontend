@@ -1,10 +1,10 @@
 {
     "00-s-00": {
-        "name": "Computer science 2022/23 Second Semester",
-        "description": "",
+        "name": "Computer Science Diploma Courses",
+        "description": "Computer science diploma courses offered at a Kenyan university.",
         "from": "2023-02-01",
         "to": "2023-06-30",
         "created": "2021-09-01",
-        "last_modified": "2021-09-01"
+        "last_modified": "2023-06-11"
     }
 }

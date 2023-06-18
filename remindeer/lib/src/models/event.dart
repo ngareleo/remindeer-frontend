@@ -17,7 +17,7 @@ class Event extends Resource {
   final DateTime? repeatTo;
   final DateTime? eventDate;
 
-  const Event(
+  Event(
       {required uid,
       required this.label,
       this.description,

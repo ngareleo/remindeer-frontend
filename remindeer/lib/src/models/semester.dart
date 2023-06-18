@@ -13,7 +13,7 @@ class Semester extends Resource {
   final DateTime? from;
   final DateTime? to;
 
-  const Semester(
+  Semester(
       {required String uid,
       required this.name,
       this.descrption,

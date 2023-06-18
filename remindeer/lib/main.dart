@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/common/theme/app_theme.dart';
-import 'package:remindeer/src/screens/auth.dart';
-import 'package:remindeer/src/screens/home.dart';
 import 'package:remindeer/src/screens/pages/semester/new_semester.dart';
 
 void main() {

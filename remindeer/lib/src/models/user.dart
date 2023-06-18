@@ -6,7 +6,7 @@ class User extends Resource {
   final String email;
   final String? photoUrl;
 
-  const User(
+  User(
       {required String uid,
       required this.username,
       required this.email,

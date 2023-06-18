@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SemesterPageHeader extends StatefulWidget {
   const SemesterPageHeader({Key? key, required this.label, required this.email})
@@ -19,6 +18,7 @@ class _SemesterPageHeaderState extends State<SemesterPageHeader> {
       body: SafeArea(
         child: Container(
           height: 100,
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
@@ -33,41 +33,44 @@ class _SemesterPageHeaderState extends State<SemesterPageHeader> {
           child: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: SvgPicture.asset(
-                    'assets/images/avatar.svg',
-                    fit: BoxFit.fill,
-                  ),
+              Container(
+                width: 50,
+                height: 50,
+                clipBehavior: Clip.antiAlias,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                child: Image.network(
+                  "https://yt3.googleusercontent.com/_DiGCcjGwJQAZ3zmlyB8TCYuA8O9tDJ9zGNysq5sR0rxwYb6SP5fW8cb3LbfcRwfui0m27oIhA=s900-c-k-c0x00ffffff-no-rj",
+                  fit: BoxFit.fill,
                 ),
               ),
-              SizedBox(
-                height: 60,
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.label,
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                    Text(
-                      widget.email,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.normal,
-                        decoration: TextDecoration.underline,
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: SizedBox(
+                  height: 60,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.label,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
+                            ?.copyWith(color: Colors.white),
                       ),
-                    ),
-                  ],
+                      Text(
+                        widget.email,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.normal,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

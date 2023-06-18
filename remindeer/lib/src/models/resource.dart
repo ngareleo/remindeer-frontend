@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-abstract class Resource {
+abstract class Resource extends ChangeNotifier {
   final String uid;
   final DateTime created;
   final DateTime lastModified;
 
-  const Resource(
+  Resource(
       {required this.uid, required this.created, required this.lastModified});
 
   Widget toResourceItem(BuildContext context);

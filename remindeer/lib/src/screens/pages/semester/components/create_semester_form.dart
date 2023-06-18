@@ -163,20 +163,20 @@ class _CreateSemesterFormState extends State<CreateSemesterForm> {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Row(
                 children: [
-                  const Icon(
-                    Icons.info_rounded,
-                    color: Colors.white,
+                  const Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Icon(
+                      Icons.info_rounded,
+                      color: Colors.white,
+                    ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Flexible(
-                      child: Text(
-                        'If a semester end date is not chosen, the semester will be valid for 28 days',
-                        overflow: TextOverflow.fade,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.white,
-                            ),
-                      ),
+                  Flexible(
+                    child: Text(
+                      'If a semester end date is not chosen, the semester will be valid for 28 days',
+                      overflow: TextOverflow.fade,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Colors.white,
+                          ),
                     ),
                   ),
                 ],

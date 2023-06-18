@@ -1,74 +1,74 @@
 {
-    "00-u-00": {
-        "name": "Artificial Intelligence",
-        "unit_code": "CSA302",
-        "description": "Introduction to artificial intelligence concepts and algorithms.",
-        "lecturer": "Dr. Nyambura",
-        "created": "2023-05-15",
-        "last_modified": "2023-08-10"
-    },
-    "00-u-01": {
-        "name": "Data Structures and Algorithms",
-        "unit_code": "CSA306",
-        "description": "Study of data structures and algorithmic techniques.",
-        "lecturer": "Prof. Ochieng",
-        "created": "2023-05-18",
-        "last_modified": "2023-08-10"
-    },
-    "00-u-03": {
-        "name": "Computer Networks",
-        "unit_code": "CSA200",
-        "description": "Fundamentals of computer networks and network protocols.",
-        "lecturer": "Dr. Wanjiku",
-        "created": "2023-05-21",
-        "last_modified": "2023-08-10"
-    },
-    "00-u-04": {
-        "name": "Software Engineering",
-        "unit_code": "CSA310",
-        "description": "Principles and practices of software development.",
-        "lecturer": "Prof. Maina",
-        "created": "2023-05-24",
-        "last_modified": "2023-08-10"
-    },
-    "00-u-05": {
-        "name": "Database Management Systems",
-        "unit_code": "CSA415",
-        "description": "Introduction to database systems and SQL programming.",
-        "lecturer": "Dr. Njoroge",
-        "created": "2023-05-27",
-        "last_modified": "2023-08-10"
-    },
-    "00-u-06": {
-        "name": "Web Development",
-        "unit_code": "CSA411",
-        "description": "Building dynamic websites using modern web technologies.",
-        "lecturer": "Mr. Kamau",
-        "created": "2023-05-30",
-        "last_modified": "2023-08-10"
-    },
-    "00-u-07": {
-        "name": "Operating Systems",
-        "unit_code": "CSA413",
-        "description": "Study of operating system principles and internals.",
-        "lecturer": "Dr. Gitau",
-        "created": "2023-06-02",
-        "last_modified": "2023-08-10"
-    },
-    "00-u-08": {
-        "name": "Data Science",
-        "unit_code": "CSA409",
-        "description": "Exploration and analysis of large datasets to extract insights.",
-        "lecturer": "Prof. Onyango",
-        "created": "2023-06-05",
-        "last_modified": "2023-08-10"
-    },
-    "00-u-09": {
-        "name": "Cybersecurity",
-        "unit_code": "CSA400",
-        "description": "Introduction to cybersecurity principles and practices.",
-        "lecturer": "Dr. Kamau",
-        "created": "2023-06-08",
-        "last_modified": "2023-08-10"
-    }
+  "00-un-0": {
+    "name": "Artificial Intelligence",
+    "unit_code": "CSA302",
+    "description": "Introduction to artificial intelligence concepts and algorithms.",
+    "lecturer": "Dr. Nyambura",
+    "created": "2023-05-15",
+    "last_modified": "2023-08-10"
+  },
+  "00-un-1": {
+    "name": "Data Structures and Algorithms",
+    "unit_code": "CSA306",
+    "description": "Study of data structures and algorithmic techniques.",
+    "lecturer": "Prof. Ochieng",
+    "created": "2023-05-18",
+    "last_modified": "2023-08-10"
+  },
+  "00-un-3": {
+    "name": "Computer Networks",
+    "unit_code": "CSA200",
+    "description": "Fundamentals of computer networks and network protocols.",
+    "lecturer": "Dr. Wanjiku",
+    "created": "2023-05-21",
+    "last_modified": "2023-08-10"
+  },
+  "00-un-4": {
+    "name": "Software Engineering",
+    "unit_code": "CSA310",
+    "description": "Principles and practices of software development.",
+    "lecturer": "Prof. Maina",
+    "created": "2023-05-24",
+    "last_modified": "2023-08-10"
+  },
+  "00-un-5": {
+    "name": "Database Management Systems",
+    "unit_code": "CSA415",
+    "description": "Introduction to database systems and SQL programming.",
+    "lecturer": "Dr. Njoroge",
+    "created": "2023-05-27",
+    "last_modified": "2023-08-10"
+  },
+  "00-un-6": {
+    "name": "Web Development",
+    "unit_code": "CSA411",
+    "description": "Building dynamic websites using modern web technologies.",
+    "lecturer": "Mr. Kamau",
+    "created": "2023-05-30",
+    "last_modified": "2023-08-10"
+  },
+  "00-un-7": {
+    "name": "Operating Systems",
+    "unit_code": "CSA413",
+    "description": "Study of operating system principles and internals.",
+    "lecturer": "Dr. Gitau",
+    "created": "2023-06-02",
+    "last_modified": "2023-08-10"
+  },
+  "00-un-8": {
+    "name": "Data Science",
+    "unit_code": "CSA409",
+    "description": "Exploration and analysis of large datasets to extract insights.",
+    "lecturer": "Prof. Onyango",
+    "created": "2023-06-05",
+    "last_modified": "2023-08-10"
+  },
+  "00-un-9": {
+    "name": "Cybersecurity",
+    "unit_code": "CSA400",
+    "description": "Introduction to cybersecurity principles and practices.",
+    "lecturer": "Dr. Kamau",
+    "created": "2023-06-08",
+    "last_modified": "2023-08-10"
+  }
 }

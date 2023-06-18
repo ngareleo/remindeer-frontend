@@ -12,7 +12,7 @@ class Timetable extends Resource {
   final String? description;
   final DateTime? validUntil;
 
-  const Timetable(
+  Timetable(
       {required String uid,
       required this.label,
       this.description,

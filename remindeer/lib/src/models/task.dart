@@ -15,7 +15,7 @@ class Task extends Resource {
   final int? repeatTo;
   final DateTime? due;
 
-  const Task({
+  Task({
     required String uid,
     required this.label,
     this.description,

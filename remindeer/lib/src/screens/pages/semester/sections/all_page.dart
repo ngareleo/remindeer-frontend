@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:remindeer/src/common/utils/helpers/fetch_all_resource.dart';
+import 'package:remindeer/src/models/resource.dart';
 
 import 'default.dart';
 
@@ -21,21 +23,45 @@ class AppPageBody extends StatefulWidget {
 }
 
 class _AppPageBodyState extends State<AppPageBody> {
+  final resources = <Resource>[];
+
   @override
   void initState() {
     super.initState();
-    widget.setPending(10);
+    widget.setPending(0);
+    _fetch();
+  }
+
+  Future<void> _fetch() async {
+    final res = await fetchAllResources();
+    resources.addAll(res);
+    widget.setPending(resources.length);
   }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: const SingleChildScrollView(
-        child: Column(
-          children: [],
-        ),
-      ),
-    );
+        width: MediaQuery.of(context).size.width,
+        child: SingleChildScrollView(
+          child: FutureBuilder<List<Resource>>(
+              future: fetchAllResources(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<Resource>> snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: resources.length,
+                    itemBuilder: (context, index) {
+                      return resources[index].toResourceItem(context);
+                    },
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              }),
+        ));
   }
 }

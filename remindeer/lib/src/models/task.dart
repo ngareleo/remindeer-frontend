@@ -9,25 +9,39 @@ class Task extends Resource {
   final String label;
   final String? venue;
   final String? description;
-  final DateTime? from;
-  final DateTime? to;
   final bool? repeat;
   final int? repeatTo;
   final DateTime? due;
+  final DateTime? completed;
 
   Task({
     required String uid,
     required this.label,
     this.description,
-    this.from,
-    this.to,
     this.venue,
     this.due,
     this.repeat,
     this.repeatTo,
     required DateTime created,
     required DateTime lastModified,
+    this.completed,
   }) : super(uid: uid, created: created, lastModified: lastModified);
+
+  factory Task.form() {
+    return Task(
+        uid: "",
+        label: "",
+        created: DateTime.now(),
+        lastModified: DateTime.now());
+  }
+
+  factory Task.fromJson() {
+    return Task(
+        uid: '',
+        label: '',
+        created: DateTime.now(),
+        lastModified: DateTime.now());
+  }
 
   @override
   Widget toResourceItem(BuildContext context) {

@@ -3,6 +3,8 @@
         "name": "John Doe",
         "email": "janedoe@gmail.com",
         "username": "janedoe",
-        "password": "password"
+        "photoUrl": "",
+        "created": "2020-10-20",
+        "lastModified": "2020-10-20"
     }
 }

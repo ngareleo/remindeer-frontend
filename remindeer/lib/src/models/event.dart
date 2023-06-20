@@ -3,7 +3,6 @@ import 'package:remindeer/src/common/components/cards/resource_card.dart';
 import 'package:remindeer/src/common/utils/structs/window.dart';
 import 'package:remindeer/src/common/utils/values.dart';
 import 'package:remindeer/src/models/resource.dart';
-import 'package:remindeer/src/screens/pages/my_library/my_library.dart';
 
 class Event extends Resource {
   static const _name = "event";

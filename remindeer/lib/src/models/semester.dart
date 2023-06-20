@@ -32,12 +32,12 @@ class Semester extends Resource {
     var from = json["from"].toString();
     var to = json["to"].toString();
     var name = json["name"].toString();
-    var descrption = json["description"].toString();
+    var description = json["description"].toString();
 
     return Semester(
         uid: uid,
         name: name,
-        descrption: descrption,
+        descrption: description,
         from: DateTime.parse(from),
         to: DateTime.parse(to),
         created: DateTime.parse(created),

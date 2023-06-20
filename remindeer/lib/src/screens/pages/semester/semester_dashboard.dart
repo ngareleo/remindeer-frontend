@@ -27,7 +27,6 @@ class _SemesterDashboardPageState extends State<SemesterDashboardPage> {
   void initState() {
     super.initState();
     current = 0;
-    pages[current].setActive(true);
   }
 
   @override
@@ -65,8 +64,12 @@ class _SemesterDashboardPageState extends State<SemesterDashboardPage> {
                   width: MediaQuery.of(context).size.width,
                   height: 40,
                   child: SlidingTabs(
-                    tabs: List.generate(pages.length,
-                        (index) => pages[index].buildHeader(context, pages)),
+                    tabs: List.generate(
+                        pages.length,
+                        (index) => pages[index].buildHeader(
+                            context,
+                            current == index,
+                            () => {setState(() => current = index)})),
                   ),
                 ),
               ),

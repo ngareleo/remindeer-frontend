@@ -4,10 +4,12 @@ import 'package:remindeer/src/models/resource.dart';
 class User extends Resource {
   final String username;
   final String email;
+  final String name;
   final String? photoUrl;
 
   User(
       {required String uid,
+      required this.name,
       required this.username,
       required this.email,
       this.photoUrl,
@@ -19,6 +21,7 @@ class User extends Resource {
     required String uid,
     required Map<String, dynamic> json,
   }) {
+    var name = json["name"].toString();
     var created = json["created"].toString();
     var lastModified = json["last_modified"].toString();
     var username = json["username"].toString();
@@ -27,6 +30,7 @@ class User extends Resource {
 
     return User(
         uid: uid,
+        name: name,
         username: username,
         email: email,
         photoUrl: photoUrl,

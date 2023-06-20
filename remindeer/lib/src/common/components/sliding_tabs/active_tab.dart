@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 
 class ActiveTab extends StatelessWidget {
-  const ActiveTab(
-      {Key? key,
-      required this.label,
-      required this.pending,
-      required this.onPressed})
-      : super(key: key);
-
+  const ActiveTab({
+    Key? key,
+    required this.label,
+    required this.pending,
+  }) : super(key: key);
   final String label;
   final String pending;
-  final Function onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => onPressed(),
+    return Padding(
+      padding: const EdgeInsets.only(right: 10),
       child: Container(
-        decoration: const BoxDecoration(color: Colors.white),
+        width: 120,
+        height: MediaQuery.of(context).size.height,
+        constraints: const BoxConstraints(maxWidth: 400),
         child: Column(
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
               mainAxisSize: MainAxisSize.max,
@@ -30,7 +29,10 @@ class ActiveTab extends StatelessWidget {
                   padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 6, 0),
                   child: Text(
                     label,
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
                 ),
                 Container(
@@ -42,15 +44,23 @@ class ActiveTab extends StatelessWidget {
                     padding: const EdgeInsetsDirectional.fromSTEB(6, 2, 6, 2),
                     child: Text(
                       pending,
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).primaryColor,
+                          ),
                     ),
                   ),
                 ),
               ],
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 3,
+            Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                  )),
             ),
           ],
         ),

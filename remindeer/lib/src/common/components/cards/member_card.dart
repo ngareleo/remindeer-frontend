@@ -63,7 +63,7 @@ class _MemberCardWidgetState extends State<MemberCardWidget> {
             ],
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () => {},
             icon: const Icon(
               Icons.more_vert_rounded,
               color: Colors.black,

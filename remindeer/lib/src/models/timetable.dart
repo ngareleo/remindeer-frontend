@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
 import 'package:remindeer/src/models/resource.dart';
-import 'package:remindeer/src/screens/pages/timetable/timetable_main_page.dart';
+import 'package:remindeer/src/screens/pages/timetable/timetable_dashboard.dart';
 
 class Timetable extends Resource {
   static const _name = "timetable";

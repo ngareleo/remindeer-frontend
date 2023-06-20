@@ -65,7 +65,10 @@ class _TimetableHomePageState extends State<TimetableHomePage> {
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
-                const TimetablePageHeaderWidget(),
+                const TimetablePageHeader(
+                  email: '',
+                  title: '',
+                ),
                 Padding(
                   padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
                   child: SizedBox(

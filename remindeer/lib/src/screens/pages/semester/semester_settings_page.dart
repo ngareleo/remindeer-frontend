@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:remindeer/src/common/components/cards/member_group.dart';
+import 'package:remindeer/src/common/components/links/action_links_group.dart';
+import 'package:remindeer/src/screens/pages/semester/components/semester_settings_page_header.dart';
 
 class SemesterSettingsPage extends StatefulWidget {
   const SemesterSettingsPage({Key? key}) : super(key: key);
@@ -21,17 +24,15 @@ class _SemesterSettingsPageState extends State<SemesterSettingsPage> {
             color: Colors.black,
             size: 30,
           ),
-          onPressed: () {},
+          onPressed: () {
+            if (Navigator.canPop(context)) Navigator.pop(context);
+          },
         ),
-        title: const Text(
-          'Semester',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-          ),
+        title: Text(
+          'Semester Settings',
+          style: Theme.of(context).textTheme.titleMedium,
         ),
-        actions: [],
+        actions: const [],
         centerTitle: false,
         elevation: 1,
       ),
@@ -42,11 +43,18 @@ class _SemesterSettingsPageState extends State<SemesterSettingsPage> {
           decoration: const BoxDecoration(
             color: Colors.white,
           ),
-          child: const Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+          child: Padding(
+            padding: const EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
             child: Column(
               mainAxisSize: MainAxisSize.max,
-              children: [],
+              children: [
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+                  child: SemesterSettingsPageHeader(),
+                ),
+                SemesterPageLinksGroupWidget(),
+                MemberGroupWidget()
+              ],
             ),
           ),
         ),

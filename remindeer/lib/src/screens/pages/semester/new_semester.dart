@@ -23,14 +23,11 @@ class _NewSemesterPageState extends State<NewSemesterPage> {
             color: Colors.black,
             size: 30,
           ),
-          onPressed: () {},
+          onPressed: () {
+            if (Navigator.canPop(context)) Navigator.pop(context);
+          },
         ),
-        title: const Text('Semester',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-            )),
+        title: Text('Semester', style: Theme.of(context).textTheme.titleMedium),
         actions: const [],
         centerTitle: false,
         elevation: 1,

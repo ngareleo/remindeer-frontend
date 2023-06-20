@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/common/theme/app_theme.dart';
-import 'package:remindeer/src/screens/auth.dart';
-import 'package:remindeer/src/screens/home.dart';
+import 'package:remindeer/src/features/auth/auth.dart';
+import 'package:remindeer/src/screens/pages/semester/new_semester.dart';
+
+// This widget is the root of your application.
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +17,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyApp extends State<MyApp> {
-  var isLoggedIn = true;
+  final authProvider = AuthProvider.instance();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class _MyApp extends State<MyApp> {
       title: 'Remindeer',
       debugShowCheckedModeBanner: false,
       theme: appTheme,
-      home: isLoggedIn ? const HomePageWidget() : const AuthScreen(),
+      home: const NewSemesterPage(),
     );
   }
 }

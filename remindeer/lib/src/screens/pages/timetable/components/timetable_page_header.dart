@@ -1,29 +1,18 @@
 import 'package:flutter/material.dart';
 
-class TimetablePageHeaderWidget extends StatefulWidget {
-  const TimetablePageHeaderWidget({Key? key}) : super(key: key);
+class TimetablePageHeader extends StatefulWidget {
+  const TimetablePageHeader(
+      {Key? key, required this.title, required this.email})
+      : super(key: key);
+
+  final String? title;
+  final String? email;
 
   @override
-  _TimetablePageHeaderWidgetState createState() =>
-      _TimetablePageHeaderWidgetState();
+  State<StatefulWidget> createState() => _TimetablePageHeaderState();
 }
 
-class _TimetablePageHeaderWidgetState extends State<TimetablePageHeaderWidget> {
-  @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
+class _TimetablePageHeaderState extends State<TimetablePageHeader> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -41,13 +30,13 @@ class _TimetablePageHeaderWidgetState extends State<TimetablePageHeaderWidget> {
               Theme.of(context).colorScheme.primary,
               Theme.of(context).colorScheme.secondary
             ],
-            stops: [0, 1],
-            begin: AlignmentDirectional(-1, 0),
-            end: AlignmentDirectional(1, 0),
+            stops: const [0, 1],
+            begin: const AlignmentDirectional(-1, 0),
+            end: const AlignmentDirectional(1, 0),
           ),
         ),
         child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
+          padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -58,20 +47,13 @@ class _TimetablePageHeaderWidgetState extends State<TimetablePageHeaderWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
-                    child: Text(
-                      'Exam Timetable',
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
+                    child: Text(widget.title!,
+                        style: Theme.of(context).textTheme.headline1),
                   ),
                   Text(
-                    'by janedoe@gmail.com',
-                    style: TextStyle(
+                    'by ${widget.email}',
+                    style: const TextStyle(
                       fontFamily: 'Roboto',
                       color: Colors.white,
                       fontSize: 12,

@@ -1,23 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/common/components/sliding_tabs/sliding_tabs.dart';
+import 'package:remindeer/src/models/semester.dart';
 import 'components/semester_page_header.dart';
+import 'sections/all_page.dart';
+import 'sections/approvals_page.dart';
+import 'sections/assignments_page.dart';
+import 'sections/units_page.dart';
 
 class SemesterDashboardPage extends StatefulWidget {
-  const SemesterDashboardPage({Key? key}) : super(key: key);
+  const SemesterDashboardPage({Key? key, required this.semester})
+      : super(key: key);
+
+  final Semester semester;
 
   @override
   State<StatefulWidget> createState() => _SemesterDashboardPageState();
 }
 
 class _SemesterDashboardPageState extends State<SemesterDashboardPage> {
+  static const _headerTitle = "Semester";
+
+  var current = 0;
+  final pages = [AllPage(), ApprovalPage(), AssignmentsPage(), UnitsPage()];
+
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
+    current = 0;
   }
 
   @override
@@ -26,25 +35,12 @@ class _SemesterDashboardPageState extends State<SemesterDashboardPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: const Color(0xFFF9F9F9),
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_rounded,
-            color: Colors.black,
-            size: 30,
-          ),
-          onPressed: () {},
+        automaticallyImplyLeading: true,
+        title: Text(
+          _headerTitle,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
-        title: const Text(
-          'Semester',
-          style: TextStyle(
-            fontFamily: 'Roboto',
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        actions: [],
+        actions: const [],
         centerTitle: false,
         elevation: 0,
       ),
@@ -58,44 +54,28 @@ class _SemesterDashboardPageState extends State<SemesterDashboardPage> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              InkWell(
-                splashColor: Colors.transparent,
-                focusColor: Colors.transparent,
-                hoverColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                onTap: () {},
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 90,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Theme.of(context).colorScheme.primary,
-                        Theme.of(context).colorScheme.secondary
-                      ],
-                      stops: const [0, 1],
-                      begin: const AlignmentDirectional(-1, 0),
-                      end: const AlignmentDirectional(1, 0),
-                    ),
-                  ),
-                  child: const SemesterPageHeaderWidget(),
-                ),
+              SemesterPageHeader(
+                email: '',
+                label: widget.semester.name,
               ),
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: 40,
-                  child: const SlidingTabsWidget(),
+                  child: SlidingTabs(
+                    tabs: List.generate(
+                        pages.length,
+                        (index) => pages[index].buildHeader(
+                            context,
+                            current == index,
+                            () => {setState(() => current = index)})),
+                  ),
                 ),
               ),
               SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: const Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [],
-                ),
-              ),
+                  width: MediaQuery.of(context).size.width,
+                  child: pages[current].buildBody(context)),
             ],
           ),
         ),

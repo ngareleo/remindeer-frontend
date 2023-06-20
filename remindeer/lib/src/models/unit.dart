@@ -11,7 +11,7 @@ class Unit extends Resource {
   final String? description;
   final String lecturer;
 
-  const Unit(
+  Unit(
       {required String uid,
       required this.name,
       required this.unitCode,

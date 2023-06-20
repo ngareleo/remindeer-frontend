@@ -1,47 +1,30 @@
 import 'package:flutter/material.dart';
 
-class SemesterSettingsPageHeaderWidget extends StatefulWidget {
-  const SemesterSettingsPageHeaderWidget({Key? key}) : super(key: key);
+class SemesterSettingsPageHeader extends StatefulWidget {
+  const SemesterSettingsPageHeader({Key? key}) : super(key: key);
 
   @override
-  _SemesterSettingsPageHeaderWidgetState createState() =>
-      _SemesterSettingsPageHeaderWidgetState();
+  State<StatefulWidget> createState() => _SemesterSettingsPageHeaderState();
 }
 
-class _SemesterSettingsPageHeaderWidgetState
-    extends State<SemesterSettingsPageHeaderWidget> {
-  @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
+class _SemesterSettingsPageHeaderState
+    extends State<SemesterSettingsPageHeader> {
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        color: Colors.white,
-      ),
+      decoration:
+          BoxDecoration(color: Theme.of(context).colorScheme.background),
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+            padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
             child: Container(
               width: 60,
               height: 60,
               clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
               ),
               child: Image.network(
@@ -50,7 +33,7 @@ class _SemesterSettingsPageHeaderWidgetState
               ),
             ),
           ),
-          Padding(
+          const Padding(
             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
             child: Text(
               'Computer science 2022/23',

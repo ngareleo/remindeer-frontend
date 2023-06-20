@@ -1,79 +1,69 @@
 import 'package:flutter/material.dart';
 
-class ActiveTabWidget extends StatefulWidget {
-  const ActiveTabWidget({Key? key}) : super(key: key);
-
-  @override
-  _ActiveTabWidgetState createState() => _ActiveTabWidgetState();
-}
-
-class _ActiveTabWidgetState extends State<ActiveTabWidget> {
-  @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
+class ActiveTab extends StatelessWidget {
+  const ActiveTab({
+    Key? key,
+    required this.label,
+    required this.pending,
+  }) : super(key: key);
+  final String label;
+  final String pending;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints(
-        maxWidth: 150,
-      ),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 6, 0),
-                child: Text(
-                  'Assignments',
-                  style: TextStyle(
-                    fontFamily: 'Roboto',
-                    color: Theme.of(context).primaryColor,
-                    fontWeight: FontWeight.normal,
+    return Padding(
+      padding: const EdgeInsets.only(right: 10),
+      child: Container(
+        width: 120,
+        height: MediaQuery.of(context).size.height,
+        constraints: const BoxConstraints(maxWidth: 400),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 6, 0),
+                  child: Text(
+                    label,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
                 ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE9EDF5),
-                  borderRadius: BorderRadius.circular(13),
-                ),
-                child: Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(6, 2, 6, 2),
-                  child: Text(
-                    '10',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      color: Theme.of(context).primaryColor,
+                Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE9EDF5),
+                    borderRadius: BorderRadius.circular(13),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.fromSTEB(6, 2, 6, 2),
+                    child: Text(
+                      pending,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).primaryColor,
+                          ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: 3,
-          ),
-        ],
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 5,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                  )),
+            ),
+          ],
+        ),
       ),
     );
   }

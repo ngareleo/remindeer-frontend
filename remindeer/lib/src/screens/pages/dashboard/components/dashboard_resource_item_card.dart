@@ -26,7 +26,6 @@ class DashboardResourceItemCard extends StatelessWidget {
               Text(
                 lecture.label,
                 style: const TextStyle(
-                  fontFamily: 'Roboto',
                   fontSize: 18,
                   fontWeight: FontWeight.normal,
                 ),
@@ -39,7 +38,6 @@ class DashboardResourceItemCard extends StatelessWidget {
                     Text(
                       lecture.unit?.name ?? "",
                       style: const TextStyle(
-                        fontFamily: 'Roboto',
                         color: Color(0xFF6B6B6B),
                         fontWeight: FontWeight.normal,
                       ),
@@ -55,14 +53,16 @@ class DashboardResourceItemCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Text(
-                      lecture.unit?.lecturer ?? "",
-                      style: const TextStyle(
-                        fontFamily: 'Roboto',
-                        color: Color(0xFF6B6B6B),
-                        fontWeight: FontWeight.normal,
+                    Flexible(
+                      child: Text(
+                        lecture.unit?.lecturer ?? "",
+                        style: const TextStyle(
+                          color: Color(0xFF6B6B6B),
+                          fontWeight: FontWeight.normal,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),

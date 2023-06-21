@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
 import 'package:remindeer/src/models/resource.dart';
+import 'package:remindeer/src/models/user.dart';
 import 'package:remindeer/src/screens/pages/timetable/timetable_dashboard.dart';
 
 class Timetable extends Resource {
@@ -64,8 +64,19 @@ class Timetable extends Resource {
       tag: _displayName,
       lastModified: timeBtwn.toString(),
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const TimetableHomePage()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => TimetableHomePage(
+                      timetable: this,
+                      user: User(
+                          uid: uid,
+                          name: "",
+                          username: "",
+                          email: "",
+                          created: DateTime.now(),
+                          lastModified: DateTime.now()),
+                    )));
       },
     );
   }

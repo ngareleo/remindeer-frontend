@@ -1,189 +1,201 @@
 import 'package:flutter/material.dart';
+import 'package:remindeer/src/models/timetable.dart';
+import 'package:remindeer/src/models/user.dart';
+import 'package:remindeer/src/screens/pages/timetable/timetable_dashboard.dart';
 
-class CreateTimetableFormWidget extends StatefulWidget {
-  const CreateTimetableFormWidget({Key? key}) : super(key: key);
+class CreateTimetableForm extends StatefulWidget {
+  const CreateTimetableForm({Key? key}) : super(key: key);
 
   @override
-  _CreateTimetableFormWidgetState createState() =>
-      _CreateTimetableFormWidgetState();
+  State<StatefulWidget> createState() => _CreateTimetableFormState();
 }
 
-class _CreateTimetableFormWidgetState extends State<CreateTimetableFormWidget> {
-  @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
+class _CreateTimetableFormState extends State<CreateTimetableForm> {
+  final _formKey = GlobalKey<FormState>();
+  final _labelController = TextEditingController();
+  DateTime? _endDate;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: 430,
-        decoration: const BoxDecoration(),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                child: TextFormField(
-                  autofocus: true,
-                  obscureText: false,
-                  decoration: const InputDecoration(
-                    hintText: 'Timetable label ...',
-                    hintStyle: TextStyle(
-                      fontFamily: 'Roboto',
-                      color: Color(0xFFA8A8A8),
-                      fontSize: 18,
+      child: Form(
+        key: _formKey,
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 30),
+                child: showTimetableLabelTextfield(context),
+              ),
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 30),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: showAddEndDateButton(context),
                     ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(4.0),
-                        topRight: Radius.circular(4.0),
-                      ),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(4.0),
-                        topRight: Radius.circular(4.0),
-                      ),
-                    ),
-                    errorBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(4.0),
-                        topRight: Radius.circular(4.0),
-                      ),
-                    ),
-                    focusedErrorBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(4.0),
-                        topRight: Radius.circular(4.0),
-                      ),
-                    ),
-                  ),
-                  style: const TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 16,
-                  ),
+                    showCreateButton(context),
+                  ],
                 ),
               ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  SizedBox showTimetableLabelTextfield(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: TextFormField(
+        controller: _labelController,
+        autofocus: true,
+        obscureText: false,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Semester required a label';
+          }
+          return null;
+        },
+        decoration: const InputDecoration(
+          hintText: 'Timetable label...',
+          hintStyle: TextStyle(
+            color: Color(0xFFA8A8A8),
+            fontSize: 24,
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Color(0x00000000),
+              width: 1,
             ),
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: TextFormField(
-                  autofocus: true,
-                  obscureText: false,
-                  decoration: const InputDecoration(
-                    hintText: 'A quick description',
-                    hintStyle: TextStyle(
-                      fontFamily: 'Roboto',
-                      color: Color(0xFFA8A8A8),
-                      fontSize: 14,
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(4.0),
-                        topRight: Radius.circular(4.0),
-                      ),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(4.0),
-                        topRight: Radius.circular(4.0),
-                      ),
-                    ),
-                    errorBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(4.0),
-                        topRight: Radius.circular(4.0),
-                      ),
-                    ),
-                    focusedErrorBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0x00000000),
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(4.0),
-                        topRight: Radius.circular(4.0),
-                      ),
-                    ),
-                  ),
-                  style: const TextStyle(
-                    fontFamily: 'Roboto',
-                    fontSize: 16,
-                  ),
-                  maxLines: 3,
-                ),
-              ),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(4.0),
+              topRight: Radius.circular(4.0),
             ),
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Color(0x00000000),
+              width: 1,
+            ),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(4.0),
+              topRight: Radius.circular(4.0),
+            ),
+          ),
+          errorBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Color(0x00000000),
+              width: 1,
+            ),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(4.0),
+              topRight: Radius.circular(4.0),
+            ),
+          ),
+          focusedErrorBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Color(0x00000000),
+              width: 1,
+            ),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(4.0),
+              topRight: Radius.circular(4.0),
+            ),
+          ),
+        ),
+        style: const TextStyle(
+          fontSize: 24,
+        ),
+      ),
+    );
+  }
+
+  TextButton showAddEndDateButton(BuildContext context) {
+    return TextButton(
+      onPressed: () async {
+        final temp = await showDatePicker(
+          context: context,
+          initialDate: DateTime.now().add(const Duration(days: 28)),
+          firstDate: DateTime.now(),
+          lastDate: DateTime.now().add(const Duration(days: 365)),
+        );
+        setState(() {
+          _endDate = temp;
+        });
+      },
+      child: _endDate == null
+          ? const Text('Choose timetable expiry date')
+          : Text(
+              "Timetable valid until ${_endDate?.day}/${_endDate?.month}/${_endDate?.year}"),
+    );
+  }
+
+  FilledButton showCreateButton(BuildContext context) {
+    return FilledButton(
+      onPressed: () {
+        if (_formKey.currentState!.validate() && _endDate != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Creating new timetable')),
+          );
+          final nTimetable = Timetable(
+            label: _labelController.text,
+            created: DateTime.now(),
+            lastModified: DateTime.now(),
+            uid: '00-s-15',
+          );
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TimetableHomePage(
+                        timetable: nTimetable,
+                        user: User(
+                            uid: "",
+                            name: "Janedoe",
+                            username: "janedoe",
+                            email: "janedoe@gmail.com",
+                            created: DateTime.now(),
+                            lastModified: DateTime.now()),
+                      )));
+        } else {
+          if (_endDate == null) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Row(
                 children: [
-                  OutlinedButton(
-                    onPressed: () {},
-                    child: const Text('Pick start date'),
+                  const Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Icon(
+                      Icons.info_rounded,
+                      color: Colors.white,
+                    ),
                   ),
-                  OutlinedButton(
-                    onPressed: () {},
-                    child: const Text('Pick end date'),
+                  Flexible(
+                    child: Text(
+                      'If a due date is not chosen, the timetable will be valid for 28 days',
+                      overflow: TextOverflow.fade,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Colors.white,
+                          ),
+                    ),
                   ),
                 ],
               ),
-            ),
-            FilledButton(
-              onPressed: () {},
-              child: const Text('Create timetable'),
-            ),
-          ],
-        ),
-      ),
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+            ));
+            setState(
+                () => _endDate = DateTime.now().add(const Duration(days: 28)));
+          }
+        }
+      },
+      child: const Text('Create timetable'),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:remindeer/src/screens/pages/timetable/timetable_settings_page.dart';
 
 class TimetablePageHeader extends StatefulWidget {
   const TimetablePageHeader(
@@ -49,23 +50,37 @@ class _TimetablePageHeaderState extends State<TimetablePageHeader> {
                   Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
                     child: Text(widget.title!,
-                        style: Theme.of(context).textTheme.headline1),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
+                            ?.copyWith(
+                              color: Colors.white,
+                            )),
                   ),
                   Text(
                     'by ${widget.email}',
                     style: const TextStyle(
-                      fontFamily: 'Roboto',
                       color: Colors.white,
                       fontSize: 12,
                     ),
                   ),
                 ],
               ),
-              Icon(
-                Icons.edit_rounded,
-                color: Colors.white,
-                size: 24,
-              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TimetableSettingsPage(),
+                    ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.edit_rounded,
+                  color: Colors.white,
+                  size: 24,
+                ),
+              )
             ],
           ),
         ),

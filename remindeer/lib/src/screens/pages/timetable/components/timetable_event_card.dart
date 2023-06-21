@@ -1,33 +1,28 @@
 import 'package:flutter/material.dart';
 
-class TimetableEventCardWidget extends StatefulWidget {
-  const TimetableEventCardWidget({Key? key}) : super(key: key);
+class TimetableEventCard extends StatefulWidget {
+  final String label;
+  final String tag;
+  final String? from;
+  final String? to;
+  const TimetableEventCard(
+      {Key? key,
+      required this.from,
+      required this.to,
+      required this.label,
+      required this.tag})
+      : super(key: key);
 
   @override
-  _TimetableEventCardWidgetState createState() =>
-      _TimetableEventCardWidgetState();
+  State<StatefulWidget> createState() => _TimetableEventCardState();
 }
 
-class _TimetableEventCardWidgetState extends State<TimetableEventCardWidget> {
-  @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
+class _TimetableEventCardState extends State<TimetableEventCard> {
   @override
   Widget build(BuildContext context) {
+    final time = "${widget.from.toString()} to ${widget.to.toString()}";
     return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+      padding: const EdgeInsets.only(bottom: 10),
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Column(
@@ -35,11 +30,10 @@ class _TimetableEventCardWidgetState extends State<TimetableEventCardWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
+              padding: const EdgeInsets.only(bottom: 10),
               child: Text(
-                '7:00AM - 9:00AM',
+                time,
                 style: TextStyle(
-                  fontFamily: 'Roboto',
                   color: Theme.of(context).colorScheme.primary,
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
@@ -48,7 +42,7 @@ class _TimetableEventCardWidgetState extends State<TimetableEventCardWidget> {
             ),
             SizedBox(
               width: MediaQuery.of(context).size.width,
-              height: 50,
+              height: 60,
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
@@ -63,13 +57,14 @@ class _TimetableEventCardWidgetState extends State<TimetableEventCardWidget> {
                     child: Container(
                       height: MediaQuery.of(context).size.height * 1,
                       decoration: BoxDecoration(
-                        color: Color(0xFFF9F9F9),
+                        color: const Color(0xFFF9F9F9),
                         border: Border.all(
                           color: Colors.white,
                         ),
                       ),
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(10, 5, 10, 5),
+                        padding:
+                            const EdgeInsetsDirectional.fromSTEB(10, 5, 10, 5),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -80,7 +75,7 @@ class _TimetableEventCardWidgetState extends State<TimetableEventCardWidget> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Exam',
+                                  widget.tag,
                                   style: TextStyle(
                                     fontFamily: 'Roboto',
                                     color:
@@ -90,16 +85,14 @@ class _TimetableEventCardWidgetState extends State<TimetableEventCardWidget> {
                                   ),
                                 ),
                                 Text(
-                                  'Automata Theory',
-                                  style: TextStyle(
-                                    fontFamily: 'Roboto',
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                                  widget.label,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium,
                                 ),
                               ],
                             ),
-                            Icon(
+                            const Icon(
                               Icons.more_vert_rounded,
                               color: Color(0xFFBEBEBE),
                               size: 24,

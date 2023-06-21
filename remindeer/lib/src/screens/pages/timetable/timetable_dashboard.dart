@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:remindeer/src/models/event.dart';
+import 'package:remindeer/src/models/timetable.dart';
+import 'package:remindeer/src/models/user.dart';
+import 'package:remindeer/src/screens/pages/timetable/components/no_events_card.dart';
 
-import 'components/timetable_event_group.dart';
 import 'components/timetable_page_header.dart';
 
 class TimetableHomePage extends StatefulWidget {
-  const TimetableHomePage({Key? key}) : super(key: key);
+  final Timetable timetable;
+  final User user;
+  const TimetableHomePage(
+      {Key? key, required this.timetable, required this.user})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _TimetableHomePageState();
@@ -12,6 +19,12 @@ class TimetableHomePage extends StatefulWidget {
 
 class _TimetableHomePageState extends State<TimetableHomePage> {
   final _pageTitle = "Timetable";
+  final _events = <Event>[];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +50,9 @@ class _TimetableHomePageState extends State<TimetableHomePage> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              const TimetablePageHeader(
-                email: '',
-                title: '',
+              TimetablePageHeader(
+                email: widget.user.email,
+                title: widget.timetable.label,
               ),
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(10, 10, 10, 10),
@@ -50,35 +63,29 @@ class _TimetableHomePageState extends State<TimetableHomePage> {
                     children: [
                       SizedBox(
                         width: MediaQuery.of(context).size.width,
-                        child: const Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                              child: TimetableDayGroupWidget(
-                                day: 'Wednesday',
+                        child: _events.isEmpty
+                            ? const Padding(
+                                padding: EdgeInsets.only(bottom: 20),
+                                child: NoEventsCard(),
+                              )
+                            : const Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [],
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                              child: TimetableDayGroupWidget(
-                                day: 'Wednesday',
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
                       FilledButton(
                         onPressed: () {},
-                        child: const Column(
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
+                            Padding(
+                              padding: EdgeInsets.only(right: 5),
+                              child: Icon(
+                                Icons.add,
+                                size: 16,
+                              ),
+                            ),
                             Text('Add event'),
-                            Icon(
-                              Icons.add,
-                              size: 15,
-                            )
                           ],
                         ),
                       ),

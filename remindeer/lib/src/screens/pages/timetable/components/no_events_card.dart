@@ -1,27 +1,7 @@
 import 'package:flutter/material.dart';
 
-class NoEventsCardWidget extends StatefulWidget {
-  const NoEventsCardWidget({Key? key}) : super(key: key);
-
-  @override
-  _NoEventsCardWidgetState createState() => _NoEventsCardWidgetState();
-}
-
-class _NoEventsCardWidgetState extends State<NoEventsCardWidget> {
-  @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
+class NoEventsCard extends StatelessWidget {
+  const NoEventsCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +15,9 @@ class _NoEventsCardWidgetState extends State<NoEventsCardWidget> {
         ),
       ),
       alignment: const AlignmentDirectional(0, 0),
-      child: const Text(
+      child: Text(
         'No events. Add something',
-        style: TextStyle(
-          fontFamily: 'Roboto',
-          color: Color(0xFF464F60),
-        ),
+        style: Theme.of(context).textTheme.headlineSmall,
       ),
     );
   }

@@ -3,14 +3,14 @@ import 'pages/dashboard/dashboard.dart';
 import 'pages/my_library/my_library.dart';
 import 'pages/search/search.dart';
 
-class HomePageWidget extends StatefulWidget {
-  const HomePageWidget({Key? key}) : super(key: key);
+class AppHomePage extends StatefulWidget {
+  const AppHomePage({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _HomePageWidgetState();
+  State<StatefulWidget> createState() => _AppHomePageState();
 }
 
-class _HomePageWidgetState extends State<HomePageWidget> {
+class _AppHomePageState extends State<AppHomePage> {
   var currentPageIndex = 0;
 
   @override

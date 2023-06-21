@@ -7,8 +7,8 @@ import 'pages/signup/phone_verfication.dart';
 import 'pages/signup/security.dart';
 import 'pages/signup/welcome_page.dart';
 
-class AuthScreen extends StatelessWidget {
-  const AuthScreen({super.key});
+class AppAuthPage extends StatelessWidget {
+  const AppAuthPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class AuthScreen extends StatelessWidget {
                   color: Colors.black))),
       initialRoute: '/',
       routes: {
-        '/': (context) => const HomePageWidget(),
+        '/': (context) => const AppHomePage(),
         '/signin': (context) => const LoginPageWidget(),
         '/signup': (context) => const PersonalDetailsPageWidget(),
         '/phone': (context) => const PhoneVerificationPageWidget(),

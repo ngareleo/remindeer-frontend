@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/screens/pages/timetable/components/timetable_event_card.dart';
 
-class TimetableDayGroupWidget extends StatefulWidget {
-  const TimetableDayGroupWidget({
+class TimetableDayGroup extends StatefulWidget {
+  const TimetableDayGroup({
     Key? key,
     this.day,
   }) : super(key: key);
@@ -10,26 +9,10 @@ class TimetableDayGroupWidget extends StatefulWidget {
   final String? day;
 
   @override
-  _TimetableDayGroupWidgetState createState() =>
-      _TimetableDayGroupWidgetState();
+  State<StatefulWidget> createState() => _TimetableDayGroupState();
 }
 
-class _TimetableDayGroupWidgetState extends State<TimetableDayGroupWidget> {
-  @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
+class _TimetableDayGroupState extends State<TimetableDayGroup> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -39,7 +22,7 @@ class _TimetableDayGroupWidgetState extends State<TimetableDayGroupWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+            padding: const EdgeInsets.only(bottom: 10),
             child: Text(
               widget.day!,
               style: TextStyle(
@@ -49,8 +32,6 @@ class _TimetableDayGroupWidgetState extends State<TimetableDayGroupWidget> {
               ),
             ),
           ),
-          TimetableEventCardWidget(),
-          TimetableEventCardWidget()
         ],
       ),
     );

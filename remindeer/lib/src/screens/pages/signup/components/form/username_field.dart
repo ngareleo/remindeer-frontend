@@ -1,72 +1,38 @@
 import 'package:flutter/material.dart';
 
 class UsernameField extends StatelessWidget {
+  final TextEditingController controller;
   const UsernameField({
     super.key,
+    required this.controller,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: TextFormField(
-        autofocus: true,
-        obscureText: false,
-        decoration: InputDecoration(
-          labelText: 'Username',
-          labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontFamily: 'Roboto',
-                color: const Color(0xFF464F60),
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
-          hintText: ' Doe',
-          hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontFamily: 'Roboto',
-                color: const Color(0xFFA1A9B8),
-                fontSize: 14,
-              ),
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Color(0xFFA1A9B8),
-              width: 1,
-            ),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(4.0),
-              topRight: Radius.circular(4.0),
-            ),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: TextFormField(
+          autofocus: true,
+          obscureText: false,
+          controller: controller,
+          validator: (value) {
+            if (value == null || value.isEmpty || value.trim() == "") {
+              return 'Last name is required';
+            } else if (!RegExp("[0-9a-z]").hasMatch(value)) {
+              return 'Username can only contain alphanumeric characters [0-9a-z]';
+            } else if (value.length > 10) {
+              return 'Username cannot be longer than 10 characters';
+            }
+            return null;
+          },
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: 'Username',
+            hintText: 'janadoey',
+            floatingLabelBehavior: FloatingLabelBehavior.always,
           ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Color(0x00000000),
-              width: 1,
-            ),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(4.0),
-              topRight: Radius.circular(4.0),
-            ),
-          ),
-          errorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Color(0x00000000),
-              width: 1,
-            ),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(4.0),
-              topRight: Radius.circular(4.0),
-            ),
-          ),
-          focusedErrorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Color(0x00000000),
-              width: 1,
-            ),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(4.0),
-              topRight: Radius.circular(4.0),
-            ),
-          ),
-          filled: true,
         ),
       ),
     );

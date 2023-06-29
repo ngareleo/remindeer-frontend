@@ -1,75 +1,41 @@
 import 'package:flutter/material.dart';
 
 class EmailAddressField extends StatelessWidget {
+  final TextEditingController controller;
   const EmailAddressField({
     super.key,
+    required this.controller,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: TextFormField(
-        autofillHints: const [AutofillHints.email],
-        obscureText: false,
-        decoration: InputDecoration(
-          labelText: 'Email address',
-          labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontFamily: 'Roboto',
-                color: const Color(0xFF464F60),
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
-          hintText: 'janedoe@gmail.com',
-          hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontFamily: 'Roboto',
-                color: const Color(0xFFA1A9B8),
-                fontSize: 14,
-              ),
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Color(0xFFA1A9B8),
-              width: 1,
-            ),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(4.0),
-              topRight: Radius.circular(4.0),
-            ),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: TextFormField(
+          autofillHints: const [AutofillHints.email],
+          obscureText: false,
+          controller: controller,
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: 'Email address',
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            hintText: 'janedoe@gmail.com',
           ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Color(0x00000000),
-              width: 1,
-            ),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(4.0),
-              topRight: Radius.circular(4.0),
-            ),
-          ),
-          errorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Color(0x00000000),
-              width: 1,
-            ),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(4.0),
-              topRight: Radius.circular(4.0),
-            ),
-          ),
-          focusedErrorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Color(0x00000000),
-              width: 1,
-            ),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(4.0),
-              topRight: Radius.circular(4.0),
-            ),
-          ),
-          filled: true,
+          validator: (value) {
+            if (value == null || value.isEmpty || value.trim() == "") {
+              return 'Last name is required';
+            } else if (!RegExp(
+                    "^[a-zA-Z0-9.!#%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*")
+                .hasMatch(value)) {
+              return 'Enter a valid email address please';
+            }
+            return null;
+          },
+          style: Theme.of(context).textTheme.bodyMedium,
+          keyboardType: TextInputType.emailAddress,
         ),
-        style: Theme.of(context).textTheme.bodyMedium,
-        keyboardType: TextInputType.emailAddress,
       ),
     );
   }

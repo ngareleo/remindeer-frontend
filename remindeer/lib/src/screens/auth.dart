@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/screens/home.dart';
-
 import 'pages/login/login.dart';
 import 'pages/signup/personal_details.dart';
 import 'pages/signup/phone_verfication.dart';
@@ -31,14 +29,13 @@ class AppAuthPage extends StatelessWidget {
                   fontSize: 12,
                   fontWeight: FontWeight.normal,
                   color: Colors.black))),
-      initialRoute: '/',
+      initialRoute: '/login',
       routes: {
-        '/': (context) => const AppHomePage(),
-        '/signin': (context) => const LoginPageWidget(),
-        '/signup': (context) => const PersonalDetailsPageWidget(),
-        '/phone': (context) => const PhoneVerificationPageWidget(),
-        '/security': (context) => const SecurityPageWidget(),
-        '/welcome': (context) => const WelcomePageWidget()
+        '/login': (context) => const LoginPage(),
+        '/signup': (context) => const PersonalDetailsPage(),
+        '/phone': (context) => const PhoneVerificationPage(),
+        '/security': (context) => const SecurityPage(),
+        '/welcome': (context) => const WelcomePage()
       },
     );
   }

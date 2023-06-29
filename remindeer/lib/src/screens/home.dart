@@ -26,11 +26,8 @@ class _AppHomePageState extends State<AppHomePage> {
               icon: Icon(Icons.bookmark_rounded), label: "My Library")
         ],
         selectedIndex: currentPageIndex,
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPageIndex = index;
-          });
-        },
+        onDestinationSelected: (int index) =>
+            setState(() => currentPageIndex = index),
       ),
       body: <Widget>[
         const Dashboard(),

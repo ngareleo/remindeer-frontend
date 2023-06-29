@@ -13,14 +13,14 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _authProvider = AuthProvider.instance();
 
   void logUserInAndValidate() async {
     if (_formKey.currentState!.validate()) {
       await _authProvider.login(
-          _emailController.text, _passwordController.text);
+          _usernameController.text, _passwordController.text);
     }
   }
 
@@ -76,6 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: FilledButton(
                       onPressed: () {
                         logUserInAndValidate();
+
                         if (_authProvider.isLoggedIn()) {
                           Navigator.pushAndRemoveUntil(
                             context,
@@ -84,6 +85,33 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             (r) => false,
                           );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Row(
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(right: 10),
+                                  child: Icon(
+                                    Icons.info_rounded,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Text(
+                                    'Trouble logging you in, please check you password, email combination',
+                                    overflow: TextOverflow.fade,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                          color: Colors.white,
+                                        ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            backgroundColor: Colors.redAccent,
+                          ));
                         }
                       },
                       child: const Text('Next'),
@@ -107,67 +135,21 @@ class _LoginPageState extends State<LoginPage> {
         child: TextFormField(
           autofocus: true,
           autofillHints: const [AutofillHints.email],
-          controller: _emailController,
+          controller: _usernameController,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter your username or email';
+              return 'Username';
             }
             return null;
           },
           obscureText: false,
-          decoration: InputDecoration(
-            labelText: 'Username or email',
-            labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFF464F60),
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                ),
-            hintText: '',
-            hintStyle: Theme.of(context).textTheme.bodySmall,
-            enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Color(0xFFA1A9B8),
-                width: 1,
-              ),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(4.0),
-                topRight: Radius.circular(4.0),
-              ),
-            ),
-            focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Color(0x00000000),
-                width: 1,
-              ),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(4.0),
-                topRight: Radius.circular(4.0),
-              ),
-            ),
-            errorBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Color(0x00000000),
-                width: 1,
-              ),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(4.0),
-                topRight: Radius.circular(4.0),
-              ),
-            ),
-            focusedErrorBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Color(0x00000000),
-                width: 1,
-              ),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(4.0),
-                topRight: Radius.circular(4.0),
-              ),
-            ),
-            filled: true,
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: 'Username',
+            floatingLabelBehavior: FloatingLabelBehavior.always,
           ),
           style: Theme.of(context).textTheme.bodyMedium,
-          keyboardType: TextInputType.emailAddress,
+          keyboardType: TextInputType.name,
         ),
       ),
     );

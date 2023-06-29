@@ -1,12 +1,25 @@
 import 'package:flutter/material.dart';
 
-class PasswordField extends StatelessWidget {
+class PasswordField extends StatefulWidget {
   final TextEditingController controller;
 
   const PasswordField({
     super.key,
     required this.controller,
   });
+
+  @override
+  PasswordFieldState createState() => PasswordFieldState();
+}
+
+class PasswordFieldState extends State<PasswordField> {
+  bool viewPassword = false;
+
+  @override
+  void initState() {
+    super.initState();
+    viewPassword = false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,75 +29,19 @@ class PasswordField extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         child: TextFormField(
           autofocus: true,
-          controller: controller,
-          obscureText: true,
-          obscuringCharacter: '*',
+          obscureText: viewPassword,
+          controller: widget.controller,
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Password is required';
             }
             return null;
           },
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
             labelText: 'Enter  password',
-            labelStyle: const TextStyle(
-              color: Color(0xFF464F60),
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-            ),
-            hintText: ' ',
-            hintStyle: Theme.of(context).textTheme.bodySmall,
-            enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Color(0xFFA1A9B8),
-                width: 1,
-              ),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(4.0),
-                topRight: Radius.circular(4.0),
-              ),
-            ),
-            focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Color(0x00000000),
-                width: 1,
-              ),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(4.0),
-                topRight: Radius.circular(4.0),
-              ),
-            ),
-            errorBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Color(0x00000000),
-                width: 1,
-              ),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(4.0),
-                topRight: Radius.circular(4.0),
-              ),
-            ),
-            focusedErrorBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Color(0x00000000),
-                width: 1,
-              ),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(4.0),
-                topRight: Radius.circular(4.0),
-              ),
-            ),
-            filled: true,
-            suffixIcon: InkWell(
-              onTap: () {},
-              focusNode: FocusNode(skipTraversal: true),
-              child: const Icon(
-                Icons.visibility_outlined,
-                size: 24,
-              ),
-            ),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
           ),
-          style: Theme.of(context).textTheme.bodyMedium,
         ),
       ),
     );

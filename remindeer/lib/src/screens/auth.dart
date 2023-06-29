@@ -32,10 +32,10 @@ class AppAuthPage extends StatelessWidget {
       initialRoute: '/login',
       routes: {
         '/login': (context) => const LoginPage(),
-        '/signup': (context) => const PersonalDetailsPageWidget(),
-        '/phone': (context) => const PhoneVerificationPageWidget(),
+        '/signup': (context) => const PersonalDetailsPage(),
+        '/phone': (context) => const PhoneVerificationPage(),
         '/security': (context) => const SecurityPage(),
-        '/welcome': (context) => const WelcomePageWidget()
+        '/welcome': (context) => const WelcomePage()
       },
     );
   }

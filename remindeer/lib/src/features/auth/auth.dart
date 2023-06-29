@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:remindeer/src/models/user.dart';
 
@@ -10,6 +9,7 @@ enum AuthStatus {
   unauthenticated,
 }
 
+// prefered a Singleton
 class AuthProvider {
   static AuthProvider? _instance;
   static User? _loggedInUser;
@@ -41,8 +41,8 @@ class AuthProvider {
       return AuthStatus.unauthenticated;
     }
 
-    debugPrint(response.data.toString());
-
+    final user = User.fromApi(json: response.data);
+    _loggedInUser = user;
     return AuthStatus.authenticated;
   }
 

@@ -22,19 +22,7 @@ class _SecurityPageState extends State<SecurityPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_rounded,
-            color: Colors.black,
-            size: 30,
-          ),
-          onPressed: () {
-            if (Navigator.canPop(context)) {
-              Navigator.pop(context);
-            }
-          },
-        ),
+        automaticallyImplyLeading: true,
         elevation: 0,
       ),
       body: SafeArea(
@@ -51,47 +39,60 @@ class _SecurityPageState extends State<SecurityPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 40),
-                  child: Text(
-                    'Security',
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                Form(
-                  key: _formKey,
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        PasswordField(
-                          controller: _passwordController,
-                        ),
-                        ConfirmPasswordField(
-                          controller: _confirmPasswordController,
-                          otherController: _passwordController,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                  child: FilledButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/welcome");
-                    },
-                    child: const Text('Next'),
-                  ),
-                ),
+                showHeader(),
+                showForm(context),
+                showSubmitButton(context),
                 const LoginLink()
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Padding showSubmitButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+      child: FilledButton(
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {}
+          Navigator.pushNamed(context, "/welcome");
+        },
+        child: const Text('Next'),
+      ),
+    );
+  }
+
+  Form showForm(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            PasswordField(
+              controller: _passwordController,
+            ),
+            ConfirmPasswordField(
+              controller: _confirmPasswordController,
+              otherController: _passwordController,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Padding showHeader() {
+    return const Padding(
+      padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 40),
+      child: Text(
+        'Security',
+        style: TextStyle(
+          fontSize: 26,
+          fontWeight: FontWeight.w500,
         ),
       ),
     );

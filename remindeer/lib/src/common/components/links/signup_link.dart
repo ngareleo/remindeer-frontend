@@ -23,7 +23,6 @@ class SignupLink extends StatelessWidget {
         child: Text(
           'I don\'t have an account',
           style: TextStyle(
-            fontFamily: 'Roboto',
             color: Theme.of(context).primaryColor,
             fontSize: 16,
             fontWeight: FontWeight.w600,

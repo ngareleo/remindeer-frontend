@@ -1,25 +1,26 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:remindeer/src/models/user.dart';
+
+enum AuthStatus {
+  unknown,
+  authenticated,
+  unauthenticated,
+}
 
 class AuthProvider {
   static AuthProvider? _instance;
   static User? _loggedInUser;
 
   AuthProvider._() {
-    if (_instance != null) {
-      throw Exception("AuthProvider is already initialized");
-    }
-    _setUserFromLocal();
     _instance = this;
   }
 
   factory AuthProvider.instance() => _instance ?? AuthProvider._();
 
   static User get loggedInUser {
-    if (_loggedInUser == null) {
-      throw Exception("User is not logged in");
-    }
     return _loggedInUser!;
   }
 
@@ -27,7 +28,23 @@ class AuthProvider {
     return _loggedInUser != null;
   }
 
-  Future<void> login(String email, String password) async {}
+  Future<AuthStatus> login(String email, String password) async {
+    final dio = Dio();
+    final response = await dio.post("http://localhost:8080/signin",
+        data: {
+          "username": email,
+          "password": password,
+        },
+        options: Options(contentType: Headers.formUrlEncodedContentType));
+
+    if (response.statusCode != 200) {
+      return AuthStatus.unauthenticated;
+    }
+
+    debugPrint(response.data.toString());
+
+    return AuthStatus.authenticated;
+  }
 
   Future<void> logout() async {}
 

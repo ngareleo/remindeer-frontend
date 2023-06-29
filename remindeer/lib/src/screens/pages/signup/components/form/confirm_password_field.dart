@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ConfirmPasswordField extends StatelessWidget {
-  const ConfirmPasswordField({
-    super.key,
-  });
+  final TextEditingController? controller;
+  final TextEditingController? otherController;
+  const ConfirmPasswordField(
+      {super.key, required this.controller, required this.otherController});
 
   @override
   Widget build(BuildContext context) {
@@ -13,10 +14,20 @@ class ConfirmPasswordField extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         child: TextFormField(
           autofocus: true,
+          controller: controller,
+          obscureText: true,
+          obscuringCharacter: "*",
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Password is required';
+            } else if (value != otherController!.text) {
+              return 'Passwords do not match';
+            }
+            return null;
+          },
           decoration: InputDecoration(
             labelText: 'Confirm password',
             labelStyle: const TextStyle(
-              fontFamily: 'Roboto',
               color: Color(0xFF464F60),
               fontSize: 20,
               fontWeight: FontWeight.w500,

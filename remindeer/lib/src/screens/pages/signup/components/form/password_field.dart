@@ -1,22 +1,33 @@
 import 'package:flutter/material.dart';
 
 class PasswordField extends StatelessWidget {
+  final TextEditingController controller;
+
   const PasswordField({
     super.key,
+    required this.controller,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
-      child: Container(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: TextFormField(
           autofocus: true,
+          controller: controller,
+          obscureText: true,
+          obscuringCharacter: '*',
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Password is required';
+            }
+            return null;
+          },
           decoration: InputDecoration(
             labelText: 'Enter  password',
             labelStyle: const TextStyle(
-              fontFamily: 'Roboto',
               color: Color(0xFF464F60),
               fontSize: 20,
               fontWeight: FontWeight.w500,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:remindeer/src/screens/pages/signup/personal_details.dart';
 
 class SignupLink extends StatelessWidget {
   const SignupLink({
@@ -15,11 +16,10 @@ class SignupLink extends StatelessWidget {
         focusColor: Colors.transparent,
         hoverColor: Colors.transparent,
         highlightColor: Colors.transparent,
-        onTap: () async {
-          if (Navigator.of(context).canPop()) {
-            Navigator.pushNamed(context, '/signup');
-          }
-        },
+        onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const PersonalDetailsPage())),
         child: Text(
           'I don\'t have an account',
           style: TextStyle(

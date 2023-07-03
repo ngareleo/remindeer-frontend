@@ -47,82 +47,89 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 40),
-                    child: Text(
-                      'Sign in your account',
-                      style: TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        showUsernameField(),
-                        Padding(
-                            padding: const EdgeInsets.only(bottom: 20),
-                            child: PasswordField(
-                              controller: _passwordController,
-                            )),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: FilledButton(
-                      onPressed: () {
-                        logUserInAndValidate();
-
-                        if (_authProvider.isLoggedIn()) {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const AppHomePage(),
-                            ),
-                            (r) => false,
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Row(
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.only(right: 10),
-                                  child: Icon(
-                                    Icons.info_rounded,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Flexible(
-                                  child: Text(
-                                    'Trouble logging you in, please check you password, email combination',
-                                    overflow: TextOverflow.fade,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.copyWith(
-                                          color: Colors.white,
-                                        ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            backgroundColor: Colors.redAccent,
-                          ));
-                        }
-                      },
-                      child: const Text('Next'),
-                    ),
-                  ),
+                  showHeader(),
+                  showForm(context),
+                  showLoginButton(context),
                   const SignupLink(),
                 ],
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Padding showLoginButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: FilledButton(
+        onPressed: () {
+          logUserInAndValidate();
+
+          if (_authProvider.isLoggedIn()) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AppHomePage(),
+              ),
+              (r) => false,
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Icon(
+                      Icons.info_rounded,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Flexible(
+                    child: Text(
+                      'Trouble logging you in, please check you password, email combination',
+                      overflow: TextOverflow.fade,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Colors.white,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+              backgroundColor: Colors.redAccent,
+            ));
+          }
+        },
+        child: const Text('Next'),
+      ),
+    );
+  }
+
+  Padding showHeader() {
+    return const Padding(
+      padding: EdgeInsets.only(bottom: 40),
+      child: Text(
+        'Sign in your account',
+        style: TextStyle(
+          fontSize: 26,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+
+  SizedBox showForm(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          showUsernameField(),
+          PasswordField(
+            controller: _passwordController,
+          )
+        ],
       ),
     );
   }

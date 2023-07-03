@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 class EmailAddressField extends StatelessWidget {
   final TextEditingController controller;
+  final bool taken;
   const EmailAddressField({
     super.key,
     required this.controller,
+    required this.taken,
   });
 
   @override
@@ -30,6 +32,8 @@ class EmailAddressField extends StatelessWidget {
                     "^[a-zA-Z0-9.!#%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*")
                 .hasMatch(value)) {
               return 'Enter a valid email address please';
+            } else if (taken) {
+              return 'Email address is already taken';
             }
             return null;
           },

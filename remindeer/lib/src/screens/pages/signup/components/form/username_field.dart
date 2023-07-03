@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 class UsernameField extends StatelessWidget {
   final TextEditingController controller;
+  final bool taken;
   const UsernameField({
     super.key,
     required this.controller,
+    required this.taken,
   });
 
   @override
@@ -24,6 +26,8 @@ class UsernameField extends StatelessWidget {
               return 'Username can only contain alphanumeric characters [0-9a-z]';
             } else if (value.length > 10) {
               return 'Username cannot be longer than 10 characters';
+            } else if (taken) {
+              return 'Username is already taken';
             }
             return null;
           },

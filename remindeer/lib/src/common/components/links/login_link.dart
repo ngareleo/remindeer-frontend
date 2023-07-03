@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:remindeer/src/screens/pages/login/login.dart';
 
 class LoginLink extends StatelessWidget {
   const LoginLink({
@@ -15,9 +16,8 @@ class LoginLink extends StatelessWidget {
         focusColor: Colors.transparent,
         hoverColor: Colors.transparent,
         highlightColor: Colors.transparent,
-        onTap: () async {
-          Navigator.pushNamed(context, '/signin');
-        },
+        onTap: () => Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const LoginPage())),
         child: Text(
           'I already have an account',
           style: TextStyle(

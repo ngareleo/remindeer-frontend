@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/common/components/links/login_link.dart';
+import 'package:remindeer/src/features/auth/auth.dart';
 
 import 'components/form/phonenumber_field.dart';
 
 class PhoneVerificationPage extends StatefulWidget {
-  const PhoneVerificationPage({Key? key}) : super(key: key);
+  final String name;
+  final String username;
+  final String email;
+
+  const PhoneVerificationPage(
+      {Key? key,
+      required this.name,
+      required this.email,
+      required this.username})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _PhoneVerificationPageState();
@@ -13,6 +23,21 @@ class PhoneVerificationPage extends StatefulWidget {
 class _PhoneVerificationPageState extends State<PhoneVerificationPage> {
   final _formKey = GlobalKey<FormState>();
   final _phonenumberController = TextEditingController();
+  final AuthProvider _authProvider = AuthProvider.instance();
+  bool phonenumberTaken = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> validateDetailsInServer() async {
+    final valid =
+        await _authProvider.validatePhonenumber(_phonenumberController.text);
+    if (valid != null) {
+      setState(() => phonenumberTaken = valid);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +77,9 @@ class _PhoneVerificationPageState extends State<PhoneVerificationPage> {
       padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
       child: FilledButton(
         onPressed: () {
-          if (_formKey.currentState!.validate()) {}
-          Navigator.pushNamed(context, '/security');
+          if (_formKey.currentState!.validate() && !phonenumberTaken) {
+            Navigator.pushNamed(context, '/security');
+          }
         },
         child: const Text('Next'),
       ),
@@ -70,6 +96,7 @@ class _PhoneVerificationPageState extends State<PhoneVerificationPage> {
           children: [
             PhonenumberField(
               controller: _phonenumberController,
+              taken: phonenumberTaken,
             )
           ],
         ),

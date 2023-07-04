@@ -7,6 +7,15 @@ import 'components/form/email_field.dart';
 import 'components/form/firstname_field.dart';
 import 'components/form/username_field.dart';
 
+class PersonalDetailsPageArguments {
+  final String name;
+  final String username;
+  final String email;
+
+  PersonalDetailsPageArguments(
+      {required this.name, required this.username, required this.email});
+}
+
 class PersonalDetailsPage extends StatefulWidget {
   const PersonalDetailsPage({Key? key}) : super(key: key);
 
@@ -105,11 +114,14 @@ class _PersonalDetailsPageState extends State<PersonalDetailsPage>
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => PhoneVerificationPage(
+                    builder: (context) => const PhoneVerificationPage(),
+                    settings: RouteSettings(
+                        name: 'PhoneVerificationPage',
+                        arguments: PersonalDetailsPageArguments(
                           email: _emailController.text,
                           username: _usernameController.text,
                           name: _nameController.text,
-                        )));
+                        ))));
           }
         },
         child: const Text('Next'),

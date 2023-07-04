@@ -29,7 +29,7 @@ class PasswordFieldState extends State<PasswordField> {
         width: MediaQuery.of(context).size.width,
         child: TextFormField(
           autofocus: true,
-          obscureText: viewPassword,
+          obscureText: true,
           controller: widget.controller,
           validator: (value) {
             if (value == null || value.isEmpty) {

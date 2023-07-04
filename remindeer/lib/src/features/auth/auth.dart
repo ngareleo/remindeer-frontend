@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:remindeer/src/models/user.dart';
 
 enum AuthStatus {
@@ -8,7 +9,7 @@ enum AuthStatus {
 }
 
 // prefered a Singleton
-class AuthProvider {
+class AuthProvider extends ChangeNotifier {
   static AuthProvider? _instance;
   static User? _loggedInUser;
   late Dio? _dio;
@@ -49,6 +50,7 @@ class AuthProvider {
 
     final user = User.fromApi(json: response?.data);
     _loggedInUser = user;
+    notifyListeners();
     return AuthStatus.authenticated;
   }
 
@@ -80,7 +82,33 @@ class AuthProvider {
     return response?.data['exists'] as bool;
   }
 
-  Future<void> logout() async {}
+  Future<void> logout() async {
+    _loggedInUser = null;
+    notifyListeners();
+  }
 
-  Future<void> register(String email, String password) async {}
+  Future<User?> createNewUserAccount(
+      {required String email,
+      required String name,
+      required String username,
+      required String phonenumber,
+      required String password}) async {
+    final response = await _dio?.put(
+      "http://localhost:8080/api/user",
+      data: {
+        "email": email,
+        "name": name,
+        "username": username,
+        "phone_number": phonenumber,
+        "password": password,
+      },
+      options: Options(contentType: Headers.formUrlEncodedContentType),
+    );
+
+    if (response?.statusCode != 200) return null;
+    var user = User.fromApi(json: response?.data);
+    _loggedInUser = user;
+    notifyListeners();
+    return user;
+  }
 }

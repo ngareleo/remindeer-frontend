@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:remindeer/src/common/components/forms/create_event_form.dart';
 
 class EventTypeField extends StatelessWidget {
+  final Function onChanged;
   const EventTypeField({
     super.key,
+    required this.onChanged,
   });
 
   @override
@@ -17,6 +20,7 @@ class EventTypeField extends StatelessWidget {
         ],
         initialSelection: 0,
         label: const Text('Choose the event type...'),
+        onSelected: (value) => onChanged(EventType.values[value!]),
       ),
     );
   }

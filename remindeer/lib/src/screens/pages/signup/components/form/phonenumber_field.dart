@@ -28,7 +28,9 @@ class PhonenumberField extends StatelessWidget {
           validator: (value) {
             if (value == null || value.isEmpty || value.trim() == "") {
               return 'Phone number is required';
-            } else if (!RegExp(r"^/+254[0-9]{8-10}").hasMatch(value)) {
+            } else if (!RegExp(r"^254[0-9]").hasMatch(value.trim()) ||
+                value.trim().length < 12 ||
+                value.trim().length > 14) {
               return 'Enter a valid Kenyan phone number please';
             } else if (taken) {
               return 'Phone number is already taken';

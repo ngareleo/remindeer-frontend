@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/common/components/links/login_link.dart';
 import 'package:remindeer/src/features/auth/auth.dart';
+import 'package:remindeer/src/screens/pages/signup/personal_details.dart';
+import 'package:remindeer/src/screens/pages/signup/security.dart';
 
 import 'components/form/phonenumber_field.dart';
 
-class PhoneVerificationPage extends StatefulWidget {
-  final String name;
-  final String username;
-  final String email;
+class PhoneVerificationPageArguments {
+  final String phonenumber;
+  final PersonalDetailsPageArguments personalDetails;
 
-  const PhoneVerificationPage(
-      {Key? key,
-      required this.name,
-      required this.email,
-      required this.username})
-      : super(key: key);
+  const PhoneVerificationPageArguments(
+      {required this.phonenumber, required this.personalDetails});
+}
+
+class PhoneVerificationPage extends StatefulWidget {
+  const PhoneVerificationPage({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _PhoneVerificationPageState();
@@ -78,7 +79,17 @@ class _PhoneVerificationPageState extends State<PhoneVerificationPage> {
       child: FilledButton(
         onPressed: () {
           if (_formKey.currentState!.validate() && !phonenumberTaken) {
-            Navigator.pushNamed(context, '/security');
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const SecurityPage(),
+                    settings: RouteSettings(
+                        arguments: PhoneVerificationPageArguments(
+                      phonenumber: _phonenumberController.text,
+                      personalDetails: ModalRoute.of(context)!
+                          .settings
+                          .arguments as PersonalDetailsPageArguments,
+                    ))));
           }
         },
         child: const Text('Next'),

@@ -26,8 +26,12 @@ class _LinkToSemester extends State<LinkToSemesterWidget> {
   }
 
   Future<void> _getSemesters() async {
-    semesters.clear();
-    semesters.addAll(await api.getAllSemesters());
+    final semesters = await api.getAllSemesters();
+    setState(() {
+      semesters
+        ..clear()
+        ..addAll(semesters);
+    });
   }
 
   @override

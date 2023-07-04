@@ -18,7 +18,10 @@ class CreateEventForm extends StatefulWidget {
   State<StatefulWidget> createState() => _CreateEventFormState();
 }
 
+enum EventType { regular, lecture }
+
 class _CreateEventFormState extends State<CreateEventForm> {
+  var eventType = EventType.regular;
   final List<DateTime?> dates = [];
   final _labelController = TextEditingController();
   final _descriptionController = TextEditingController();
@@ -28,11 +31,6 @@ class _CreateEventFormState extends State<CreateEventForm> {
   // final _venueController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   Window? window;
-
-  @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +63,11 @@ class _CreateEventFormState extends State<CreateEventForm> {
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const EventTypeField(),
+                  EventTypeField(
+                    onChanged: (val) {
+                      setState(() => eventType = val);
+                    },
+                  ),
                   EventLabelField(labelController: _labelController),
                   EventDescriptionField(
                       descriptionController: _descriptionController),
@@ -100,7 +102,9 @@ class _CreateEventFormState extends State<CreateEventForm> {
                     color: Colors.black12,
                   ),
                   LinkToUnitWidget(controller: _unitController),
-                  LinkToTimetableWidget(),
+                  LinkToTimetable(
+                    controller: _timetableController,
+                  ),
                   LinkToSemesterWidget(
                     controller: _semesterController,
                   ),

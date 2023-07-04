@@ -6,12 +6,14 @@ class User extends Resource {
   final String email;
   final String name;
   final String? photoUrl;
+  final String? phonenumber;
 
   User(
       {required String uid,
       required this.name,
       required this.username,
       required this.email,
+      this.phonenumber,
       this.photoUrl,
       required DateTime created,
       required DateTime lastModified})
@@ -44,6 +46,7 @@ class User extends Resource {
     final username = json["username"].toString();
     final email = json["email"].toString();
     final createdAt = json["created_at"].toString();
+    final phonenumber = json["phone_number"].toString();
     final lastModified = json["last_modified"].toString();
 
     return User(
@@ -51,6 +54,7 @@ class User extends Resource {
         name: name,
         username: username,
         email: email,
+        phonenumber: phonenumber,
         created: DateTime.parse(createdAt),
         lastModified: DateTime.parse(lastModified));
   }

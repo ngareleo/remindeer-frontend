@@ -24,12 +24,12 @@ class PasswordFieldState extends State<PasswordField> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 20),
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: TextFormField(
           autofocus: true,
-          obscureText: viewPassword,
+          obscureText: true,
           controller: widget.controller,
           validator: (value) {
             if (value == null || value.isEmpty) {

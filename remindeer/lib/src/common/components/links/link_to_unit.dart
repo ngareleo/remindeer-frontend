@@ -26,8 +26,12 @@ class _LinkToUnitWidget extends State<LinkToUnitWidget> {
   }
 
   Future<void> _getUnits() async {
-    units.clear();
-    units.addAll(await api.getAllUnits());
+    final units = await api.getAllUnits();
+    setState(() {
+      units
+        ..clear()
+        ..addAll(units);
+    });
   }
 
   @override

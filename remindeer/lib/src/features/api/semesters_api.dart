@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:remindeer/src/models/semester.dart';
 
@@ -8,7 +7,6 @@ class SemestersAPI {
     var store =
         await rootBundle.loadString("assets/store/sample_semesters.json");
     var content = Map.from(jsonDecode(store));
-    debugPrint(content.toString());
     var semesters = <Semester>[];
     for (final entry in content.entries) {
       semesters.add(Semester.fromJson(uid: entry.key, json: entry.value));

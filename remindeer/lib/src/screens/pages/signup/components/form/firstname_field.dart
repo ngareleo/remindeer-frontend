@@ -31,7 +31,7 @@ class FirstnameField extends StatelessWidget {
           },
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
-            labelText: 'First name',
+            labelText: 'Name',
             hintText: 'Jane',
             floatingLabelBehavior: FloatingLabelBehavior.always,
           ),

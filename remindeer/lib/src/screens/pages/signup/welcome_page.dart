@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:remindeer/src/screens/home.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -58,7 +59,10 @@ class _WelcomePageState extends State<WelcomePage> {
                 ),
                 FilledButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(context, "/");
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AppHomePage()));
                   },
                   child: const Text('Let\'s go!'),
                 ),

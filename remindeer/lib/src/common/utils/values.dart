@@ -7,34 +7,36 @@ enum RepeatFrequency {
 }
 
 enum DaysOfWeek {
-  monday('Mon'),
-  tuesday('Tue'),
-  wednesday('Wed'),
-  thursday('Thu'),
-  friday('Fri'),
-  saturday('Sat'),
-  sunday('Sun');
+  monday('Mon', "Monday"),
+  tuesday('Tue', "Tuesday"),
+  wednesday('Wed', "Wednesday"),
+  thursday('Thu', "Thursday"),
+  friday('Fri', "Friday"),
+  saturday('Sat', "Saturday"),
+  sunday('Sun', "Sunday");
 
-  const DaysOfWeek(this.value);
+  const DaysOfWeek(this.value, this.fullValue);
   final String value;
+  final String fullValue;
 }
 
 enum MonthsOfYear {
-  jan("Jan"),
-  feb("Feb"),
-  mar("Mar"),
-  apr("Apr"),
-  may("May"),
-  jun("Jun"),
-  jul("Jul"),
-  aug("Aug"),
-  sep("Sep"),
-  oct("Oct"),
-  nov("Nov"),
-  dec("Dec");
+  jan("Jan", "January"),
+  feb("Feb", "February"),
+  mar("Mar", "March"),
+  apr("Apr", "April"),
+  may("May", "May"),
+  jun("Jun", "June"),
+  jul("Jul", "July"),
+  aug("Aug", "August"),
+  sep("Sep", "September"),
+  oct("Oct", "October"),
+  nov("Nov", "November"),
+  dec("Dec", "December");
 
-  const MonthsOfYear(this.value);
+  const MonthsOfYear(this.value, this.fullValue);
   final String value;
+  final String fullValue;
 }
 
 DaysOfWeek mapToDayOfWeek(int num) {

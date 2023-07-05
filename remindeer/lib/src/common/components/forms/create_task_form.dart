@@ -1,4 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:remindeer/src/common/components/forms/form_widgets/date_pick_section.dart';
+import 'package:remindeer/src/common/components/forms/form_widgets/description_form_field.dart';
+import 'package:remindeer/src/common/components/forms/form_widgets/label_form_field.dart';
+import 'package:remindeer/src/common/components/links/link_to_semester.dart';
+import 'package:remindeer/src/common/components/links/link_to_timetable.dart';
+import 'package:remindeer/src/common/components/links/link_to_unit.dart';
+import 'package:remindeer/src/models/semester.dart';
+import 'package:remindeer/src/models/timetable.dart';
+import 'package:remindeer/src/models/unit.dart';
+
+enum TaskType { regular, assignment }
 
 class CreateTaskForm extends StatefulWidget {
   const CreateTaskForm({Key? key}) : super(key: key);
@@ -9,6 +20,14 @@ class CreateTaskForm extends StatefulWidget {
 
 class _CreateTaskFormState extends State<CreateTaskForm> {
   bool eventIsAllDay = false;
+  var eventType = TaskType.regular;
+  final List<DateTime?> dates = [];
+  final _labelController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  Unit? _unit;
+  Semester? _semester;
+  Timetable? _timetable;
 
   @override
   Widget build(BuildContext context) {
@@ -27,200 +46,56 @@ class _CreateTaskFormState extends State<CreateTaskForm> {
         child: Padding(
           padding: const EdgeInsetsDirectional.all(20),
           child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: DropdownMenu<int>(
-                    width: MediaQuery.of(context).size.width,
-                    dropdownMenuEntries: const [
-                      DropdownMenuEntry(value: 0, label: 'Regular'),
-                      DropdownMenuEntry(value: 1, label: 'Lecture')
-                    ],
-                    initialSelection: 0,
-                    label: const Text('Choose the event type...'),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  showtaskType(context),
+                  EventLabelField(labelController: _labelController),
+                  EventDescriptionField(
+                      descriptionController: _descriptionController),
+                  const Divider(
+                    color: Colors.black12,
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(bottom: 10),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Label',
-                      ),
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      keyboardType: TextInputType.text,
-                    ),
+                  DatePickSection(onDatesChanged: () => {}),
+                  const Divider(
+                    color: Colors.black12,
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(bottom: 10),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'Description',
-                        border: OutlineInputBorder(),
-                      ),
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      keyboardType: TextInputType.text,
-                      maxLines: 10,
-                    ),
+                  LinkToUnitWidget(
+                    onLink: (Unit? unit) => setState(() {
+                      _unit = unit;
+                    }),
                   ),
-                ),
-                const Divider(
-                  color: Colors.black12,
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(bottom: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Choose the time intervals for the task',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge
-                            ?.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            'All day',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                          Switch(
-                              value: eventIsAllDay,
-                              onChanged: (bool value) {
-                                setState(() => eventIsAllDay = value);
-                              })
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          OutlinedButton(
-                            onPressed: () {},
-                            child: const Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.add_rounded,
-                                  size: 18,
-                                ),
-                                Text(
-                                  'From',
-                                )
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: const Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                      Icons.add_rounded,
-                                      size: 18,
-                                    ),
-                                    Text('To')
-                                  ]),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
+                  LinkToTimetable(
+                    onLink: (Timetable? timetable) => setState(() {
+                      _timetable = timetable;
+                    }),
                   ),
-                ),
-                const Divider(
-                  color: Colors.black12,
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                  child: OutlinedButton(
-                    onPressed: () {},
-                    child: const Row(mainAxisSize: MainAxisSize.min, children: [
-                      Icon(
-                        Icons.add_rounded,
-                        size: 18,
-                      ),
-                      Text('Pick date')
-                    ]),
-                  ),
-                ),
-                const Divider(
-                  color: Colors.black12,
-                ),
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(bottom: 5),
-                      child: TextButton(
-                        onPressed: () {},
-                        child: Row(mainAxisSize: MainAxisSize.min, children: [
-                          Icon(
-                            Icons.link_rounded,
-                            color: Theme.of(context).primaryColor,
-                            size: 18,
-                          ),
-                          Text(
-                            'Link to unit',
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ]),
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(bottom: 5),
-                  child: TextButton(
-                    onPressed: () {},
-                    child: Row(mainAxisSize: MainAxisSize.min, children: [
-                      Icon(
-                        Icons.link_rounded,
-                        color: Theme.of(context).primaryColor,
-                        size: 18,
-                      ),
-                      Text(
-                        'Link to timetable',
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ]),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
-                  child: TextButton(
-                    onPressed: () {},
-                    child: Row(mainAxisSize: MainAxisSize.min, children: [
-                      Icon(
-                        Icons.link_rounded,
-                        color: Theme.of(context).primaryColor,
-                        size: 18,
-                      ),
-                      Text(
-                        'Link to semester',
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ]),
-                  ),
-                ),
-              ],
+                  LinkToSemesterWidget(
+                      onLink: (Semester? semester) =>
+                          setState(() => _semester = semester)),
+                ],
+              ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Padding showtaskType(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: DropdownMenu<int>(
+        width: MediaQuery.of(context).size.width,
+        dropdownMenuEntries: const [
+          DropdownMenuEntry(value: 0, label: 'Regular'),
+          DropdownMenuEntry(value: 1, label: 'Assignment')
+        ],
+        initialSelection: 0,
+        label: const Text('Choose the task type...'),
       ),
     );
   }

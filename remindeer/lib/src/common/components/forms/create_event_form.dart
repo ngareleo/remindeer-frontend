@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/common/utils/structs/window.dart';
+import 'package:remindeer/src/models/semester.dart';
+import 'package:remindeer/src/models/timetable.dart';
 import 'package:remindeer/src/models/unit.dart';
 
 import '../links/link_to_semester.dart';
@@ -25,12 +27,12 @@ class _CreateEventFormState extends State<CreateEventForm> {
   final List<DateTime?> dates = [];
   final _labelController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _semesterController = TextEditingController();
-  final _timetableController = TextEditingController();
-  final _unitController = TextEditingController();
   // final _venueController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  Window? window;
+  Unit? _unit;
+  Semester? _semester;
+  Timetable? _timetable;
+  Window? _window;
 
   @override
   Widget build(BuildContext context) {
@@ -78,10 +80,10 @@ class _CreateEventFormState extends State<CreateEventForm> {
                     onWindowChanged:
                         (bool allDay, TimeOfDay? from, TimeOfDay? to) {
                       if (allDay) {
-                        window = Window(isAllDay: true);
+                        _window = Window(isAllDay: true);
                       } else {
                         if (from != null && to != null) {
-                          window = Window(
+                          _window = Window(
                               isAllDay: false,
                               from: from.hour * 100 + from.minute,
                               to: to.hour * 100 + to.minute);
@@ -94,20 +96,27 @@ class _CreateEventFormState extends State<CreateEventForm> {
                   ),
                   DatePickSection(
                     onDatesChanged: (dates) => setState(() {
-                      dates.clear();
-                      dates.addAll(dates);
+                      dates
+                        ..clear()
+                        ..addAll(dates);
                     }),
                   ),
                   const Divider(
                     color: Colors.black12,
                   ),
-                  LinkToUnitWidget(controller: _unitController),
+                  LinkToUnitWidget(
+                    onLink: (Unit? unit) => setState(() {
+                      _unit = unit;
+                    }),
+                  ),
                   LinkToTimetable(
-                    controller: _timetableController,
+                    onLink: (Timetable? timetable) => setState(() {
+                      _timetable = timetable;
+                    }),
                   ),
                   LinkToSemesterWidget(
-                    controller: _semesterController,
-                  ),
+                      onLink: (Semester? semester) =>
+                          setState(() => _semester = semester)),
                 ],
               ),
             ),

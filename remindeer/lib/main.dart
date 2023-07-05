@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:remindeer/src/common/theme/app_theme.dart';
 import 'package:remindeer/src/features/auth/auth.dart';
 import 'package:remindeer/src/screens/home.dart';
-import 'package:remindeer/src/screens/pages/login/login.dart';
 
 // This widget is the root of your application.
 void main() {

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/common/components/forms/link_to_timetable_dialog.dart';
+import 'package:remindeer/src/common/utils/values.dart';
 import 'package:remindeer/src/features/api/timetables_api.dart';
 import 'package:remindeer/src/models/timetable.dart';
 
 class LinkToTimetable extends StatefulWidget {
-  final TextEditingController controller;
+  final Function(Timetable? timetable) onLink;
   const LinkToTimetable({
     super.key,
-    required this.controller,
+    required this.onLink,
   });
 
   @override
@@ -38,12 +38,7 @@ class _LinkToTimetableState extends State<LinkToTimetable> {
   Widget build(BuildContext context) {
     return selectedTimetable != null
         ? ActionChip(
-            onPressed: () {
-              setState(() {
-                selectedTimetable = null;
-                widget.controller.text = "";
-              });
-            },
+            onPressed: () => setState(() => widget.onLink(selectedTimetable!)),
             label: Text(selectedTimetable?.label ?? ""),
             avatar: const Icon(Icons.close_rounded))
         : Padding(
@@ -52,11 +47,16 @@ class _LinkToTimetableState extends State<LinkToTimetable> {
               onPressed: () {
                 showDialog(
                     context: context,
-                    builder: (BuildContext context) {
-                      return const Dialog(
-                        child: LinkToTimetableDialog(),
-                      );
-                    });
+                    builder: (BuildContext context) => SimpleDialog(
+                          title: const Text("Link to timetable"),
+                          children: List.generate(
+                              timetables.length,
+                              (index) => SimpleDialogOption(
+                                    onPressed: () => setState(
+                                        () => widget.onLink(selectedTimetable)),
+                                    child: Text(timetables[index].label),
+                                  )),
+                        ));
               },
               child: Row(mainAxisSize: MainAxisSize.min, children: [
                 Icon(

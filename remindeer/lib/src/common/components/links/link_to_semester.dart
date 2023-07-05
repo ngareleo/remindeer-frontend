@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/features/api/semesters_api.dart';
 import 'package:remindeer/src/models/semester.dart';
+import 'package:remindeer/src/models/unit.dart';
 
 class LinkToSemesterWidget extends StatefulWidget {
+  final Function(Semester? semester) onLink;
   const LinkToSemesterWidget({
     super.key,
-    required this.controller,
+    required this.onLink,
   });
-
-  final TextEditingController controller;
 
   @override
   State<StatefulWidget> createState() => _LinkToSemester();
@@ -40,7 +40,7 @@ class _LinkToSemester extends State<LinkToSemesterWidget> {
         ? ActionChip(
             onPressed: () {
               setState(() => selectedSemester = null);
-              widget.controller.text = "";
+              widget.onLink(null);
             },
             label: Text((selectedSemester?.name)!),
             avatar: const Icon(Icons.close_rounded))
@@ -59,8 +59,7 @@ class _LinkToSemester extends State<LinkToSemesterWidget> {
                                   onPressed: () {
                                     setState(() {
                                       selectedSemester = semesters[index];
-                                      widget.controller.text =
-                                          semesters[index].name;
+                                      widget.onLink(semesters[index]);
                                     });
                                     Navigator.pop(context);
                                   },

@@ -3,12 +3,8 @@ import 'package:remindeer/src/features/api/units_api.dart';
 import 'package:remindeer/src/models/unit.dart';
 
 class LinkToUnitWidget extends StatefulWidget {
-  const LinkToUnitWidget({
-    super.key,
-    required this.controller,
-  });
-
-  final TextEditingController controller;
+  final Function(Unit? unit) onLink;
+  const LinkToUnitWidget({super.key, required this.onLink});
 
   @override
   State<StatefulWidget> createState() => _LinkToUnitWidget();
@@ -27,62 +23,59 @@ class _LinkToUnitWidget extends State<LinkToUnitWidget> {
 
   Future<void> _getUnits() async {
     final units = await api.getAllUnits();
-    setState(() {
-      units
-        ..clear()
-        ..addAll(units);
-    });
+    setState(() => units
+      ..clear()
+      ..addAll(units));
   }
 
   @override
   Widget build(BuildContext context) {
     return selectedUnit != null
         ? ActionChip(
-            onPressed: () {
-              setState(() {
-                selectedUnit = null;
-                widget.controller.text = "";
-              });
-            },
+            onPressed: () => setState(() {
+                  selectedUnit = null;
+                  widget.onLink(null);
+                }),
             label: Text(selectedUnit ?? ""),
             avatar: const Icon(Icons.close_rounded))
-        : Padding(
-            padding: const EdgeInsetsDirectional.only(bottom: 5),
-            child: TextButton(
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return SimpleDialog(
-                        title: const Text('Link to unit'),
-                        children: List.generate(
-                            units.length,
-                            (index) => SimpleDialogOption(
-                                  onPressed: () {
-                                    setState(
-                                        () => selectedUnit = units[index].name);
-                                    widget.controller.text = units[index].uid;
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(units[index].name),
-                                )),
-                      );
-                    });
-              },
-              child: Row(mainAxisSize: MainAxisSize.min, children: [
-                Icon(
-                  Icons.link_rounded,
-                  color: Theme.of(context).primaryColor,
-                  size: 18,
-                ),
-                Text(
-                  'Link to unit',
-                  style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.w500),
-                ),
-              ]),
-            ),
-          );
+        : showUnitChooser(context);
+  }
+
+  Padding showUnitChooser(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsetsDirectional.only(bottom: 5),
+      child: TextButton(
+        onPressed: () => showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return SimpleDialog(
+                title: const Text('Link to unit'),
+                children: List.generate(
+                    units.length,
+                    (index) => SimpleDialogOption(
+                          onPressed: () {
+                            setState(() => selectedUnit = units[index].name);
+                            widget.onLink(units[index]);
+                            Navigator.pop(context);
+                          },
+                          child: Text(units[index].name),
+                        )),
+              );
+            }),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [
+          Icon(
+            Icons.link_rounded,
+            color: Theme.of(context).primaryColor,
+            size: 18,
+          ),
+          Text(
+            'Link to unit',
+            style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.w500),
+          ),
+        ]),
+      ),
+    );
   }
 }

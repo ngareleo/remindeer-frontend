@@ -40,8 +40,6 @@ class _SemesterDashboardPageState extends State<SemesterDashboardPage> {
           _headerTitle,
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        actions: const [],
-        centerTitle: false,
         elevation: 0,
       ),
       body: SafeArea(

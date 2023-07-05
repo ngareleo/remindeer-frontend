@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class MemberCardWidget extends StatefulWidget {
-  const MemberCardWidget({Key? key}) : super(key: key);
+class MemberCard extends StatefulWidget {
+  const MemberCard({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _MemberCardWidgetState();
+  State<StatefulWidget> createState() => _MemberCardState();
 }
 
-class _MemberCardWidgetState extends State<MemberCardWidget> {
+class _MemberCardState extends State<MemberCard> {
   @override
   void initState() {
     super.initState();

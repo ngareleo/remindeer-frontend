@@ -65,16 +65,15 @@ class _CalendarChooserWidgetState extends State<CalendarChooserWidget> {
                       } else {
                         month--;
                       }
-                      days.clear();
-                      days.addAll(
-                          fillWeeks(seed: DateTime(year, month + 1, 0)));
+                      days
+                        ..clear()
+                        ..addAll(fillWeeks(seed: DateTime(year, month + 1, 0)));
                     })
                   },
                 ),
                 Text(
                   '${months[month]} $year',
                   style: const TextStyle(
-                    fontFamily: 'Roboto',
                     color: Colors.white,
                     fontWeight: FontWeight.w500,
                   ),
@@ -92,9 +91,9 @@ class _CalendarChooserWidgetState extends State<CalendarChooserWidget> {
                       } else {
                         month++;
                       }
-                      days.clear();
-                      days.addAll(
-                          fillWeeks(seed: DateTime(year, month + 1, 0)));
+                      days
+                        ..clear()
+                        ..addAll(fillWeeks(seed: DateTime(year, month + 1, 0)));
                     })
                   },
                 )
@@ -104,21 +103,11 @@ class _CalendarChooserWidgetState extends State<CalendarChooserWidget> {
               onHorizontalDragUpdate: (details) {
                 int sensitivity = 8;
                 if (details.delta.dx > sensitivity) {
-                  setState(() {
-                    if (activeWeek == 3) {
-                      activeWeek = 0;
-                    } else {
-                      activeWeek++;
-                    }
-                  });
+                  setState(
+                      () => activeWeek = activeWeek == 3 ? 0 : activeWeek + 1);
                 } else if (details.delta.dx < -sensitivity) {
-                  setState(() {
-                    if (activeWeek == 0) {
-                      activeWeek = 3;
-                    } else {
-                      activeWeek--;
-                    }
-                  });
+                  setState(
+                      () => activeWeek = activeWeek == 0 ? 3 : activeWeek - 1);
                 }
               },
               child: Row(
@@ -131,16 +120,12 @@ class _CalendarChooserWidgetState extends State<CalendarChooserWidget> {
                       child: ActiveDateItem(
                           label: item.value.weekday,
                           date: item.value.day.toString()),
-                      onTap: () {
-                        setState(() {});
-                      },
+                      onTap: () {},
                     );
                   }
                   return GestureDetector(
                     onTap: () {
-                      setState(() {
-                        day = item.key;
-                      });
+                      setState(() => day = item.key);
                       widget.onDateChange(item.value.date);
                     },
                     child: InactiveDateItem(
@@ -182,7 +167,6 @@ class _ActiveDateItem extends State<ActiveDateItem> {
           Text(
             widget.label,
             style: const TextStyle(
-              fontFamily: 'Roboto',
               color: Colors.black,
               fontWeight: FontWeight.bold,
             ),
@@ -190,7 +174,6 @@ class _ActiveDateItem extends State<ActiveDateItem> {
           Text(
             widget.date,
             style: const TextStyle(
-              fontFamily: 'Roboto',
               color: Colors.black,
               fontWeight: FontWeight.w500,
             ),
@@ -227,7 +210,6 @@ class _InactiveDateItem extends State<InactiveDateItem> {
           Text(
             widget.label,
             style: const TextStyle(
-              fontFamily: 'Roboto',
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
@@ -235,7 +217,6 @@ class _InactiveDateItem extends State<InactiveDateItem> {
           Text(
             widget.date,
             style: const TextStyle(
-              fontFamily: 'Roboto',
               color: Colors.white,
               fontWeight: FontWeight.w500,
             ),

@@ -6,25 +6,10 @@ class MemberGroupWidget extends StatefulWidget {
   const MemberGroupWidget({Key? key}) : super(key: key);
 
   @override
-  _MemberGroupWidgetState createState() => _MemberGroupWidgetState();
+  State<StatefulWidget> createState() => _MemberGroupWidgetState();
 }
 
 class _MemberGroupWidgetState extends State<MemberGroupWidget> {
-  @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -49,10 +34,10 @@ class _MemberGroupWidgetState extends State<MemberGroupWidget> {
             ),
             Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                child: MemberCardWidget()),
+                child: MemberCard()),
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-              child: MemberCardWidget(),
+              child: MemberCard(),
             ),
           ],
         ),

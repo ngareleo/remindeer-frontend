@@ -47,7 +47,7 @@ class _TimetableSettingsPageState extends State<TimetableSettingsPage> {
                   padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
                   child: SemesterSettingsPageHeader(),
                 ),
-                SemesterPageLinksGroupWidget(),
+                SemesterPageLinksGroup(),
                 MemberGroupWidget()
               ],
             ),

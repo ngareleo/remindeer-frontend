@@ -1,30 +1,14 @@
 import 'package:flutter/material.dart';
 import 'action_link.dart';
 
-class SemesterPageLinksGroupWidget extends StatefulWidget {
-  const SemesterPageLinksGroupWidget({Key? key}) : super(key: key);
+class SemesterPageLinksGroup extends StatefulWidget {
+  const SemesterPageLinksGroup({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _SemesterPageLinksGroupWidgetState();
+  State<StatefulWidget> createState() => _SemesterPageLinksGroupState();
 }
 
-class _SemesterPageLinksGroupWidgetState
-    extends State<SemesterPageLinksGroupWidget> {
-  @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
+class _SemesterPageLinksGroupState extends State<SemesterPageLinksGroup> {
   @override
   Widget build(BuildContext context) {
     return Padding(

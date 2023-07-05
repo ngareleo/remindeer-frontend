@@ -16,21 +16,6 @@ class SemesterPageLinkWidget extends StatefulWidget {
 
 class _SemesterPageLinkWidgetState extends State<SemesterPageLinkWidget> {
   @override
-  void setState(VoidCallback callback) {
-    super.setState(callback);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
       height: 40,

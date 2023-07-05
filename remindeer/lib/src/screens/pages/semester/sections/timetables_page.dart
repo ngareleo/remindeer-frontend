@@ -13,7 +13,7 @@ class TimetablesPage extends SemesterPage {
 class TimetablesPageBody extends StatefulWidget {
   const TimetablesPageBody({super.key, required this.setPending});
 
-  final Function setPending;
+  final Function(int) setPending;
 
   @override
   State<TimetablesPageBody> createState() => _TimetablesPageBodyState();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/common/components/sliding_tabs/sliding_tabs.dart';
-import 'package:remindeer/src/models/semester.dart';
+import 'package:remindeer/src/features/local_api/models/semester.dart';
 import 'components/semester_page_header.dart';
 import 'sections/all_page.dart';
 import 'sections/approvals_page.dart';
@@ -54,7 +54,7 @@ class _SemesterDashboardPageState extends State<SemesterDashboardPage> {
             children: [
               SemesterPageHeader(
                 email: '',
-                label: widget.semester.name,
+                label: widget.semester.label,
               ),
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),

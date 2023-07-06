@@ -27,39 +27,44 @@ const EventSchema = CollectionSchema(
       name: r'description',
       type: IsarType.string,
     ),
-    r'eventDate': PropertySchema(
+    r'event_date': PropertySchema(
       id: 2,
-      name: r'eventDate',
+      name: r'event_date',
       type: IsarType.dateTime,
     ),
-    r'label': PropertySchema(
+    r'hasListeners': PropertySchema(
       id: 3,
+      name: r'hasListeners',
+      type: IsarType.bool,
+    ),
+    r'label': PropertySchema(
+      id: 4,
       name: r'label',
       type: IsarType.string,
     ),
     r'lastModified': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'lastModified',
       type: IsarType.dateTime,
     ),
     r'repeat': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'repeat',
       type: IsarType.byte,
       enumMap: _EventrepeatEnumValueMap,
     ),
-    r'repeatTo': PropertySchema(
-      id: 6,
-      name: r'repeatTo',
+    r'repeat_to': PropertySchema(
+      id: 7,
+      name: r'repeat_to',
       type: IsarType.dateTime,
     ),
     r'venue': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'venue',
       type: IsarType.string,
     ),
     r'window': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'window',
       type: IsarType.object,
       target: r'Window',
@@ -91,12 +96,7 @@ int _eventEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
-  {
-    final value = object.label;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
+  bytesCount += 3 + object.label.length * 3;
   {
     final value = object.venue;
     if (value != null) {
@@ -122,13 +122,14 @@ void _eventSerialize(
   writer.writeDateTime(offsets[0], object.created);
   writer.writeString(offsets[1], object.description);
   writer.writeDateTime(offsets[2], object.eventDate);
-  writer.writeString(offsets[3], object.label);
-  writer.writeDateTime(offsets[4], object.lastModified);
-  writer.writeByte(offsets[5], object.repeat.index);
-  writer.writeDateTime(offsets[6], object.repeatTo);
-  writer.writeString(offsets[7], object.venue);
+  writer.writeBool(offsets[3], object.hasListeners);
+  writer.writeString(offsets[4], object.label);
+  writer.writeDateTime(offsets[5], object.lastModified);
+  writer.writeByte(offsets[6], object.repeat.index);
+  writer.writeDateTime(offsets[7], object.repeatTo);
+  writer.writeString(offsets[8], object.venue);
   writer.writeObject<Window>(
-    offsets[8],
+    offsets[9],
     allOffsets,
     WindowSchema.serialize,
     object.window,
@@ -141,21 +142,21 @@ Event _eventDeserialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = Event();
-  object.description = reader.readStringOrNull(offsets[1]);
-  object.eventDate = reader.readDateTimeOrNull(offsets[2]);
-  object.id = id;
-  object.label = reader.readStringOrNull(offsets[3]);
-  object.lastModified = reader.readDateTime(offsets[4]);
-  object.repeat = _EventrepeatValueEnumMap[reader.readByteOrNull(offsets[5])] ??
-      RepeatFrequency.none;
-  object.repeatTo = reader.readDateTimeOrNull(offsets[6]);
-  object.venue = reader.readStringOrNull(offsets[7]);
-  object.window = reader.readObjectOrNull<Window>(
-    offsets[8],
-    WindowSchema.deserialize,
-    allOffsets,
+  final object = Event(
+    description: reader.readStringOrNull(offsets[1]),
+    eventDate: reader.readDateTimeOrNull(offsets[2]),
+    label: reader.readString(offsets[4]),
+    repeat: _EventrepeatValueEnumMap[reader.readByteOrNull(offsets[6])] ??
+        RepeatFrequency.none,
+    repeatTo: reader.readDateTimeOrNull(offsets[7]),
+    venue: reader.readStringOrNull(offsets[8]),
+    window: reader.readObjectOrNull<Window>(
+      offsets[9],
+      WindowSchema.deserialize,
+      allOffsets,
+    ),
   );
+  object.id = id;
   return object;
 }
 
@@ -173,17 +174,19 @@ P _eventDeserializeProp<P>(
     case 2:
       return (reader.readDateTimeOrNull(offset)) as P;
     case 3:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 4:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 5:
+      return (reader.readDateTime(offset)) as P;
+    case 6:
       return (_EventrepeatValueEnumMap[reader.readByteOrNull(offset)] ??
           RepeatFrequency.none) as P;
-    case 6:
-      return (reader.readDateTimeOrNull(offset)) as P;
     case 7:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 8:
+      return (reader.readStringOrNull(offset)) as P;
+    case 9:
       return (reader.readObjectOrNull<Window>(
         offset,
         WindowSchema.deserialize,
@@ -499,7 +502,7 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
   QueryBuilder<Event, Event, QAfterFilterCondition> eventDateIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'eventDate',
+        property: r'event_date',
       ));
     });
   }
@@ -507,7 +510,7 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
   QueryBuilder<Event, Event, QAfterFilterCondition> eventDateIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'eventDate',
+        property: r'event_date',
       ));
     });
   }
@@ -516,7 +519,7 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
       DateTime? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'eventDate',
+        property: r'event_date',
         value: value,
       ));
     });
@@ -529,7 +532,7 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'eventDate',
+        property: r'event_date',
         value: value,
       ));
     });
@@ -542,7 +545,7 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'eventDate',
+        property: r'event_date',
         value: value,
       ));
     });
@@ -556,11 +559,21 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'eventDate',
+        property: r'event_date',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> hasListenersEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'hasListeners',
+        value: value,
       ));
     });
   }
@@ -633,24 +646,8 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Event, Event, QAfterFilterCondition> labelIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'label',
-      ));
-    });
-  }
-
-  QueryBuilder<Event, Event, QAfterFilterCondition> labelIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'label',
-      ));
-    });
-  }
-
   QueryBuilder<Event, Event, QAfterFilterCondition> labelEqualTo(
-    String? value, {
+    String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -663,7 +660,7 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> labelGreaterThan(
-    String? value, {
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -678,7 +675,7 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> labelLessThan(
-    String? value, {
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -693,8 +690,8 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
   }
 
   QueryBuilder<Event, Event, QAfterFilterCondition> labelBetween(
-    String? lower,
-    String? upper, {
+    String lower,
+    String upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -886,7 +883,7 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
   QueryBuilder<Event, Event, QAfterFilterCondition> repeatToIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'repeatTo',
+        property: r'repeat_to',
       ));
     });
   }
@@ -894,7 +891,7 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
   QueryBuilder<Event, Event, QAfterFilterCondition> repeatToIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'repeatTo',
+        property: r'repeat_to',
       ));
     });
   }
@@ -903,7 +900,7 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
       DateTime? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'repeatTo',
+        property: r'repeat_to',
         value: value,
       ));
     });
@@ -916,7 +913,7 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'repeatTo',
+        property: r'repeat_to',
         value: value,
       ));
     });
@@ -929,7 +926,7 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'repeatTo',
+        property: r'repeat_to',
         value: value,
       ));
     });
@@ -943,7 +940,7 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'repeatTo',
+        property: r'repeat_to',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1151,13 +1148,25 @@ extension EventQuerySortBy on QueryBuilder<Event, Event, QSortBy> {
 
   QueryBuilder<Event, Event, QAfterSortBy> sortByEventDate() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'eventDate', Sort.asc);
+      return query.addSortBy(r'event_date', Sort.asc);
     });
   }
 
   QueryBuilder<Event, Event, QAfterSortBy> sortByEventDateDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'eventDate', Sort.desc);
+      return query.addSortBy(r'event_date', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByHasListeners() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hasListeners', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByHasListenersDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hasListeners', Sort.desc);
     });
   }
 
@@ -1199,13 +1208,13 @@ extension EventQuerySortBy on QueryBuilder<Event, Event, QSortBy> {
 
   QueryBuilder<Event, Event, QAfterSortBy> sortByRepeatTo() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'repeatTo', Sort.asc);
+      return query.addSortBy(r'repeat_to', Sort.asc);
     });
   }
 
   QueryBuilder<Event, Event, QAfterSortBy> sortByRepeatToDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'repeatTo', Sort.desc);
+      return query.addSortBy(r'repeat_to', Sort.desc);
     });
   }
 
@@ -1249,13 +1258,25 @@ extension EventQuerySortThenBy on QueryBuilder<Event, Event, QSortThenBy> {
 
   QueryBuilder<Event, Event, QAfterSortBy> thenByEventDate() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'eventDate', Sort.asc);
+      return query.addSortBy(r'event_date', Sort.asc);
     });
   }
 
   QueryBuilder<Event, Event, QAfterSortBy> thenByEventDateDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'eventDate', Sort.desc);
+      return query.addSortBy(r'event_date', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByHasListeners() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hasListeners', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByHasListenersDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hasListeners', Sort.desc);
     });
   }
 
@@ -1309,13 +1330,13 @@ extension EventQuerySortThenBy on QueryBuilder<Event, Event, QSortThenBy> {
 
   QueryBuilder<Event, Event, QAfterSortBy> thenByRepeatTo() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'repeatTo', Sort.asc);
+      return query.addSortBy(r'repeat_to', Sort.asc);
     });
   }
 
   QueryBuilder<Event, Event, QAfterSortBy> thenByRepeatToDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'repeatTo', Sort.desc);
+      return query.addSortBy(r'repeat_to', Sort.desc);
     });
   }
 
@@ -1348,7 +1369,13 @@ extension EventQueryWhereDistinct on QueryBuilder<Event, Event, QDistinct> {
 
   QueryBuilder<Event, Event, QDistinct> distinctByEventDate() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'eventDate');
+      return query.addDistinctBy(r'event_date');
+    });
+  }
+
+  QueryBuilder<Event, Event, QDistinct> distinctByHasListeners() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'hasListeners');
     });
   }
 
@@ -1373,7 +1400,7 @@ extension EventQueryWhereDistinct on QueryBuilder<Event, Event, QDistinct> {
 
   QueryBuilder<Event, Event, QDistinct> distinctByRepeatTo() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'repeatTo');
+      return query.addDistinctBy(r'repeat_to');
     });
   }
 
@@ -1406,11 +1433,17 @@ extension EventQueryProperty on QueryBuilder<Event, Event, QQueryProperty> {
 
   QueryBuilder<Event, DateTime?, QQueryOperations> eventDateProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'eventDate');
+      return query.addPropertyName(r'event_date');
     });
   }
 
-  QueryBuilder<Event, String?, QQueryOperations> labelProperty() {
+  QueryBuilder<Event, bool, QQueryOperations> hasListenersProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'hasListeners');
+    });
+  }
+
+  QueryBuilder<Event, String, QQueryOperations> labelProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'label');
     });
@@ -1430,7 +1463,7 @@ extension EventQueryProperty on QueryBuilder<Event, Event, QQueryProperty> {
 
   QueryBuilder<Event, DateTime?, QQueryOperations> repeatToProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'repeatTo');
+      return query.addPropertyName(r'repeat_to');
     });
   }
 

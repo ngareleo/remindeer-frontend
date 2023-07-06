@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/common/utils/structs/window.dart';
+import 'package:remindeer/src/features/local_api/models/event.dart';
+import 'package:remindeer/src/features/local_api/repository/event_repository.dart';
 import 'package:remindeer/src/models/semester.dart';
 import 'package:remindeer/src/models/timetable.dart';
 import 'package:remindeer/src/models/unit.dart';
@@ -29,6 +30,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
   final _descriptionController = TextEditingController();
   // final _venueController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final _eventRepository = EventRepository.instance();
   Unit? _unit;
   Semester? _semester;
   Timetable? _timetable;
@@ -45,9 +47,16 @@ class _CreateEventFormState extends State<CreateEventForm> {
             child: FilledButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Creating new event')),
+                    final event = Event(
+                      label: _labelController.text,
+                      description: _descriptionController.text,
+                      window: _window,
                     );
+                    _eventRepository.addEvent(event);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('New event added!')),
+                    );
+                    Navigator.pop(context);
                   }
                 },
                 child: const Text('Save')),

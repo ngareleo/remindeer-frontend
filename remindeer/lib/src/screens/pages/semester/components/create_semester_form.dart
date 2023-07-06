@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/models/semester.dart';
+import 'package:remindeer/src/features/local_api/models/semester.dart';
+import 'package:remindeer/src/features/local_api/repository/semester_repository.dart';
 import 'package:remindeer/src/screens/pages/semester/semester_dashboard.dart';
 
 class CreateSemesterForm extends StatefulWidget {
@@ -12,7 +13,41 @@ class CreateSemesterForm extends StatefulWidget {
 class _CreateSemesterFormState extends State<CreateSemesterForm> {
   final _formKey = GlobalKey<FormState>();
   final _semesterNameController = TextEditingController();
+  final _semesterRepository = SemesterRepository.instance();
   DateTime? _semesterEndDate;
+  Semester? _semester;
+
+  void createNewSemester() async {
+    if (!_formKey.currentState!.validate()) {
+      const snackBar = SnackBar(
+          content: Text('Something went wrong, please go back and try again.'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return;
+    }
+
+    final semester = await _semesterRepository.addSemester(
+      Semester.fromNewSemesterForm(
+        label: _semesterNameController.text,
+        to: _semesterEndDate!,
+      ),
+    );
+
+    setState(() => _semester = semester);
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    super.setState(fn);
+    if (_semester != null) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => SemesterDashboardPage(
+            semester: _semester!,
+          ),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,54 +176,41 @@ class _CreateSemesterFormState extends State<CreateSemesterForm> {
   FilledButton showCreateSemesterButton(BuildContext context) {
     return FilledButton(
       onPressed: () {
-        if (_formKey.currentState!.validate() && _semesterEndDate != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Creating new semester')),
-          );
-          final newSemester = Semester(
-            name: _semesterNameController.text,
-            from: DateTime.now(),
-            to: _semesterEndDate!,
-            created: DateTime.now(),
-            lastModified: DateTime.now(),
-            uid: '00-s-15',
-          );
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      SemesterDashboardPage(semester: newSemester)));
+        if (_semesterEndDate != null) {
+          createNewSemester();
         } else {
-          if (_semesterEndDate == null) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Row(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Icon(
-                      Icons.info_rounded,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Flexible(
-                    child: Text(
-                      'If a semester end date is not chosen, the semester will be valid for 28 days',
-                      overflow: TextOverflow.fade,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.white,
-                          ),
-                    ),
-                  ),
-                ],
-              ),
-              backgroundColor: Theme.of(context).colorScheme.secondary,
-            ));
-            setState(() => _semesterEndDate =
-                DateTime.now().add(const Duration(days: 28)));
-          }
+          showMissingEndDateMessage();
+          setState(() =>
+              _semesterEndDate = DateTime.now().add(const Duration(days: 28)));
         }
       },
       child: const Text('Create semester'),
     );
+  }
+
+  void showMissingEndDateMessage() {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Row(
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(right: 10),
+            child: Icon(
+              Icons.info_rounded,
+              color: Colors.white,
+            ),
+          ),
+          Flexible(
+            child: Text(
+              'If a semester end date is not chosen, the semester will be valid for 28 days',
+              overflow: TextOverflow.fade,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Colors.white,
+                  ),
+            ),
+          ),
+        ],
+      ),
+      backgroundColor: Theme.of(context).colorScheme.secondary,
+    ));
   }
 }

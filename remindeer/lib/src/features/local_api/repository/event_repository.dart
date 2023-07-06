@@ -1,26 +1,19 @@
 import 'package:isar/isar.dart';
-import 'package:remindeer/src/features/local_api/models/event.dart';
-import 'package:remindeer/src/models/event.dart' as app_event_model;
+
+import '../models/event.dart';
 
 class EventRepository {
-  static EventRepository? _instance;
+  static final EventRepository _instance = EventRepository._internal();
   final Isar _isar;
 
-  EventRepository(this._isar) {
-    _instance = this;
-  }
+  EventRepository(this._isar);
 
-  factory EventRepository.instance() => _instance!;
+  factory EventRepository.instance() => _instance;
+  factory EventRepository._internal() => _instance;
 
-  Future<List<Event>> getAllEvents() async {
-    final all = await _isar.events.where().findAll();
-    return all;
-  }
-
-  Future<void> addEvent(app_event_model.Event event) async {
-    final event_ = Event.fromLocalEventModel(event);
-    await _isar.writeTxn((isar) async {
-      await isar.events.put(event_);
-    } as Future Function());
+  Future<void> addEvent(Event event) async {
+    await _isar.writeTxn(() async {
+      return await _isar.events.put(event);
+    });
   }
 }

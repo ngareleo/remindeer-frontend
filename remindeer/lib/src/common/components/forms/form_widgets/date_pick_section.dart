@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:remindeer/src/common/utils/values.dart';
 
 class DatePickSection extends StatefulWidget {
+  final Function(List<DateTime?>) onDatesChanged;
   const DatePickSection({Key? key, required this.onDatesChanged})
       : super(key: key);
-
-  final Function onDatesChanged;
 
   @override
   State<StatefulWidget> createState() => _DatePickSectionState();
@@ -13,11 +12,6 @@ class DatePickSection extends StatefulWidget {
 
 class _DatePickSectionState extends State<DatePickSection> {
   final dates = <DateTime?>[];
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

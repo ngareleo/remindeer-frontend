@@ -37,28 +37,33 @@ const TaskSchema = CollectionSchema(
       name: r'due',
       type: IsarType.dateTime,
     ),
-    r'label': PropertySchema(
+    r'hasListeners': PropertySchema(
       id: 4,
+      name: r'hasListeners',
+      type: IsarType.bool,
+    ),
+    r'label': PropertySchema(
+      id: 5,
       name: r'label',
       type: IsarType.string,
     ),
     r'lastModified': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'lastModified',
       type: IsarType.dateTime,
     ),
     r'repeat': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'repeat',
       type: IsarType.bool,
     ),
-    r'repeatTo': PropertySchema(
-      id: 7,
-      name: r'repeatTo',
+    r'repeat_to': PropertySchema(
+      id: 8,
+      name: r'repeat_to',
       type: IsarType.long,
     ),
     r'venue': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'venue',
       type: IsarType.string,
     )
@@ -89,12 +94,7 @@ int _taskEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
-  {
-    final value = object.label;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
+  bytesCount += 3 + object.label.length * 3;
   {
     final value = object.venue;
     if (value != null) {
@@ -114,11 +114,12 @@ void _taskSerialize(
   writer.writeDateTime(offsets[1], object.created);
   writer.writeString(offsets[2], object.description);
   writer.writeDateTime(offsets[3], object.due);
-  writer.writeString(offsets[4], object.label);
-  writer.writeDateTime(offsets[5], object.lastModified);
-  writer.writeBool(offsets[6], object.repeat);
-  writer.writeLong(offsets[7], object.repeatTo);
-  writer.writeString(offsets[8], object.venue);
+  writer.writeBool(offsets[4], object.hasListeners);
+  writer.writeString(offsets[5], object.label);
+  writer.writeDateTime(offsets[6], object.lastModified);
+  writer.writeBool(offsets[7], object.repeat);
+  writer.writeLong(offsets[8], object.repeatTo);
+  writer.writeString(offsets[9], object.venue);
 }
 
 Task _taskDeserialize(
@@ -127,16 +128,16 @@ Task _taskDeserialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = Task();
-  object.completed = reader.readDateTimeOrNull(offsets[0]);
-  object.description = reader.readStringOrNull(offsets[2]);
-  object.due = reader.readDateTimeOrNull(offsets[3]);
+  final object = Task(
+    completed: reader.readDateTimeOrNull(offsets[0]),
+    description: reader.readStringOrNull(offsets[2]),
+    due: reader.readDateTimeOrNull(offsets[3]),
+    label: reader.readString(offsets[5]),
+    repeat: reader.readBoolOrNull(offsets[7]),
+    repeatTo: reader.readLongOrNull(offsets[8]),
+    venue: reader.readStringOrNull(offsets[9]),
+  );
   object.id = id;
-  object.label = reader.readStringOrNull(offsets[4]);
-  object.lastModified = reader.readDateTime(offsets[5]);
-  object.repeat = reader.readBoolOrNull(offsets[6]);
-  object.repeatTo = reader.readLongOrNull(offsets[7]);
-  object.venue = reader.readStringOrNull(offsets[8]);
   return object;
 }
 
@@ -156,14 +157,16 @@ P _taskDeserializeProp<P>(
     case 3:
       return (reader.readDateTimeOrNull(offset)) as P;
     case 4:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 5:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 6:
-      return (reader.readBoolOrNull(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 7:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 8:
+      return (reader.readLongOrNull(offset)) as P;
+    case 9:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -594,6 +597,16 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Task, Task, QAfterFilterCondition> hasListenersEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'hasListeners',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<Task, Task, QAfterFilterCondition> idIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -662,24 +675,8 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Task, Task, QAfterFilterCondition> labelIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'label',
-      ));
-    });
-  }
-
-  QueryBuilder<Task, Task, QAfterFilterCondition> labelIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'label',
-      ));
-    });
-  }
-
   QueryBuilder<Task, Task, QAfterFilterCondition> labelEqualTo(
-    String? value, {
+    String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -692,7 +689,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
   }
 
   QueryBuilder<Task, Task, QAfterFilterCondition> labelGreaterThan(
-    String? value, {
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -707,7 +704,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
   }
 
   QueryBuilder<Task, Task, QAfterFilterCondition> labelLessThan(
-    String? value, {
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -722,8 +719,8 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
   }
 
   QueryBuilder<Task, Task, QAfterFilterCondition> labelBetween(
-    String? lower,
-    String? upper, {
+    String lower,
+    String upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -887,7 +884,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
   QueryBuilder<Task, Task, QAfterFilterCondition> repeatToIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'repeatTo',
+        property: r'repeat_to',
       ));
     });
   }
@@ -895,7 +892,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
   QueryBuilder<Task, Task, QAfterFilterCondition> repeatToIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'repeatTo',
+        property: r'repeat_to',
       ));
     });
   }
@@ -903,7 +900,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
   QueryBuilder<Task, Task, QAfterFilterCondition> repeatToEqualTo(int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'repeatTo',
+        property: r'repeat_to',
         value: value,
       ));
     });
@@ -916,7 +913,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'repeatTo',
+        property: r'repeat_to',
         value: value,
       ));
     });
@@ -929,7 +926,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'repeatTo',
+        property: r'repeat_to',
         value: value,
       ));
     });
@@ -943,7 +940,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'repeatTo',
+        property: r'repeat_to',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1150,6 +1147,18 @@ extension TaskQuerySortBy on QueryBuilder<Task, Task, QSortBy> {
     });
   }
 
+  QueryBuilder<Task, Task, QAfterSortBy> sortByHasListeners() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hasListeners', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterSortBy> sortByHasListenersDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hasListeners', Sort.desc);
+    });
+  }
+
   QueryBuilder<Task, Task, QAfterSortBy> sortByLabel() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'label', Sort.asc);
@@ -1188,13 +1197,13 @@ extension TaskQuerySortBy on QueryBuilder<Task, Task, QSortBy> {
 
   QueryBuilder<Task, Task, QAfterSortBy> sortByRepeatTo() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'repeatTo', Sort.asc);
+      return query.addSortBy(r'repeat_to', Sort.asc);
     });
   }
 
   QueryBuilder<Task, Task, QAfterSortBy> sortByRepeatToDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'repeatTo', Sort.desc);
+      return query.addSortBy(r'repeat_to', Sort.desc);
     });
   }
 
@@ -1260,6 +1269,18 @@ extension TaskQuerySortThenBy on QueryBuilder<Task, Task, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Task, Task, QAfterSortBy> thenByHasListeners() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hasListeners', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterSortBy> thenByHasListenersDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hasListeners', Sort.desc);
+    });
+  }
+
   QueryBuilder<Task, Task, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -1310,13 +1331,13 @@ extension TaskQuerySortThenBy on QueryBuilder<Task, Task, QSortThenBy> {
 
   QueryBuilder<Task, Task, QAfterSortBy> thenByRepeatTo() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'repeatTo', Sort.asc);
+      return query.addSortBy(r'repeat_to', Sort.asc);
     });
   }
 
   QueryBuilder<Task, Task, QAfterSortBy> thenByRepeatToDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'repeatTo', Sort.desc);
+      return query.addSortBy(r'repeat_to', Sort.desc);
     });
   }
 
@@ -1359,6 +1380,12 @@ extension TaskQueryWhereDistinct on QueryBuilder<Task, Task, QDistinct> {
     });
   }
 
+  QueryBuilder<Task, Task, QDistinct> distinctByHasListeners() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'hasListeners');
+    });
+  }
+
   QueryBuilder<Task, Task, QDistinct> distinctByLabel(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1380,7 +1407,7 @@ extension TaskQueryWhereDistinct on QueryBuilder<Task, Task, QDistinct> {
 
   QueryBuilder<Task, Task, QDistinct> distinctByRepeatTo() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'repeatTo');
+      return query.addDistinctBy(r'repeat_to');
     });
   }
 
@@ -1423,7 +1450,13 @@ extension TaskQueryProperty on QueryBuilder<Task, Task, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Task, String?, QQueryOperations> labelProperty() {
+  QueryBuilder<Task, bool, QQueryOperations> hasListenersProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'hasListeners');
+    });
+  }
+
+  QueryBuilder<Task, String, QQueryOperations> labelProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'label');
     });
@@ -1443,7 +1476,7 @@ extension TaskQueryProperty on QueryBuilder<Task, Task, QQueryProperty> {
 
   QueryBuilder<Task, int?, QQueryOperations> repeatToProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'repeatTo');
+      return query.addPropertyName(r'repeat_to');
     });
   }
 

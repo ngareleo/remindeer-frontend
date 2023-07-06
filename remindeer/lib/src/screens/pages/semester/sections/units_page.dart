@@ -13,7 +13,7 @@ class UnitsPage extends SemesterPage {
 class UnitsPageBody extends StatefulWidget {
   const UnitsPageBody({super.key, required this.setPending});
 
-  final Function setPending;
+  final Function(int) setPending;
 
   @override
   State<UnitsPageBody> createState() => _UnitsPageBodyState();

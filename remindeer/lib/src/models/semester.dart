@@ -1,12 +1,12 @@
+// Archived for reference purposes only (DO NOT USE)
+
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
-import 'package:remindeer/src/screens/pages/semester/semester_dashboard.dart';
 
 import 'resource.dart';
 
 class Semester extends Resource {
-  static const _name = "semester";
-  static const _displayName = "Semester";
+  static const _name = "Semester";
 
   final String name;
   final String? descrption;
@@ -64,23 +64,12 @@ class Semester extends Resource {
 
   @override
   Widget toResourceItem(BuildContext context) {
-    final timeBtwn = lastModified.difference(DateTime.now());
+    final timeBtwn = lastModified?.difference(DateTime.now());
     return ResourceCard(
       label: name,
       lastModified: timeBtwn.toString(),
-      tag: _displayName,
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => SemesterDashboardPage(
-                      semester: Semester(
-                          uid: uid,
-                          name: name,
-                          created: created,
-                          lastModified: lastModified),
-                    )));
-      },
+      tag: _name,
+      onTap: () {},
     );
   }
 }

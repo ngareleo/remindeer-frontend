@@ -13,7 +13,7 @@ class ApprovalPage extends SemesterPage {
 class ApprovalsPageBody extends StatefulWidget {
   const ApprovalsPageBody({super.key, required this.setPending});
 
-  final Function setPending;
+  final Function(int) setPending;
 
   @override
   State<ApprovalsPageBody> createState() => _ApprovalsPageBodyState();

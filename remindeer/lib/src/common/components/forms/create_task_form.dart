@@ -5,6 +5,8 @@ import 'package:remindeer/src/common/components/forms/form_widgets/label_form_fi
 import 'package:remindeer/src/common/components/links/link_to_semester.dart';
 import 'package:remindeer/src/common/components/links/link_to_timetable.dart';
 import 'package:remindeer/src/common/components/links/link_to_unit.dart';
+import 'package:remindeer/src/features/local_api/models/task.dart';
+import 'package:remindeer/src/features/local_api/repository/task_repository.dart';
 import 'package:remindeer/src/models/semester.dart';
 import 'package:remindeer/src/models/timetable.dart';
 import 'package:remindeer/src/models/unit.dart';
@@ -21,10 +23,11 @@ class CreateTaskForm extends StatefulWidget {
 class _CreateTaskFormState extends State<CreateTaskForm> {
   bool eventIsAllDay = false;
   var eventType = TaskType.regular;
-  final List<DateTime?> dates = [];
+  final List<DateTime?> _dates = [];
   final _labelController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  final _taskRepository = TaskRepository.instance();
   Unit? _unit;
   Semester? _semester;
   Timetable? _timetable;
@@ -37,7 +40,20 @@ class _CreateTaskFormState extends State<CreateTaskForm> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(10),
-            child: FilledButton(onPressed: () {}, child: const Text('Save')),
+            child: FilledButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _taskRepository.addTask(Task(
+                      label: _labelController.text,
+                      description: _descriptionController.text,
+                    ));
+                    const SnackBar snackBar =
+                        SnackBar(content: Text('Task created'));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    Navigator.pop(context);
+                  }
+                },
+                child: const Text('Save')),
           )
         ],
       ),
@@ -59,7 +75,11 @@ class _CreateTaskFormState extends State<CreateTaskForm> {
                   const Divider(
                     color: Colors.black12,
                   ),
-                  DatePickSection(onDatesChanged: () => {}),
+                  DatePickSection(onDatesChanged: (List<DateTime?> dates) {
+                    _dates
+                      ..clear()
+                      ..addAll(dates);
+                  }),
                   const Divider(
                     color: Colors.black12,
                   ),

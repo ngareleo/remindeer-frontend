@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:remindeer/src/features/auth/auth.dart';
+import 'package:remindeer/src/features/local_api/models/timetable.dart';
 import 'package:remindeer/src/models/event.dart';
-import 'package:remindeer/src/models/timetable.dart';
 import 'package:remindeer/src/models/user.dart';
 import 'package:remindeer/src/screens/pages/timetable/components/no_events_card.dart';
 
@@ -8,9 +9,7 @@ import 'components/timetable_page_header.dart';
 
 class TimetableHomePage extends StatefulWidget {
   final Timetable timetable;
-  final User user;
-  const TimetableHomePage(
-      {Key? key, required this.timetable, required this.user})
+  const TimetableHomePage({Key? key, required this.timetable})
       : super(key: key);
 
   @override
@@ -20,6 +19,8 @@ class TimetableHomePage extends StatefulWidget {
 class _TimetableHomePageState extends State<TimetableHomePage> {
   final _pageTitle = "Timetable";
   final _events = <Event>[];
+
+  final User? user = AuthProvider.loggedInUser;
 
   @override
   void initState() {
@@ -51,7 +52,7 @@ class _TimetableHomePageState extends State<TimetableHomePage> {
             mainAxisSize: MainAxisSize.max,
             children: [
               TimetablePageHeader(
-                email: widget.user.email,
+                email: user?.email ?? "undefined yet",
                 title: widget.timetable.label,
               ),
               Padding(

@@ -28,8 +28,8 @@ class AuthProvider extends ChangeNotifier {
 
   factory AuthProvider.instance() => _instance ?? AuthProvider._();
 
-  static User get loggedInUser {
-    return _loggedInUser!;
+  static User? get loggedInUser {
+    return _loggedInUser;
   }
 
   bool isLoggedIn() {

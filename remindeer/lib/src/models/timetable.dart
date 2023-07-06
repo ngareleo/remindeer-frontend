@@ -1,15 +1,17 @@
+// Archived for reference purposes only (DO NOT USE)
+
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
 import 'package:remindeer/src/models/resource.dart';
-import 'package:remindeer/src/models/user.dart';
-import 'package:remindeer/src/screens/pages/timetable/timetable_dashboard.dart';
 
 class Timetable extends Resource {
-  static const _name = "timetable";
-  static const _displayName = "Timetable";
+  static const _name = "Timetable";
 
   final String label;
   final String? description;
+
+  @Name("valid_until")
   final DateTime? validUntil;
 
   Timetable(
@@ -58,26 +60,12 @@ class Timetable extends Resource {
   Widget toResourceItem(
     BuildContext context,
   ) {
-    final timeBtwn = lastModified.difference(DateTime.now());
+    final timeBtwn = lastModified?.difference(DateTime.now());
     return ResourceCard(
       label: label,
-      tag: _displayName,
+      tag: _name,
       lastModified: timeBtwn.toString(),
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => TimetableHomePage(
-                      timetable: this,
-                      user: User(
-                          uid: uid,
-                          name: "",
-                          username: "",
-                          email: "",
-                          created: DateTime.now(),
-                          lastModified: DateTime.now()),
-                    )));
-      },
+      onTap: () {},
     );
   }
 }

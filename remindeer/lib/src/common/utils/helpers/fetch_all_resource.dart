@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:remindeer/src/features/api/task_api.dart';
 import 'package:remindeer/src/features/api/timetables_api.dart';
 import 'package:remindeer/src/features/api/units_api.dart';
@@ -11,11 +10,10 @@ Future<List<Resource>> fetchAllResources() async {
 
   final resources = <Resource>[];
 
-  resources.addAll(await timetblApi.getAllTimetables());
-  resources.addAll(await unitsApit.getAllUnits());
-  resources.addAll(tasksApi.getTasks());
-
-  debugPrint('Resources: ${resources.length}');
+  resources
+    ..addAll(await timetblApi.getAllTimetables())
+    ..addAll(await unitsApit.getAllUnits())
+    ..addAll(tasksApi.getTasks());
 
   return resources;
 }

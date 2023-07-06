@@ -31,10 +31,9 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
   }
 
   void _onFilterChange(Set<ContentFilters> filters) {
-    setState(() {
-      activeFilters.clear();
-      activeFilters.addAll(filters);
-    });
+    setState(() => activeFilters
+      ..clear()
+      ..addAll(filters));
     _filterResources();
   }
 
@@ -44,9 +43,10 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
     final timetables = await timetablesApi.getAllTimetables();
 
     setState(() {
-      resources.addAll(units);
-      resources.addAll(semesters);
-      resources.addAll(timetables);
+      resources
+        ..addAll(units)
+        ..addAll(semesters)
+        ..addAll(timetables);
     });
   }
 
@@ -81,10 +81,9 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
       }
     }
 
-    setState(() {
-      resources.clear();
-      resources.addAll(filteredResources);
-    });
+    setState(() => resources
+      ..clear()
+      ..addAll(filteredResources));
   }
 
   @override

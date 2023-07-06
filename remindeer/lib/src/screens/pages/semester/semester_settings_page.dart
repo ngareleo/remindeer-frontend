@@ -52,7 +52,7 @@ class _SemesterSettingsPageState extends State<SemesterSettingsPage> {
                   padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
                   child: SemesterSettingsPageHeader(),
                 ),
-                SemesterPageLinksGroupWidget(),
+                SemesterPageLinksGroup(),
                 MemberGroupWidget()
               ],
             ),

@@ -16,7 +16,7 @@ class AllPage extends SemesterPage {
 class AppPageBody extends StatefulWidget {
   const AppPageBody({super.key, required this.setPending});
 
-  final Function setPending;
+  final Function(int) setPending;
 
   @override
   State<AppPageBody> createState() => _AppPageBodyState();

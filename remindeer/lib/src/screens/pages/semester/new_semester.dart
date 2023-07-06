@@ -28,8 +28,6 @@ class _NewSemesterPageState extends State<NewSemesterPage> {
           },
         ),
         title: Text('Semester', style: Theme.of(context).textTheme.titleMedium),
-        actions: const [],
-        centerTitle: false,
         elevation: 1,
       ),
       body: SafeArea(

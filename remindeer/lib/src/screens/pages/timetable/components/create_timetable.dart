@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/models/timetable.dart';
-import 'package:remindeer/src/models/user.dart';
+import 'package:remindeer/src/features/local_api/models/timetable.dart';
+import 'package:remindeer/src/features/local_api/repository/timetable_repository.dart';
 import 'package:remindeer/src/screens/pages/timetable/timetable_dashboard.dart';
 
 class CreateTimetableForm extends StatefulWidget {
@@ -13,7 +13,41 @@ class CreateTimetableForm extends StatefulWidget {
 class _CreateTimetableFormState extends State<CreateTimetableForm> {
   final _formKey = GlobalKey<FormState>();
   final _labelController = TextEditingController();
+  final _timetableRepository = TimetableRepository.instance();
   DateTime? _endDate;
+  Timetable? _timetable;
+
+  void createNewTimetable() async {
+    if (!_formKey.currentState!.validate() || _timetable != null) {
+      const snackBar = SnackBar(
+          content: Text('Something went wrong, please go back and try again.'));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return;
+    }
+
+    final timetable = await _timetableRepository.addTimetable(
+      Timetable(
+        label: _labelController.text,
+        validUntil: _endDate!,
+      ),
+    );
+
+    setState(() => _timetable = timetable);
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    super.setState(fn);
+    if (_timetable != null) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => TimetableHomePage(
+            timetable: _timetable!,
+          ),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,54 +176,11 @@ class _CreateTimetableFormState extends State<CreateTimetableForm> {
   FilledButton showCreateButton(BuildContext context) {
     return FilledButton(
       onPressed: () {
-        if (_formKey.currentState!.validate() && _endDate != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Creating new timetable')),
-          );
-          final nTimetable = Timetable(
-            label: _labelController.text,
-            created: DateTime.now(),
-            lastModified: DateTime.now(),
-            uid: '00-s-15',
-          );
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => TimetableHomePage(
-                        timetable: nTimetable,
-                        user: User(
-                            uid: "",
-                            name: "Janedoe",
-                            username: "janedoe",
-                            email: "janedoe@gmail.com",
-                            created: DateTime.now(),
-                            lastModified: DateTime.now()),
-                      )));
+        if (_endDate != null) {
+          createNewTimetable();
         } else {
           if (_endDate == null) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Row(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Icon(
-                      Icons.info_rounded,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Flexible(
-                    child: Text(
-                      'If a due date is not chosen, the timetable will be valid for 28 days',
-                      overflow: TextOverflow.fade,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.white,
-                          ),
-                    ),
-                  ),
-                ],
-              ),
-              backgroundColor: Theme.of(context).colorScheme.secondary,
-            ));
+            showDueDateNotAddedMessage();
             setState(
                 () => _endDate = DateTime.now().add(const Duration(days: 28)));
           }
@@ -197,5 +188,31 @@ class _CreateTimetableFormState extends State<CreateTimetableForm> {
       },
       child: const Text('Create timetable'),
     );
+  }
+
+  void showDueDateNotAddedMessage() {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Row(
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(right: 10),
+            child: Icon(
+              Icons.info_rounded,
+              color: Colors.white,
+            ),
+          ),
+          Flexible(
+            child: Text(
+              'If a due date is not chosen, the timetable will be valid for 28 days',
+              overflow: TextOverflow.fade,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Colors.white,
+                  ),
+            ),
+          ),
+        ],
+      ),
+      backgroundColor: Theme.of(context).colorScheme.secondary,
+    ));
   }
 }

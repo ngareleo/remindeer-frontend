@@ -23,14 +23,12 @@ class DashboardGroupItem extends StatelessWidget {
                 const Text(
                   'In about ',
                   style: TextStyle(
-                    fontFamily: 'Roboto',
                     fontWeight: FontWeight.normal,
                   ),
                 ),
                 Text(
                   '30 min',
                   style: TextStyle(
-                    fontFamily: 'Roboto',
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.w500,
                   ),

@@ -1,3 +1,5 @@
+// Archived for reference purposes only (DO NOT USE)
+
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
 import 'package:remindeer/src/common/utils/structs/window.dart';
@@ -5,8 +7,7 @@ import 'package:remindeer/src/common/utils/values.dart';
 import 'package:remindeer/src/models/resource.dart';
 
 class Event extends Resource {
-  static const _name = "event";
-  static const _displayName = "Event";
+  static const _name = "Event";
 
   final String? venue;
   final String label;
@@ -25,8 +26,8 @@ class Event extends Resource {
       this.repeatTo,
       this.eventDate,
       this.repeat,
-      required DateTime created,
-      required DateTime lastModified})
+      DateTime? created,
+      DateTime? lastModified})
       : super(uid: uid, created: created, lastModified: lastModified);
 
   dynamic toJson() {
@@ -51,8 +52,8 @@ class Event extends Resource {
 
   @override
   ResourceCard toResourceItem(BuildContext context) {
-    final timeBtwn = lastModified.difference(DateTime.now());
+    final timeBtwn = lastModified?.difference(DateTime.now());
     return ResourceCard(
-        label: label, tag: _displayName, lastModified: timeBtwn.toString());
+        label: label, tag: _name, lastModified: timeBtwn.toString());
   }
 }

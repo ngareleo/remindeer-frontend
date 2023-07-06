@@ -3,8 +3,7 @@ import 'package:remindeer/src/common/components/cards/resource_card.dart';
 import 'package:remindeer/src/models/resource.dart';
 
 class Unit extends Resource {
-  static const _name = "unit";
-  static const _displayName = "Unit";
+  static const _name = "Unit";
 
   final String name;
   final String unitCode;
@@ -59,10 +58,10 @@ class Unit extends Resource {
 
   @override
   Widget toResourceItem(BuildContext context) {
-    final timeBtwn = lastModified.difference(DateTime.now());
+    final timeBtwn = lastModified?.difference(DateTime.now());
     return ResourceCard(
       label: name,
-      tag: _displayName,
+      tag: _name,
       lastModified: timeBtwn.toString(),
       onTap: () {},
     );

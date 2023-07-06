@@ -5,8 +5,7 @@ import 'package:remindeer/src/screens/pages/semester/semester_dashboard.dart';
 import 'resource.dart';
 
 class Semester extends Resource {
-  static const _name = "semester";
-  static const _displayName = "Semester";
+  static const _name = "Semester";
 
   final String name;
   final String? descrption;
@@ -68,7 +67,7 @@ class Semester extends Resource {
     return ResourceCard(
       label: name,
       lastModified: timeBtwn.toString(),
-      tag: _displayName,
+      tag: _name,
       onTap: () {
         Navigator.push(
             context,

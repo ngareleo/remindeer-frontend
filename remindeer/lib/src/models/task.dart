@@ -3,8 +3,7 @@ import 'package:remindeer/src/common/components/cards/resource_card.dart';
 import 'package:remindeer/src/models/resource.dart';
 
 class Task extends Resource {
-  static const _name = "task";
-  static const _displayName = "Task";
+  static const _name = "Task";
 
   final String label;
   final String? venue;
@@ -48,7 +47,7 @@ class Task extends Resource {
     final timeBtwn = lastModified.difference(DateTime.now());
     return ResourceCard(
       label: label,
-      tag: _displayName,
+      tag: _name,
       lastModified: timeBtwn.toString(),
     );
   }

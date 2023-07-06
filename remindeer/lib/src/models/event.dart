@@ -5,8 +5,7 @@ import 'package:remindeer/src/common/utils/values.dart';
 import 'package:remindeer/src/models/resource.dart';
 
 class Event extends Resource {
-  static const _name = "event";
-  static const _displayName = "Event";
+  static const _name = "Event";
 
   final String? venue;
   final String label;
@@ -53,6 +52,6 @@ class Event extends Resource {
   ResourceCard toResourceItem(BuildContext context) {
     final timeBtwn = lastModified.difference(DateTime.now());
     return ResourceCard(
-        label: label, tag: _displayName, lastModified: timeBtwn.toString());
+        label: label, tag: _name, lastModified: timeBtwn.toString());
   }
 }

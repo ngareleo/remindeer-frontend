@@ -16,8 +16,6 @@ class Semester extends Resource {
   String? descrption;
   late DateTime from = DateTime.now();
   late DateTime to;
-
-  @Name("created")
   late DateTime created = DateTime.now();
 
   @Name("last_modified")

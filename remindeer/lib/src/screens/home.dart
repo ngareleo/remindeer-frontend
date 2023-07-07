@@ -32,7 +32,7 @@ class _AppHomePageState extends State<AppHomePage> {
       body: <Widget>[
         const Dashboard(),
         const SearchPage(),
-        const MyLibraryWidget()
+        const MyLibrary()
       ][currentPageIndex],
     );
   }

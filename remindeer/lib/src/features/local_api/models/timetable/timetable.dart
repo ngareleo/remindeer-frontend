@@ -17,8 +17,6 @@ class Timetable extends Resource {
 
   @Name("valid_until")
   late DateTime validUntil;
-
-  @Name("created")
   late DateTime created = DateTime.now();
 
   @Name("last_modified")

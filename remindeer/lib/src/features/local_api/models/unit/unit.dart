@@ -15,11 +15,8 @@ class Unit extends Resource {
 
   @Name("unit_code")
   late String unitCode;
-
   String? description;
   late String lecturer;
-
-  @Name("created")
   late DateTime created = DateTime.now();
 
   @Name("last_modified")

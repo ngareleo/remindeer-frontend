@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:remindeer/src/common/theme/app_theme.dart';
 import 'package:remindeer/src/features/auth/auth.dart';
+import 'package:remindeer/src/features/local_api/models/event/event.dart';
 import 'package:remindeer/src/screens/home.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:remindeer/src/features/local_api/models/event/event.dart';
 import 'package:remindeer/src/features/local_api/models/homework/homework.dart';
 import 'package:remindeer/src/features/local_api/models/lecture/lecture.dart';
 import 'package:remindeer/src/features/local_api/models/semester/semester.dart';
@@ -26,12 +26,12 @@ void main() async {
   final dir = await getApplicationDocumentsDirectory();
   final isar = await Isar.open([
     TaskSchema,
-    EventSchema,
     TimetableSchema,
     SemesterSchema,
     UnitSchema,
     LectureSchema,
-    HomeworkSchema
+    HomeworkSchema,
+    EventSchema
   ], directory: dir.path);
   EventRepository(isar);
   TaskRepository(isar);

@@ -47,9 +47,9 @@ const TaskSchema = CollectionSchema(
       name: r'label',
       type: IsarType.string,
     ),
-    r'lastModified': PropertySchema(
+    r'last_modified': PropertySchema(
       id: 6,
-      name: r'lastModified',
+      name: r'last_modified',
       type: IsarType.dateTime,
     ),
     r'repeat': PropertySchema(
@@ -807,7 +807,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
       DateTime value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'lastModified',
+        property: r'last_modified',
         value: value,
       ));
     });
@@ -820,7 +820,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'lastModified',
+        property: r'last_modified',
         value: value,
       ));
     });
@@ -833,7 +833,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'lastModified',
+        property: r'last_modified',
         value: value,
       ));
     });
@@ -847,7 +847,7 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'lastModified',
+        property: r'last_modified',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1173,13 +1173,13 @@ extension TaskQuerySortBy on QueryBuilder<Task, Task, QSortBy> {
 
   QueryBuilder<Task, Task, QAfterSortBy> sortByLastModified() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lastModified', Sort.asc);
+      return query.addSortBy(r'last_modified', Sort.asc);
     });
   }
 
   QueryBuilder<Task, Task, QAfterSortBy> sortByLastModifiedDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lastModified', Sort.desc);
+      return query.addSortBy(r'last_modified', Sort.desc);
     });
   }
 
@@ -1307,13 +1307,13 @@ extension TaskQuerySortThenBy on QueryBuilder<Task, Task, QSortThenBy> {
 
   QueryBuilder<Task, Task, QAfterSortBy> thenByLastModified() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lastModified', Sort.asc);
+      return query.addSortBy(r'last_modified', Sort.asc);
     });
   }
 
   QueryBuilder<Task, Task, QAfterSortBy> thenByLastModifiedDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lastModified', Sort.desc);
+      return query.addSortBy(r'last_modified', Sort.desc);
     });
   }
 
@@ -1395,7 +1395,7 @@ extension TaskQueryWhereDistinct on QueryBuilder<Task, Task, QDistinct> {
 
   QueryBuilder<Task, Task, QDistinct> distinctByLastModified() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'lastModified');
+      return query.addDistinctBy(r'last_modified');
     });
   }
 
@@ -1464,7 +1464,7 @@ extension TaskQueryProperty on QueryBuilder<Task, Task, QQueryProperty> {
 
   QueryBuilder<Task, DateTime, QQueryOperations> lastModifiedProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'lastModified');
+      return query.addPropertyName(r'last_modified');
     });
   }
 

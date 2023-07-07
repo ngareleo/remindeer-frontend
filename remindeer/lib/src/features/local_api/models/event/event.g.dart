@@ -42,9 +42,9 @@ const EventSchema = CollectionSchema(
       name: r'label',
       type: IsarType.string,
     ),
-    r'lastModified': PropertySchema(
+    r'last_modified': PropertySchema(
       id: 5,
-      name: r'lastModified',
+      name: r'last_modified',
       type: IsarType.dateTime,
     ),
     r'repeat': PropertySchema(
@@ -67,7 +67,7 @@ const EventSchema = CollectionSchema(
       id: 9,
       name: r'window',
       type: IsarType.object,
-      target: r'Window',
+      target: r'EventWindow',
     )
   },
   estimateSize: _eventEstimateSize,
@@ -77,7 +77,7 @@ const EventSchema = CollectionSchema(
   idName: r'id',
   indexes: {},
   links: {},
-  embeddedSchemas: {r'Window': WindowSchema},
+  embeddedSchemas: {r'EventWindow': EventWindowSchema},
   getId: _eventGetId,
   getLinks: _eventGetLinks,
   attach: _eventAttach,
@@ -103,13 +103,9 @@ int _eventEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
-  {
-    final value = object.window;
-    if (value != null) {
-      bytesCount +=
-          3 + WindowSchema.estimateSize(value, allOffsets[Window]!, allOffsets);
-    }
-  }
+  bytesCount += 3 +
+      EventWindowSchema.estimateSize(
+          object.window, allOffsets[EventWindow]!, allOffsets);
   return bytesCount;
 }
 
@@ -128,10 +124,10 @@ void _eventSerialize(
   writer.writeByte(offsets[6], object.repeat.index);
   writer.writeDateTime(offsets[7], object.repeatTo);
   writer.writeString(offsets[8], object.venue);
-  writer.writeObject<Window>(
+  writer.writeObject<EventWindow>(
     offsets[9],
     allOffsets,
-    WindowSchema.serialize,
+    EventWindowSchema.serialize,
     object.window,
   );
 }
@@ -150,11 +146,12 @@ Event _eventDeserialize(
         RepeatFrequency.none,
     repeatTo: reader.readDateTimeOrNull(offsets[7]),
     venue: reader.readStringOrNull(offsets[8]),
-    window: reader.readObjectOrNull<Window>(
-      offsets[9],
-      WindowSchema.deserialize,
-      allOffsets,
-    ),
+    window: reader.readObjectOrNull<EventWindow>(
+          offsets[9],
+          EventWindowSchema.deserialize,
+          allOffsets,
+        ) ??
+        EventWindow(),
   );
   object.id = id;
   return object;
@@ -187,11 +184,12 @@ P _eventDeserializeProp<P>(
     case 8:
       return (reader.readStringOrNull(offset)) as P;
     case 9:
-      return (reader.readObjectOrNull<Window>(
-        offset,
-        WindowSchema.deserialize,
-        allOffsets,
-      )) as P;
+      return (reader.readObjectOrNull<EventWindow>(
+            offset,
+            EventWindowSchema.deserialize,
+            allOffsets,
+          ) ??
+          EventWindow()) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -778,7 +776,7 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
       DateTime value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'lastModified',
+        property: r'last_modified',
         value: value,
       ));
     });
@@ -791,7 +789,7 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'lastModified',
+        property: r'last_modified',
         value: value,
       ));
     });
@@ -804,7 +802,7 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'lastModified',
+        property: r'last_modified',
         value: value,
       ));
     });
@@ -818,7 +816,7 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'lastModified',
+        property: r'last_modified',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1092,27 +1090,11 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
       ));
     });
   }
-
-  QueryBuilder<Event, Event, QAfterFilterCondition> windowIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'window',
-      ));
-    });
-  }
-
-  QueryBuilder<Event, Event, QAfterFilterCondition> windowIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'window',
-      ));
-    });
-  }
 }
 
 extension EventQueryObject on QueryBuilder<Event, Event, QFilterCondition> {
   QueryBuilder<Event, Event, QAfterFilterCondition> window(
-      FilterQuery<Window> q) {
+      FilterQuery<EventWindow> q) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'window');
     });
@@ -1184,13 +1166,13 @@ extension EventQuerySortBy on QueryBuilder<Event, Event, QSortBy> {
 
   QueryBuilder<Event, Event, QAfterSortBy> sortByLastModified() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lastModified', Sort.asc);
+      return query.addSortBy(r'last_modified', Sort.asc);
     });
   }
 
   QueryBuilder<Event, Event, QAfterSortBy> sortByLastModifiedDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lastModified', Sort.desc);
+      return query.addSortBy(r'last_modified', Sort.desc);
     });
   }
 
@@ -1306,13 +1288,13 @@ extension EventQuerySortThenBy on QueryBuilder<Event, Event, QSortThenBy> {
 
   QueryBuilder<Event, Event, QAfterSortBy> thenByLastModified() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lastModified', Sort.asc);
+      return query.addSortBy(r'last_modified', Sort.asc);
     });
   }
 
   QueryBuilder<Event, Event, QAfterSortBy> thenByLastModifiedDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'lastModified', Sort.desc);
+      return query.addSortBy(r'last_modified', Sort.desc);
     });
   }
 
@@ -1388,7 +1370,7 @@ extension EventQueryWhereDistinct on QueryBuilder<Event, Event, QDistinct> {
 
   QueryBuilder<Event, Event, QDistinct> distinctByLastModified() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'lastModified');
+      return query.addDistinctBy(r'last_modified');
     });
   }
 
@@ -1451,7 +1433,7 @@ extension EventQueryProperty on QueryBuilder<Event, Event, QQueryProperty> {
 
   QueryBuilder<Event, DateTime, QQueryOperations> lastModifiedProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'lastModified');
+      return query.addPropertyName(r'last_modified');
     });
   }
 
@@ -1473,7 +1455,7 @@ extension EventQueryProperty on QueryBuilder<Event, Event, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Event, Window?, QQueryOperations> windowProperty() {
+  QueryBuilder<Event, EventWindow, QQueryOperations> windowProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'window');
     });
@@ -1487,9 +1469,9 @@ extension EventQueryProperty on QueryBuilder<Event, Event, QQueryProperty> {
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-const WindowSchema = Schema(
-  name: r'Window',
-  id: 7867258023164432953,
+const EventWindowSchema = Schema(
+  name: r'EventWindow',
+  id: 3784424850019363100,
   properties: {
     r'from': PropertySchema(
       id: 0,
@@ -1507,14 +1489,14 @@ const WindowSchema = Schema(
       type: IsarType.long,
     )
   },
-  estimateSize: _windowEstimateSize,
-  serialize: _windowSerialize,
-  deserialize: _windowDeserialize,
-  deserializeProp: _windowDeserializeProp,
+  estimateSize: _eventWindowEstimateSize,
+  serialize: _eventWindowSerialize,
+  deserialize: _eventWindowDeserialize,
+  deserializeProp: _eventWindowDeserializeProp,
 );
 
-int _windowEstimateSize(
-  Window object,
+int _eventWindowEstimateSize(
+  EventWindow object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -1522,8 +1504,8 @@ int _windowEstimateSize(
   return bytesCount;
 }
 
-void _windowSerialize(
-  Window object,
+void _eventWindowSerialize(
+  EventWindow object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
@@ -1533,13 +1515,13 @@ void _windowSerialize(
   writer.writeLong(offsets[2], object.to);
 }
 
-Window _windowDeserialize(
+EventWindow _eventWindowDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = Window(
+  final object = EventWindow(
     from: reader.readLongOrNull(offsets[0]),
     isAllDay: reader.readBoolOrNull(offsets[1]),
     to: reader.readLongOrNull(offsets[2]),
@@ -1547,7 +1529,7 @@ Window _windowDeserialize(
   return object;
 }
 
-P _windowDeserializeProp<P>(
+P _eventWindowDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -1565,8 +1547,9 @@ P _windowDeserializeProp<P>(
   }
 }
 
-extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
-  QueryBuilder<Window, Window, QAfterFilterCondition> fromIsNull() {
+extension EventWindowQueryFilter
+    on QueryBuilder<EventWindow, EventWindow, QFilterCondition> {
+  QueryBuilder<EventWindow, EventWindow, QAfterFilterCondition> fromIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'from',
@@ -1574,7 +1557,8 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> fromIsNotNull() {
+  QueryBuilder<EventWindow, EventWindow, QAfterFilterCondition>
+      fromIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'from',
@@ -1582,7 +1566,8 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> fromEqualTo(int? value) {
+  QueryBuilder<EventWindow, EventWindow, QAfterFilterCondition> fromEqualTo(
+      int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'from',
@@ -1591,7 +1576,7 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> fromGreaterThan(
+  QueryBuilder<EventWindow, EventWindow, QAfterFilterCondition> fromGreaterThan(
     int? value, {
     bool include = false,
   }) {
@@ -1604,7 +1589,7 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> fromLessThan(
+  QueryBuilder<EventWindow, EventWindow, QAfterFilterCondition> fromLessThan(
     int? value, {
     bool include = false,
   }) {
@@ -1617,7 +1602,7 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> fromBetween(
+  QueryBuilder<EventWindow, EventWindow, QAfterFilterCondition> fromBetween(
     int? lower,
     int? upper, {
     bool includeLower = true,
@@ -1634,7 +1619,8 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> isAllDayIsNull() {
+  QueryBuilder<EventWindow, EventWindow, QAfterFilterCondition>
+      isAllDayIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'isAllDay',
@@ -1642,7 +1628,8 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> isAllDayIsNotNull() {
+  QueryBuilder<EventWindow, EventWindow, QAfterFilterCondition>
+      isAllDayIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'isAllDay',
@@ -1650,7 +1637,7 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> isAllDayEqualTo(
+  QueryBuilder<EventWindow, EventWindow, QAfterFilterCondition> isAllDayEqualTo(
       bool? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -1660,7 +1647,7 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> toIsNull() {
+  QueryBuilder<EventWindow, EventWindow, QAfterFilterCondition> toIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'to',
@@ -1668,7 +1655,7 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> toIsNotNull() {
+  QueryBuilder<EventWindow, EventWindow, QAfterFilterCondition> toIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'to',
@@ -1676,7 +1663,8 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> toEqualTo(int? value) {
+  QueryBuilder<EventWindow, EventWindow, QAfterFilterCondition> toEqualTo(
+      int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'to',
@@ -1685,7 +1673,7 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> toGreaterThan(
+  QueryBuilder<EventWindow, EventWindow, QAfterFilterCondition> toGreaterThan(
     int? value, {
     bool include = false,
   }) {
@@ -1698,7 +1686,7 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> toLessThan(
+  QueryBuilder<EventWindow, EventWindow, QAfterFilterCondition> toLessThan(
     int? value, {
     bool include = false,
   }) {
@@ -1711,7 +1699,7 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> toBetween(
+  QueryBuilder<EventWindow, EventWindow, QAfterFilterCondition> toBetween(
     int? lower,
     int? upper, {
     bool includeLower = true,
@@ -1729,4 +1717,5 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
   }
 }
 
-extension WindowQueryObject on QueryBuilder<Window, Window, QFilterCondition> {}
+extension EventWindowQueryObject
+    on QueryBuilder<EventWindow, EventWindow, QFilterCondition> {}

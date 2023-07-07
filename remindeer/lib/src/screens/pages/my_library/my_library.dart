@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:remindeer/src/features/local_api/models/resource.dart';
+import 'package:remindeer/src/features/local_api/repository/event_repository.dart';
 import 'package:remindeer/src/features/local_api/repository/homework_repository.dart';
 import 'package:remindeer/src/features/local_api/repository/lecture_repository.dart';
 import 'package:remindeer/src/features/local_api/repository/semester_repository.dart';
 import 'package:remindeer/src/features/local_api/repository/task_repository.dart';
 import 'package:remindeer/src/features/local_api/repository/timetable_repository.dart';
 import 'package:remindeer/src/features/local_api/repository/unit_repository.dart';
-import 'package:remindeer/src/models/resource.dart';
 import 'components/my_library_filter_panel.dart';
 
-class MyLibraryWidget extends StatefulWidget {
-  const MyLibraryWidget({Key? key}) : super(key: key);
+class MyLibrary extends StatefulWidget {
+  const MyLibrary({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _MyLibraryWidgetState();
+  State<StatefulWidget> createState() => _MyLibraryState();
 }
 
-class _MyLibraryWidgetState extends State<MyLibraryWidget> {
+class _MyLibraryState extends State<MyLibrary> {
   final unitsApi = UnitRepository.instance();
   final semestersApi = SemesterRepository.instance();
   final timetablesApi = TimetableRepository.instance();
   final tasksApi = TaskRepository.instance();
   final lecturesAPI = LectureRepository.instance();
   final homeworkApi = HomeworkRepository.instance();
+  final eventsApi = EventRepository.instance();
+  final taskApi = TaskRepository.instance();
 
   final activeFilters = ContentFilters.values.toSet();
   final resources = <Resource>[];
@@ -45,15 +48,18 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
     final timetables = await timetablesApi.getAllTimetables();
     final lectures = await lecturesAPI.getAllLectures();
     final homework = await homeworkApi.getAllHomework();
+    final tasks = await taskApi.getAllTasks();
+    final events = await eventsApi.getAllEvents();
 
-    setState(() {
-      resources
-        ..addAll(semesters as Iterable<Resource>)
-        ..addAll(timetables as Iterable<Resource>)
-        ..addAll(units as Iterable<Resource>)
-        ..addAll(lectures as Iterable<Resource>)
-        ..addAll(homework as Iterable<Resource>);
-    });
+    setState(() => resources
+      ..clear()
+      ..addAll(semesters)
+      ..addAll(timetables)
+      ..addAll(units)
+      ..addAll(lectures)
+      ..addAll(homework)
+      ..addAll(tasks)
+      ..addAll(events));
   }
 
   Future<void> _filterResources() async {
@@ -67,25 +73,25 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
     for (final filter in activeFilters) {
       switch (filter) {
         case ContentFilters.units:
-          // filteredResources.addAll(await unitsApi.getAllUnits());
+          filteredResources.addAll(await unitsApi.getAllUnits());
           break;
         case ContentFilters.semesters:
-          filteredResources.addAll(
-              (await semestersApi.getAllSemesters()) as Iterable<Resource>);
+          filteredResources.addAll((await semestersApi.getAllSemesters()));
           break;
         case ContentFilters.timetables:
-          filteredResources.addAll(
-              (await timetablesApi.getAllTimetables()) as Iterable<Resource>);
+          filteredResources.addAll((await timetablesApi.getAllTimetables()));
           break;
         case ContentFilters.lectures:
-          filteredResources
-              .addAll(await lecturesAPI.getAllLectures() as Iterable<Resource>);
+          filteredResources.addAll(await lecturesAPI.getAllLectures());
           break;
         case ContentFilters.events:
-          // filteredResources.addAll(await e);
+          filteredResources.addAll(await eventsApi.getAllEvents());
           break;
         case ContentFilters.tasks:
-          // filteredResources.addAll(await ());
+          filteredResources.addAll(await taskApi.getAllTasks());
+          break;
+        case ContentFilters.homework:
+          filteredResources.addAll(await homeworkApi.getAllHomework());
           break;
       }
     }

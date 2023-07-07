@@ -34,7 +34,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
   Unit? _unit;
   Semester? _semester;
   Timetable? _timetable;
-  Window? _window;
+  EventWindow? _window;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
                     final event = Event(
                       label: _labelController.text,
                       description: _descriptionController.text,
-                      window: _window,
+                      window: _window!,
                     );
                     _eventRepository.addEvent(event);
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -89,10 +89,10 @@ class _CreateEventFormState extends State<CreateEventForm> {
                     onWindowChanged:
                         (bool allDay, TimeOfDay? from, TimeOfDay? to) {
                       if (allDay) {
-                        _window = Window(isAllDay: true);
+                        _window = EventWindow(isAllDay: true);
                       } else {
                         if (from != null && to != null) {
-                          _window = Window(
+                          _window = EventWindow(
                               isAllDay: false,
                               from: from.hour * 100 + from.minute,
                               to: to.hour * 100 + to.minute);

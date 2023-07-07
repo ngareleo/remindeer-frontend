@@ -15,13 +15,9 @@ class Homework extends Resource {
   Id? id;
   late String label;
   String? description;
-
   DateTime due;
   final unit = IsarLink<Unit>();
-
-  @Name("created")
   late DateTime created = DateTime.now();
-
   @Name("last_modified")
   late DateTime lastModified = DateTime.now();
 
@@ -31,16 +27,12 @@ class Homework extends Resource {
     required this.due,
   });
 
-  factory Homework.fromJson() {
-    return Homework(label: '', due: DateTime.now());
-  }
+  factory Homework.fromJson() => Homework(label: '', due: DateTime.now());
 
-  factory Homework.fromForm() {
-    return Homework(
-      label: '',
-      due: DateTime.now(),
-    );
-  }
+  factory Homework.fromForm() => Homework(
+        label: '',
+        due: DateTime.now(),
+      );
 
   @override
   Widget toResourceItem(BuildContext context) {

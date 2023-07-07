@@ -22,9 +22,9 @@ const LectureSchema = CollectionSchema(
       name: r'created',
       type: IsarType.dateTime,
     ),
-    r'date_of_week': PropertySchema(
+    r'dayOfWeek': PropertySchema(
       id: 1,
-      name: r'date_of_week',
+      name: r'dayOfWeek',
       type: IsarType.byte,
       enumMap: _LecturedayOfWeekEnumValueMap,
     ),
@@ -62,7 +62,7 @@ const LectureSchema = CollectionSchema(
       id: 8,
       name: r'window',
       type: IsarType.object,
-      target: r'Window',
+      target: r'LectureWindow',
     )
   },
   estimateSize: _lectureEstimateSize,
@@ -85,7 +85,7 @@ const LectureSchema = CollectionSchema(
       single: true,
     )
   },
-  embeddedSchemas: {r'Window': WindowSchema},
+  embeddedSchemas: {r'LectureWindow': LectureWindowSchema},
   getId: _lectureGetId,
   getLinks: _lectureGetLinks,
   attach: _lectureAttach,
@@ -107,7 +107,8 @@ int _lectureEstimateSize(
   bytesCount += 3 + object.label.length * 3;
   bytesCount += 3 + object.venue.length * 3;
   bytesCount += 3 +
-      WindowSchema.estimateSize(object.window, allOffsets[Window]!, allOffsets);
+      LectureWindowSchema.estimateSize(
+          object.window, allOffsets[LectureWindow]!, allOffsets);
   return bytesCount;
 }
 
@@ -125,10 +126,10 @@ void _lectureSerialize(
   writer.writeDateTime(offsets[5], object.lastModified);
   writer.writeDateTime(offsets[6], object.repeatTo);
   writer.writeString(offsets[7], object.venue);
-  writer.writeObject<Window>(
+  writer.writeObject<LectureWindow>(
     offsets[8],
     allOffsets,
-    WindowSchema.serialize,
+    LectureWindowSchema.serialize,
     object.window,
   );
 }
@@ -147,12 +148,12 @@ Lecture _lectureDeserialize(
     label: reader.readString(offsets[4]),
     repeatTo: reader.readDateTime(offsets[6]),
     venue: reader.readString(offsets[7]),
-    window: reader.readObjectOrNull<Window>(
+    window: reader.readObjectOrNull<LectureWindow>(
           offsets[8],
-          WindowSchema.deserialize,
+          LectureWindowSchema.deserialize,
           allOffsets,
         ) ??
-        Window(),
+        LectureWindow(),
   );
   object.created = reader.readDateTime(offsets[0]);
   object.id = id;
@@ -185,12 +186,12 @@ P _lectureDeserializeProp<P>(
     case 7:
       return (reader.readString(offset)) as P;
     case 8:
-      return (reader.readObjectOrNull<Window>(
+      return (reader.readObjectOrNull<LectureWindow>(
             offset,
-            WindowSchema.deserialize,
+            LectureWindowSchema.deserialize,
             allOffsets,
           ) ??
-          Window()) as P;
+          LectureWindow()) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -364,7 +365,7 @@ extension LectureQueryFilter
       DaysOfWeek value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'date_of_week',
+        property: r'dayOfWeek',
         value: value,
       ));
     });
@@ -377,7 +378,7 @@ extension LectureQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'date_of_week',
+        property: r'dayOfWeek',
         value: value,
       ));
     });
@@ -390,7 +391,7 @@ extension LectureQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'date_of_week',
+        property: r'dayOfWeek',
         value: value,
       ));
     });
@@ -404,7 +405,7 @@ extension LectureQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'date_of_week',
+        property: r'dayOfWeek',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1008,7 +1009,7 @@ extension LectureQueryFilter
 extension LectureQueryObject
     on QueryBuilder<Lecture, Lecture, QFilterCondition> {
   QueryBuilder<Lecture, Lecture, QAfterFilterCondition> window(
-      FilterQuery<Window> q) {
+      FilterQuery<LectureWindow> q) {
     return QueryBuilder.apply(this, (query) {
       return query.object(q, r'window');
     });
@@ -1059,13 +1060,13 @@ extension LectureQuerySortBy on QueryBuilder<Lecture, Lecture, QSortBy> {
 
   QueryBuilder<Lecture, Lecture, QAfterSortBy> sortByDayOfWeek() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'date_of_week', Sort.asc);
+      return query.addSortBy(r'dayOfWeek', Sort.asc);
     });
   }
 
   QueryBuilder<Lecture, Lecture, QAfterSortBy> sortByDayOfWeekDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'date_of_week', Sort.desc);
+      return query.addSortBy(r'dayOfWeek', Sort.desc);
     });
   }
 
@@ -1158,13 +1159,13 @@ extension LectureQuerySortThenBy
 
   QueryBuilder<Lecture, Lecture, QAfterSortBy> thenByDayOfWeek() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'date_of_week', Sort.asc);
+      return query.addSortBy(r'dayOfWeek', Sort.asc);
     });
   }
 
   QueryBuilder<Lecture, Lecture, QAfterSortBy> thenByDayOfWeekDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'date_of_week', Sort.desc);
+      return query.addSortBy(r'dayOfWeek', Sort.desc);
     });
   }
 
@@ -1263,7 +1264,7 @@ extension LectureQueryWhereDistinct
 
   QueryBuilder<Lecture, Lecture, QDistinct> distinctByDayOfWeek() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'date_of_week');
+      return query.addDistinctBy(r'dayOfWeek');
     });
   }
 
@@ -1323,7 +1324,7 @@ extension LectureQueryProperty
 
   QueryBuilder<Lecture, DaysOfWeek, QQueryOperations> dayOfWeekProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'date_of_week');
+      return query.addPropertyName(r'dayOfWeek');
     });
   }
 
@@ -1363,7 +1364,7 @@ extension LectureQueryProperty
     });
   }
 
-  QueryBuilder<Lecture, Window, QQueryOperations> windowProperty() {
+  QueryBuilder<Lecture, LectureWindow, QQueryOperations> windowProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'window');
     });
@@ -1377,9 +1378,9 @@ extension LectureQueryProperty
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-const WindowSchema = Schema(
-  name: r'Window',
-  id: 7867258023164432953,
+const LectureWindowSchema = Schema(
+  name: r'LectureWindow',
+  id: -6053003462651930175,
   properties: {
     r'from': PropertySchema(
       id: 0,
@@ -1392,14 +1393,14 @@ const WindowSchema = Schema(
       type: IsarType.long,
     )
   },
-  estimateSize: _windowEstimateSize,
-  serialize: _windowSerialize,
-  deserialize: _windowDeserialize,
-  deserializeProp: _windowDeserializeProp,
+  estimateSize: _lectureWindowEstimateSize,
+  serialize: _lectureWindowSerialize,
+  deserialize: _lectureWindowDeserialize,
+  deserializeProp: _lectureWindowDeserializeProp,
 );
 
-int _windowEstimateSize(
-  Window object,
+int _lectureWindowEstimateSize(
+  LectureWindow object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -1407,8 +1408,8 @@ int _windowEstimateSize(
   return bytesCount;
 }
 
-void _windowSerialize(
-  Window object,
+void _lectureWindowSerialize(
+  LectureWindow object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
@@ -1417,20 +1418,20 @@ void _windowSerialize(
   writer.writeLong(offsets[1], object.to);
 }
 
-Window _windowDeserialize(
+LectureWindow _lectureWindowDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = Window(
+  final object = LectureWindow(
     from: reader.readLongOrNull(offsets[0]),
     to: reader.readLongOrNull(offsets[1]),
   );
   return object;
 }
 
-P _windowDeserializeProp<P>(
+P _lectureWindowDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -1446,8 +1447,10 @@ P _windowDeserializeProp<P>(
   }
 }
 
-extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
-  QueryBuilder<Window, Window, QAfterFilterCondition> fromIsNull() {
+extension LectureWindowQueryFilter
+    on QueryBuilder<LectureWindow, LectureWindow, QFilterCondition> {
+  QueryBuilder<LectureWindow, LectureWindow, QAfterFilterCondition>
+      fromIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'from',
@@ -1455,7 +1458,8 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> fromIsNotNull() {
+  QueryBuilder<LectureWindow, LectureWindow, QAfterFilterCondition>
+      fromIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'from',
@@ -1463,7 +1467,8 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> fromEqualTo(int? value) {
+  QueryBuilder<LectureWindow, LectureWindow, QAfterFilterCondition> fromEqualTo(
+      int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'from',
@@ -1472,7 +1477,8 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> fromGreaterThan(
+  QueryBuilder<LectureWindow, LectureWindow, QAfterFilterCondition>
+      fromGreaterThan(
     int? value, {
     bool include = false,
   }) {
@@ -1485,7 +1491,8 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> fromLessThan(
+  QueryBuilder<LectureWindow, LectureWindow, QAfterFilterCondition>
+      fromLessThan(
     int? value, {
     bool include = false,
   }) {
@@ -1498,7 +1505,7 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> fromBetween(
+  QueryBuilder<LectureWindow, LectureWindow, QAfterFilterCondition> fromBetween(
     int? lower,
     int? upper, {
     bool includeLower = true,
@@ -1515,7 +1522,7 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> toIsNull() {
+  QueryBuilder<LectureWindow, LectureWindow, QAfterFilterCondition> toIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'to',
@@ -1523,7 +1530,8 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> toIsNotNull() {
+  QueryBuilder<LectureWindow, LectureWindow, QAfterFilterCondition>
+      toIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'to',
@@ -1531,7 +1539,8 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> toEqualTo(int? value) {
+  QueryBuilder<LectureWindow, LectureWindow, QAfterFilterCondition> toEqualTo(
+      int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'to',
@@ -1540,7 +1549,8 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> toGreaterThan(
+  QueryBuilder<LectureWindow, LectureWindow, QAfterFilterCondition>
+      toGreaterThan(
     int? value, {
     bool include = false,
   }) {
@@ -1553,7 +1563,7 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> toLessThan(
+  QueryBuilder<LectureWindow, LectureWindow, QAfterFilterCondition> toLessThan(
     int? value, {
     bool include = false,
   }) {
@@ -1566,7 +1576,7 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Window, Window, QAfterFilterCondition> toBetween(
+  QueryBuilder<LectureWindow, LectureWindow, QAfterFilterCondition> toBetween(
     int? lower,
     int? upper, {
     bool includeLower = true,
@@ -1584,4 +1594,5 @@ extension WindowQueryFilter on QueryBuilder<Window, Window, QFilterCondition> {
   }
 }
 
-extension WindowQueryObject on QueryBuilder<Window, Window, QFilterCondition> {}
+extension LectureWindowQueryObject
+    on QueryBuilder<LectureWindow, LectureWindow, QFilterCondition> {}

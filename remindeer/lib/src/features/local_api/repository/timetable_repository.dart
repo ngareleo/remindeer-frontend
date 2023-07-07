@@ -1,6 +1,6 @@
 import 'package:isar/isar.dart';
 
-import '../models/timetable.dart';
+import '../models/timetable/timetable.dart';
 
 class TimetableRepository {
   static TimetableRepository? _instance;
@@ -25,5 +25,9 @@ class TimetableRepository {
       return await _isar.timetables.put(timetable);
     });
     return await _isar.timetables.where().sortByLastModifiedDesc().findFirst();
+  }
+
+  Future<List<Timetable>> getAllTimetables() async {
+    return await _isar.timetables.where().sortByLastModifiedDesc().findAll();
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/features/local_api/models/semester.dart';
+import 'package:remindeer/src/features/local_api/models/semester/semester.dart';
 import 'package:remindeer/src/features/local_api/repository/semester_repository.dart';
 import 'package:remindeer/src/screens/pages/semester/semester_dashboard.dart';
 

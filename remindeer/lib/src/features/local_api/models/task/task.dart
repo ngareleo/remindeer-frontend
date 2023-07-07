@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
 
-import 'resource.dart';
+import '../resource.dart';
 part 'task.g.dart';
 
 const _resourceName = "Task";
 
 @Collection()
-@Name("Task")
+@Name(_resourceName)
 class Task extends Resource {
   Id? id;
   String label;

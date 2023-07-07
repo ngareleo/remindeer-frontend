@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/features/auth/auth.dart';
-import 'package:remindeer/src/features/local_api/models/timetable.dart';
+import 'package:remindeer/src/features/local_api/models/timetable/timetable.dart';
 import 'package:remindeer/src/models/event.dart';
 import 'package:remindeer/src/models/user.dart';
 import 'package:remindeer/src/screens/pages/timetable/components/no_events_card.dart';

@@ -3,7 +3,7 @@ import 'package:isar/isar.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
 import 'package:remindeer/src/common/utils/values.dart';
 
-import 'resource.dart';
+import '../resource.dart';
 part 'event.g.dart';
 
 const _resourceName = "Event";

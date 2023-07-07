@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/features/api/lectures_api.dart';
-import 'package:remindeer/src/features/api/semesters_api.dart';
-import 'package:remindeer/src/features/api/task_api.dart';
-import 'package:remindeer/src/features/api/timetables_api.dart';
-import 'package:remindeer/src/features/api/units_api.dart';
+import 'package:remindeer/src/features/local_api/repository/homework_repository.dart';
+import 'package:remindeer/src/features/local_api/repository/lecture_repository.dart';
+import 'package:remindeer/src/features/local_api/repository/semester_repository.dart';
+import 'package:remindeer/src/features/local_api/repository/task_repository.dart';
+import 'package:remindeer/src/features/local_api/repository/timetable_repository.dart';
+import 'package:remindeer/src/features/local_api/repository/unit_repository.dart';
 import 'package:remindeer/src/models/resource.dart';
 import 'components/my_library_filter_panel.dart';
 
@@ -15,14 +16,15 @@ class MyLibraryWidget extends StatefulWidget {
 }
 
 class _MyLibraryWidgetState extends State<MyLibraryWidget> {
-  final unitsApi = UnitsAPI();
-  final semestersApi = SemestersAPI();
-  final timetablesApi = TimetableAPI();
-  final tasksApi = TaskAPI();
-  final lecturesAPI = LecturesAPI();
+  final unitsApi = UnitRepository.instance();
+  final semestersApi = SemesterRepository.instance();
+  final timetablesApi = TimetableRepository.instance();
+  final tasksApi = TaskRepository.instance();
+  final lecturesAPI = LectureRepository.instance();
+  final homeworkApi = HomeworkRepository.instance();
 
   final activeFilters = ContentFilters.values.toSet();
-  final resources = <Resource>{};
+  final resources = <Resource>[];
 
   @override
   void initState() {
@@ -41,12 +43,16 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
     final units = await unitsApi.getAllUnits();
     final semesters = await semestersApi.getAllSemesters();
     final timetables = await timetablesApi.getAllTimetables();
+    final lectures = await lecturesAPI.getAllLectures();
+    final homework = await homeworkApi.getAllHomework();
 
     setState(() {
       resources
-        ..addAll(units)
-        ..addAll(semesters)
-        ..addAll(timetables);
+        ..addAll(semesters as Iterable<Resource>)
+        ..addAll(timetables as Iterable<Resource>)
+        ..addAll(units as Iterable<Resource>)
+        ..addAll(lectures as Iterable<Resource>)
+        ..addAll(homework as Iterable<Resource>);
     });
   }
 
@@ -61,16 +67,19 @@ class _MyLibraryWidgetState extends State<MyLibraryWidget> {
     for (final filter in activeFilters) {
       switch (filter) {
         case ContentFilters.units:
-          filteredResources.addAll(await unitsApi.getAllUnits());
+          // filteredResources.addAll(await unitsApi.getAllUnits());
           break;
         case ContentFilters.semesters:
-          filteredResources.addAll(await semestersApi.getAllSemesters());
+          filteredResources.addAll(
+              (await semestersApi.getAllSemesters()) as Iterable<Resource>);
           break;
         case ContentFilters.timetables:
-          filteredResources.addAll(await timetablesApi.getAllTimetables());
+          filteredResources.addAll(
+              (await timetablesApi.getAllTimetables()) as Iterable<Resource>);
           break;
         case ContentFilters.lectures:
-          filteredResources.addAll(await lecturesAPI.getAllLectures());
+          filteredResources
+              .addAll(await lecturesAPI.getAllLectures() as Iterable<Resource>);
           break;
         case ContentFilters.events:
           // filteredResources.addAll(await e);

@@ -1,5 +1,6 @@
 import 'package:isar/isar.dart';
-import 'package:remindeer/src/features/local_api/models/task.dart';
+
+import '../models/task/task.dart';
 
 class TaskRepository {
   static final TaskRepository _instance = TaskRepository._internal();

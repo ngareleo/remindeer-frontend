@@ -1,6 +1,6 @@
 import 'package:isar/isar.dart';
 
-import '../models/event.dart';
+import '../models/event/event.dart';
 
 class EventRepository {
   static final EventRepository _instance = EventRepository._internal();

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/features/local_api/models/event.dart';
+import 'package:remindeer/src/features/local_api/models/event/event.dart';
 import 'package:remindeer/src/features/local_api/repository/event_repository.dart';
 import 'package:remindeer/src/models/semester.dart';
 import 'package:remindeer/src/models/timetable.dart';

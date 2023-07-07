@@ -5,7 +5,7 @@ import 'package:remindeer/src/common/components/forms/form_widgets/label_form_fi
 import 'package:remindeer/src/common/components/links/link_to_semester.dart';
 import 'package:remindeer/src/common/components/links/link_to_timetable.dart';
 import 'package:remindeer/src/common/components/links/link_to_unit.dart';
-import 'package:remindeer/src/features/local_api/models/task.dart';
+import 'package:remindeer/src/features/local_api/models/task/task.dart';
 import 'package:remindeer/src/features/local_api/repository/task_repository.dart';
 import 'package:remindeer/src/models/semester.dart';
 import 'package:remindeer/src/models/timetable.dart';

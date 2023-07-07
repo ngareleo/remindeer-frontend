@@ -3,7 +3,7 @@ import 'package:isar/isar.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
 import 'package:remindeer/src/screens/pages/semester/semester_dashboard.dart';
 
-import 'resource.dart';
+import '../resource.dart';
 part 'semester.g.dart';
 
 const _resourceName = "Semester";
@@ -16,8 +16,6 @@ class Semester extends Resource {
   String? descrption;
   late DateTime from = DateTime.now();
   late DateTime to;
-
-  @Name("created")
   late DateTime created = DateTime.now();
 
   @Name("last_modified")

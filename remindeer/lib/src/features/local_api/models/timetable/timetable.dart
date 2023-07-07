@@ -3,7 +3,7 @@ import 'package:isar/isar.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
 import 'package:remindeer/src/screens/pages/timetable/timetable_dashboard.dart';
 
-import 'resource.dart';
+import '../resource.dart';
 part 'timetable.g.dart';
 
 const _resourceName = "Timetable";
@@ -17,8 +17,6 @@ class Timetable extends Resource {
 
   @Name("valid_until")
   late DateTime validUntil;
-
-  @Name("created")
   late DateTime created = DateTime.now();
 
   @Name("last_modified")

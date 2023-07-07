@@ -1,6 +1,6 @@
 import 'package:isar/isar.dart';
 
-import '../models/semester.dart';
+import '../models/semester/semester.dart';
 
 class SemesterRepository {
   static SemesterRepository? _instance;
@@ -26,5 +26,9 @@ class SemesterRepository {
     });
 
     return await _isar.semesters.where().sortByCreatedDesc().findFirst();
+  }
+
+  Future<List<Semester>> getAllSemesters() async {
+    return await _isar.semesters.where().sortByCreatedDesc().findAll();
   }
 }

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/models/event.dart';
-import 'package:remindeer/src/models/lecture.dart';
-import 'package:remindeer/src/models/semester.dart';
-import 'package:remindeer/src/models/task.dart';
-import 'package:remindeer/src/models/timetable.dart';
-import 'package:remindeer/src/models/unit.dart';
+import 'package:remindeer/src/features/local_api/models/event/event.dart';
+import 'package:remindeer/src/features/local_api/models/homework/homework.dart';
+import 'package:remindeer/src/features/local_api/models/lecture/lecture.dart';
+import 'package:remindeer/src/features/local_api/models/semester/semester.dart';
+import 'package:remindeer/src/features/local_api/models/task/task.dart';
+import 'package:remindeer/src/features/local_api/models/timetable/timetable.dart';
+import 'package:remindeer/src/features/local_api/models/unit/unit.dart';
 
 enum ContentFilters {
+  homework("Homework", Homework),
   semesters("Semester", Semester),
   timetables("Timetable", Timetable),
   events("Events", Event),

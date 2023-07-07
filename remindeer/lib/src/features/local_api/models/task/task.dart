@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
 
-import 'resource.dart';
+import '../resource.dart';
 part 'task.g.dart';
 
 const _resourceName = "Task";
 
 @Collection()
-@Name("Task")
+@Name(_resourceName)
 class Task extends Resource {
   Id? id;
-  String label;
+  late String label;
   String? venue;
   String? description;
   bool? repeat;
@@ -20,15 +20,10 @@ class Task extends Resource {
   int? repeatTo;
   DateTime? due;
   DateTime? completed;
-
-  @Name("created")
-  final DateTime _created = DateTime.now();
-
+  final DateTime created = DateTime.now();
+  
   @Name("last_modified")
-  final DateTime _lastModified = DateTime.now();
-
-  DateTime get created => _created;
-  DateTime get lastModified => _lastModified;
+  final DateTime lastModified = DateTime.now();
 
   Task({
     required this.label,
@@ -42,7 +37,7 @@ class Task extends Resource {
 
   @override
   Widget toResourceItem(BuildContext context) {
-    final timeBtwn = _lastModified.difference(DateTime.now());
+    final timeBtwn = lastModified.difference(DateTime.now());
     return ResourceCard(
       label: label,
       tag: _resourceName,

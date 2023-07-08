@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+import 'package:remindeer/src/features/local_api/models/event/event.dart';
 
 import '../models/timetable/timetable.dart';
 
@@ -29,5 +30,11 @@ class TimetableRepository {
 
   Future<List<Timetable>> getAllTimetables() async {
     return await _isar.timetables.where().sortByLastModifiedDesc().findAll();
+  }
+
+  Future<void> addEvent(Event event) async {
+    await _isar.writeTxn(() async {
+      return _isar.events.putSync(event);
+    });
   }
 }

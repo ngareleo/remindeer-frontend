@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
+import 'package:remindeer/src/features/local_api/models/event/event.dart';
 import 'package:remindeer/src/screens/pages/timetable/timetable_dashboard.dart';
 
 import '../resource.dart';
@@ -14,6 +15,8 @@ class Timetable extends Resource {
   Id? id;
   late String label;
   String? description;
+
+  final events = IsarLinks<Event>();
 
   @Name("valid_until")
   late DateTime validUntil;

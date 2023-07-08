@@ -23,11 +23,11 @@ class EventLabelField extends StatelessWidget {
             }
             return null;
           },
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
+          decoration: InputDecoration(
+            border: const UnderlineInputBorder(),
             labelText: 'Label',
+            labelStyle: TextStyle(color: Theme.of(context).primaryColor),
             floatingLabelBehavior: FloatingLabelBehavior.always,
-
           ),
           style: Theme.of(context).textTheme.bodyMedium,
           keyboardType: TextInputType.text,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:remindeer/src/common/components/forms/add_to_timetable.dart';
+import 'package:remindeer/src/common/components/forms/create_event_form.dart';
 import 'package:remindeer/src/features/auth/auth.dart';
 import 'package:remindeer/src/features/local_api/models/timetable/timetable.dart';
 import 'package:remindeer/src/models/event.dart';
@@ -38,7 +40,6 @@ class _TimetableHomePageState extends State<TimetableHomePage> {
           _pageTitle,
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        actions: const [],
         elevation: 1,
       ),
       body: SafeArea(
@@ -62,34 +63,8 @@ class _TimetableHomePageState extends State<TimetableHomePage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: _events.isEmpty
-                            ? const Padding(
-                                padding: EdgeInsets.only(bottom: 20),
-                                child: NoEventsCard(),
-                              )
-                            : const Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [],
-                              ),
-                      ),
-                      FilledButton(
-                        onPressed: () {},
-                        child: const Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(right: 5),
-                              child: Icon(
-                                Icons.add,
-                                size: 16,
-                              ),
-                            ),
-                            Text('Add event'),
-                          ],
-                        ),
-                      ),
+                      showEventsEmptyCard(context),
+                      showAddEventButton(),
                     ],
                   ),
                 ),
@@ -97,6 +72,45 @@ class _TimetableHomePageState extends State<TimetableHomePage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  SizedBox showEventsEmptyCard(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: _events.isEmpty
+          ? const Padding(
+              padding: EdgeInsets.only(bottom: 20),
+              child: NoEventsCard(),
+            )
+          : const Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [],
+            ),
+    );
+  }
+
+  FilledButton showAddEventButton() {
+    return FilledButton(
+      onPressed: () => showDialog(
+          context: context,
+          builder: (BuildContext context) => Dialog.fullscreen(
+                child: AddToTimetableForm(
+                    timetable: widget.timetable, onLink: (event) {}),
+              )),
+      child: const Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(right: 5),
+            child: Icon(
+              Icons.add,
+              size: 16,
+            ),
+          ),
+          Text('Add event'),
+        ],
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
+import 'package:remindeer/src/common/utils/values.dart';
 
 import '../resource.dart';
 part 'event.g.dart';
@@ -15,6 +16,9 @@ class Event extends Resource {
   String? venue;
   String? description;
   late EventWindow window;
+
+  @Enumerated(EnumType.name)
+  DaysOfWeek? dayOfWeek;
 
   @enumerated
   RepeatFrequency repeat = RepeatFrequency.none;
@@ -37,19 +41,21 @@ class Event extends Resource {
     required this.window,
     this.repeatTo,
     this.eventDate,
+    this.dayOfWeek,
     this.repeat = RepeatFrequency.none,
   });
 
   dynamic toJson() => {
-        venue: venue,
-        label: label,
-        description: description,
-        window: window.toJson(),
-        repeat: repeat,
-        repeatTo: repeatTo.toString(),
-        eventDate: eventDate.toString(),
-        created: created.toString(),
-        lastModified: lastModified.toString()
+        "venue": venue,
+        "label": label,
+        "description": description,
+        "window": window.toJson(),
+        "repeat": repeat,
+        "repeat_to": repeatTo.toString(),
+        "day_of_week": dayOfWeek,
+        "event_date": eventDate.toString(),
+        "created": created.toString(),
+        "last_modified": lastModified.toString()
       };
 
   @override
@@ -75,12 +81,4 @@ class EventWindow {
         to: to,
         isAllDay: isAllDay,
       };
-}
-
-enum RepeatFrequency {
-  none,
-  daily,
-  weekly,
-  monthly,
-  annually,
 }

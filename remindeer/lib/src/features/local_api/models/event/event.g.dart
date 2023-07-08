@@ -22,49 +22,55 @@ const EventSchema = CollectionSchema(
       name: r'created',
       type: IsarType.dateTime,
     ),
-    r'description': PropertySchema(
+    r'dayOfWeek': PropertySchema(
       id: 1,
+      name: r'dayOfWeek',
+      type: IsarType.string,
+      enumMap: _EventdayOfWeekEnumValueMap,
+    ),
+    r'description': PropertySchema(
+      id: 2,
       name: r'description',
       type: IsarType.string,
     ),
     r'event_date': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'event_date',
       type: IsarType.dateTime,
     ),
     r'hasListeners': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'hasListeners',
       type: IsarType.bool,
     ),
     r'label': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'label',
       type: IsarType.string,
     ),
     r'last_modified': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'last_modified',
       type: IsarType.dateTime,
     ),
     r'repeat': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'repeat',
       type: IsarType.byte,
       enumMap: _EventrepeatEnumValueMap,
     ),
     r'repeat_to': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'repeat_to',
       type: IsarType.dateTime,
     ),
     r'venue': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'venue',
       type: IsarType.string,
     ),
     r'window': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'window',
       type: IsarType.object,
       target: r'EventWindow',
@@ -91,6 +97,12 @@ int _eventEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
+    final value = object.dayOfWeek;
+    if (value != null) {
+      bytesCount += 3 + value.name.length * 3;
+    }
+  }
+  {
     final value = object.description;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -116,16 +128,17 @@ void _eventSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeDateTime(offsets[0], object.created);
-  writer.writeString(offsets[1], object.description);
-  writer.writeDateTime(offsets[2], object.eventDate);
-  writer.writeBool(offsets[3], object.hasListeners);
-  writer.writeString(offsets[4], object.label);
-  writer.writeDateTime(offsets[5], object.lastModified);
-  writer.writeByte(offsets[6], object.repeat.index);
-  writer.writeDateTime(offsets[7], object.repeatTo);
-  writer.writeString(offsets[8], object.venue);
+  writer.writeString(offsets[1], object.dayOfWeek?.name);
+  writer.writeString(offsets[2], object.description);
+  writer.writeDateTime(offsets[3], object.eventDate);
+  writer.writeBool(offsets[4], object.hasListeners);
+  writer.writeString(offsets[5], object.label);
+  writer.writeDateTime(offsets[6], object.lastModified);
+  writer.writeByte(offsets[7], object.repeat.index);
+  writer.writeDateTime(offsets[8], object.repeatTo);
+  writer.writeString(offsets[9], object.venue);
   writer.writeObject<EventWindow>(
-    offsets[9],
+    offsets[10],
     allOffsets,
     EventWindowSchema.serialize,
     object.window,
@@ -139,15 +152,16 @@ Event _eventDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Event(
-    description: reader.readStringOrNull(offsets[1]),
-    eventDate: reader.readDateTimeOrNull(offsets[2]),
-    label: reader.readString(offsets[4]),
-    repeat: _EventrepeatValueEnumMap[reader.readByteOrNull(offsets[6])] ??
+    dayOfWeek: _EventdayOfWeekValueEnumMap[reader.readStringOrNull(offsets[1])],
+    description: reader.readStringOrNull(offsets[2]),
+    eventDate: reader.readDateTimeOrNull(offsets[3]),
+    label: reader.readString(offsets[5]),
+    repeat: _EventrepeatValueEnumMap[reader.readByteOrNull(offsets[7])] ??
         RepeatFrequency.none,
-    repeatTo: reader.readDateTimeOrNull(offsets[7]),
-    venue: reader.readStringOrNull(offsets[8]),
+    repeatTo: reader.readDateTimeOrNull(offsets[8]),
+    venue: reader.readStringOrNull(offsets[9]),
     window: reader.readObjectOrNull<EventWindow>(
-          offsets[9],
+          offsets[10],
           EventWindowSchema.deserialize,
           allOffsets,
         ) ??
@@ -167,23 +181,26 @@ P _eventDeserializeProp<P>(
     case 0:
       return (reader.readDateTime(offset)) as P;
     case 1:
-      return (reader.readStringOrNull(offset)) as P;
+      return (_EventdayOfWeekValueEnumMap[reader.readStringOrNull(offset)])
+          as P;
     case 2:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 3:
-      return (reader.readBool(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 4:
-      return (reader.readString(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 5:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 6:
+      return (reader.readDateTime(offset)) as P;
+    case 7:
       return (_EventrepeatValueEnumMap[reader.readByteOrNull(offset)] ??
           RepeatFrequency.none) as P;
-    case 7:
-      return (reader.readDateTimeOrNull(offset)) as P;
     case 8:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 9:
+      return (reader.readStringOrNull(offset)) as P;
+    case 10:
       return (reader.readObjectOrNull<EventWindow>(
             offset,
             EventWindowSchema.deserialize,
@@ -195,6 +212,24 @@ P _eventDeserializeProp<P>(
   }
 }
 
+const _EventdayOfWeekEnumValueMap = {
+  r'monday': r'monday',
+  r'tuesday': r'tuesday',
+  r'wednesday': r'wednesday',
+  r'thursday': r'thursday',
+  r'friday': r'friday',
+  r'saturday': r'saturday',
+  r'sunday': r'sunday',
+};
+const _EventdayOfWeekValueEnumMap = {
+  r'monday': DaysOfWeek.monday,
+  r'tuesday': DaysOfWeek.tuesday,
+  r'wednesday': DaysOfWeek.wednesday,
+  r'thursday': DaysOfWeek.thursday,
+  r'friday': DaysOfWeek.friday,
+  r'saturday': DaysOfWeek.saturday,
+  r'sunday': DaysOfWeek.sunday,
+};
 const _EventrepeatEnumValueMap = {
   'none': 0,
   'daily': 1,
@@ -347,6 +382,152 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> dayOfWeekIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'dayOfWeek',
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> dayOfWeekIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'dayOfWeek',
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> dayOfWeekEqualTo(
+    DaysOfWeek? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'dayOfWeek',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> dayOfWeekGreaterThan(
+    DaysOfWeek? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'dayOfWeek',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> dayOfWeekLessThan(
+    DaysOfWeek? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'dayOfWeek',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> dayOfWeekBetween(
+    DaysOfWeek? lower,
+    DaysOfWeek? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'dayOfWeek',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> dayOfWeekStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'dayOfWeek',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> dayOfWeekEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'dayOfWeek',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> dayOfWeekContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'dayOfWeek',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> dayOfWeekMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'dayOfWeek',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> dayOfWeekIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'dayOfWeek',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> dayOfWeekIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'dayOfWeek',
+        value: '',
       ));
     });
   }
@@ -1116,6 +1297,18 @@ extension EventQuerySortBy on QueryBuilder<Event, Event, QSortBy> {
     });
   }
 
+  QueryBuilder<Event, Event, QAfterSortBy> sortByDayOfWeek() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dayOfWeek', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByDayOfWeekDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dayOfWeek', Sort.desc);
+    });
+  }
+
   QueryBuilder<Event, Event, QAfterSortBy> sortByDescription() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.asc);
@@ -1223,6 +1416,18 @@ extension EventQuerySortThenBy on QueryBuilder<Event, Event, QSortThenBy> {
   QueryBuilder<Event, Event, QAfterSortBy> thenByCreatedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'created', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByDayOfWeek() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dayOfWeek', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByDayOfWeekDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dayOfWeek', Sort.desc);
     });
   }
 
@@ -1342,6 +1547,13 @@ extension EventQueryWhereDistinct on QueryBuilder<Event, Event, QDistinct> {
     });
   }
 
+  QueryBuilder<Event, Event, QDistinct> distinctByDayOfWeek(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'dayOfWeek', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Event, Event, QDistinct> distinctByDescription(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1404,6 +1616,12 @@ extension EventQueryProperty on QueryBuilder<Event, Event, QQueryProperty> {
   QueryBuilder<Event, DateTime, QQueryOperations> createdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'created');
+    });
+  }
+
+  QueryBuilder<Event, DaysOfWeek?, QQueryOperations> dayOfWeekProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'dayOfWeek');
     });
   }
 

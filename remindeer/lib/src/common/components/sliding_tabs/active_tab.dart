@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 class ActiveTab extends StatelessWidget {
+  final String label;
+  final String? pending;
+
   const ActiveTab({
     Key? key,
     required this.label,
-    required this.pending,
+    this.pending,
   }) : super(key: key);
-  final String label;
-  final String pending;
 
   @override
   Widget build(BuildContext context) {
@@ -35,22 +36,26 @@ class ActiveTab extends StatelessWidget {
                         ),
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE9EDF5),
-                    borderRadius: BorderRadius.circular(13),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(6, 2, 6, 2),
-                    child: Text(
-                      pending,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: Theme.of(context).primaryColor,
+                pending == null
+                    ? Container()
+                    : Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE9EDF5),
+                          borderRadius: BorderRadius.circular(13),
+                        ),
+                        child: Padding(
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(6, 2, 6, 2),
+                          child: Text(
+                            pending!,
+                            style:
+                                Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
                           ),
-                    ),
-                  ),
-                ),
+                        ),
+                      ),
               ],
             ),
             Padding(

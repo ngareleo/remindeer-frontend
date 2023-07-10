@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:remindeer/src/common/components/sliding_tabs/sliding_tabs.dart';
 import 'package:remindeer/src/features/local_api/models/semester/semester.dart';
 import 'package:remindeer/src/features/local_api/repository/semester_repository.dart';
+import 'package:remindeer/src/screens/pages/semester/sections/timetables_page.dart';
 import 'components/semester_page_header.dart';
-import 'sections/all_page.dart';
+import 'sections/overview_page.dart';
 import 'sections/approvals_page.dart';
-import 'sections/assignments_page.dart';
+import 'sections/homework_page.dart';
 import 'sections/units_page.dart';
 
 class SemesterDashboardPage extends StatefulWidget {
@@ -23,7 +24,6 @@ class _SemesterDashboardPageState extends State<SemesterDashboardPage> {
   final _semesterRepository = SemesterRepository.instance();
 
   var current = 0;
-  final pages = [AllPage(), ApprovalPage(), AssignmentsPage(), UnitsPage()];
   Semester? semester;
 
   @override
@@ -40,6 +40,14 @@ class _SemesterDashboardPageState extends State<SemesterDashboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    final pages = [
+      OverviewPage(widget.semesterId),
+      TimetablesPage(widget.semesterId),
+      ApprovalPage(),
+      HomeworkPage(widget.semesterId),
+      UnitsPage(widget.semesterId)
+    ];
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(

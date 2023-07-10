@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 class InactiveTab extends StatelessWidget {
+  final String label;
+  final String? pending;
+
   const InactiveTab({
     Key? key,
     required this.label,
-    required this.pending,
+    this.pending,
   }) : super(key: key);
-  final String label;
-  final String pending;
 
   @override
   Widget build(BuildContext context) {
@@ -32,19 +33,22 @@ class InactiveTab extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE9EDF5),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(6, 2, 6, 2),
-                    child: Text(
-                      pending,
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ),
-                ),
+                pending == null
+                    ? Container()
+                    : Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE9EDF5),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: Padding(
+                          padding:
+                              const EdgeInsetsDirectional.fromSTEB(6, 2, 6, 2),
+                          child: Text(
+                            pending!,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ),
+                      ),
               ],
             ),
             Padding(

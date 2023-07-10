@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:remindeer/src/common/utils/structs/date.dart';
 
 Map<int, String> mapMonthToString() {
@@ -42,4 +44,15 @@ List<Map<int, Date>> fillWeeks({required DateTime seed}) {
     weeks.add(map);
   }
   return weeks;
+}
+
+String convertToReadableTime(int hours, int minutes) {
+  DateTime now = DateTime.now();
+  DateTime time = DateTime(now.year, now.month, now.day, hours, minutes);
+  String formattedTime = DateFormat.jm().format(time);
+  return formattedTime;
+}
+
+TimeOfDay convertFromPersistenceFormat(int n) {
+  return TimeOfDay(hour: (n / 100).floor(), minute: n % 100);
 }

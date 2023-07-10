@@ -18,8 +18,6 @@ class _NewTimetablePageState extends State<NewTimetablePage> {
         automaticallyImplyLeading: true,
         title: Text('New timetable',
             style: Theme.of(context).textTheme.titleMedium),
-        actions: const [],
-        centerTitle: false,
         elevation: 1,
       ),
       body: SafeArea(

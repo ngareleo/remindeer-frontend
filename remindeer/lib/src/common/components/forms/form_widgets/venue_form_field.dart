@@ -1,34 +1,36 @@
 import 'package:flutter/material.dart';
 
-class EventDescriptionField extends StatelessWidget {
-  const EventDescriptionField({
-    super.key,
-    required TextEditingController descriptionController,
-  }) : _descriptionController = descriptionController;
+class EventVenueField extends StatelessWidget {
+  final TextEditingController controller;
 
-  final TextEditingController _descriptionController;
+  const EventVenueField({
+    super.key,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsetsDirectional.only(bottom: 10),
+      padding: const EdgeInsetsDirectional.only(bottom: 10, top: 10),
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: TextFormField(
           autofocus: false,
-          controller: _descriptionController,
+          controller: controller,
           validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Enter the events venue';
+            }
             return null;
           },
           decoration: InputDecoration(
-            labelText: 'Description',
+            border: UnderlineInputBorder(),
+            labelText: 'Venue',
             labelStyle: TextStyle(color: Theme.of(context).primaryColor),
-            border: const UnderlineInputBorder(),
             floatingLabelBehavior: FloatingLabelBehavior.always,
           ),
           style: Theme.of(context).textTheme.bodyMedium,
           keyboardType: TextInputType.text,
-          maxLines: 2,
         ),
       ),
     );

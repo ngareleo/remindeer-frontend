@@ -8,7 +8,8 @@ final appTheme = ThemeData(
         primary: _primaryColor,
         secondary: Color(0xFFDB5A98),
         tertiary: Color(0xFF2F2E41),
-        background: Color(0xFFF0F0F0)),
+        background: Color(0xFFF0F0F0),
+        surface: Color(0xFFEDEDFC)),
     useMaterial3: true,
     navigationBarTheme: NavigationBarThemeData(
       backgroundColor: const Color(0xFFFCFCFC),

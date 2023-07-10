@@ -52,7 +52,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
                       description: _descriptionController.text,
                       window: _window!,
                     );
-                    _eventRepository.addEvent(event);
+                    _eventRepository.createEvent(event);
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('New event added!')),
                     );

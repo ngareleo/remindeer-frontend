@@ -42,7 +42,7 @@ class _CreateTimetableFormState extends State<CreateTimetableForm> {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => TimetableHomePage(
-            timetable: _timetable!,
+            timetableId: _timetable!.id!,
           ),
         ),
       );

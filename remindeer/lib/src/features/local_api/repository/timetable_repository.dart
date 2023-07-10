@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:remindeer/src/features/local_api/models/event/event.dart';
 
@@ -21,20 +22,46 @@ class TimetableRepository {
     return _instance!;
   }
 
-  Future<Timetable?> addTimetable(Timetable timetable) async {
+  Future<Timetable?> getTimetable(int id) async {
+    return await _isar.timetables.get(id);
+  }
+
+  Future<Timetable> addTimetable(Timetable timetable) async {
+    // TODO: add error handling
+    // TODO: In the case an insert fails, the return value is null
+
     await _isar.writeTxn(() async {
       return await _isar.timetables.put(timetable);
     });
-    return await _isar.timetables.where().sortByLastModifiedDesc().findFirst();
+    return (await _isar.timetables
+        .where()
+        .sortByLastModifiedDesc()
+        .findFirst())!;
   }
 
   Future<List<Timetable>> getAllTimetables() async {
     return await _isar.timetables.where().sortByLastModifiedDesc().findAll();
   }
 
-  Future<void> addEvent(Event event) async {
+  Future<void> addEventToTimetable(int timetableId, Event event) async {
+    final timetable = await getTimetable(timetableId);
+    timetable?.events.add(event);
     await _isar.writeTxn(() async {
-      return _isar.events.putSync(event);
+      await timetable?.events.save();
+    });
+  }
+
+  Future<List<Event>> getAllEvents(int id) async {
+    final timetable = await _isar.timetables.get(id);
+    timetable?.events.load();
+    return timetable?.events.toList() ?? [];
+  }
+
+  void watch(Function callback) {
+    final stream = _isar.timetables.watchLazy(fireImmediately: true);
+    stream.listen((event) async {
+      debugPrint("There we go");
+      await callback();
     });
   }
 }

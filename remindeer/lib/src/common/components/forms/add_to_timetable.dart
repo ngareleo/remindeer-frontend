@@ -7,17 +7,17 @@ import 'package:remindeer/src/common/utils/values.dart';
 import 'package:remindeer/src/features/local_api/models/event/event.dart';
 import 'package:remindeer/src/features/local_api/models/timetable/timetable.dart';
 import 'package:remindeer/src/features/local_api/repository/event_repository.dart';
+import 'package:remindeer/src/features/local_api/repository/timetable_repository.dart';
+import 'package:remindeer/src/screens/pages/timetable/timetable_dashboard.dart';
 
 enum EventCreationStatus { notStarted, started, completed }
 
 class AddToTimetableForm extends StatefulWidget {
-  final Timetable timetable;
-  final Function onLink;
-  const AddToTimetableForm({
-    Key? key,
-    required this.timetable,
-    required this.onLink,
-  }) : super(key: key);
+  final int timetableId;
+  final Function() onLink;
+  const AddToTimetableForm(
+      {Key? key, required this.timetableId, required this.onLink})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _AddToTimetableFormState();
@@ -32,7 +32,7 @@ class _AddToTimetableFormState extends State<AddToTimetableForm> {
   final formKey = GlobalKey<FormState>();
   EventWindow? window;
   final _eventRepository = EventRepository.instance();
-  final _timetableRepository = EventRepository.instance();
+  final _timetableRepository = TimetableRepository.instance();
 
   TimeOfDay? from;
   TimeOfDay? to;
@@ -40,7 +40,25 @@ class _AddToTimetableFormState extends State<AddToTimetableForm> {
 
   EventCreationStatus status = EventCreationStatus.notStarted;
 
+  void popContext() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+          content: Text('Sorry something went wrong. Please try again later.')),
+    );
+    Navigator.pop(context);
+  }
+
   void addEvent() async {
+    final timetable =
+        await _timetableRepository.getTimetable(widget.timetableId);
+
+    if (timetable == null) {
+      // ideally impossible
+      // log here
+      debugPrint("Timetable object came back null");
+      popContext();
+    }
+
     final event = Event(
         label: labelController.text,
         description: descriptionController.text,
@@ -50,11 +68,11 @@ class _AddToTimetableFormState extends State<AddToTimetableForm> {
           to: to!.hour * 100 + to!.minute,
         ),
         repeat: RepeatFrequency.weekly,
-        repeatTo: widget.timetable.validUntil,
+        repeatTo: timetable!.validUntil,
         dayOfWeek: dayOfWeek);
 
-    await _eventRepository.addEvent(event);
-    await _timetableRepository.addEvent(event);
+    final result = await _eventRepository.createEvent(event);
+    await _timetableRepository.addEventToTimetable(timetable.id!, result);
     setState(() => status = EventCreationStatus.completed);
   }
 
@@ -62,10 +80,17 @@ class _AddToTimetableFormState extends State<AddToTimetableForm> {
   void setState(VoidCallback fn) {
     super.setState(fn);
     if (status == EventCreationStatus.completed) {
+      widget.onLink();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('New event added!')),
       );
-      Navigator.pop(context);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              TimetableHomePage(timetableId: widget.timetableId),
+        ),
+      );
     }
   }
 
@@ -154,31 +179,6 @@ class _AddToTimetableFormState extends State<AddToTimetableForm> {
           );
   }
 
-  Padding showDialogHeader(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: 50,
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-        ),
-        child: Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Text(
-                'Link to Timetable',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   Padding showTimeRangeChooser(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 10, bottom: 10),
@@ -233,38 +233,6 @@ class _AddToTimetableFormState extends State<AddToTimetableForm> {
                   child: const Text('To'),
                 ),
         ],
-      ),
-    );
-  }
-
-  Container showDialogFooter(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: 50,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background,
-      ),
-      child: Padding(
-        padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 20, 0),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
-              child: TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Cancel'),
-              ),
-            ),
-            FilledButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Link'),
-            ),
-          ],
-        ),
       ),
     );
   }

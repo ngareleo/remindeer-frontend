@@ -22,7 +22,7 @@ class _TimetableEventCardState extends State<TimetableEventCard> {
   Widget build(BuildContext context) {
     final time = "${widget.from.toString()} to ${widget.to.toString()}";
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 10, top: 10),
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Column(
@@ -77,7 +77,6 @@ class _TimetableEventCardState extends State<TimetableEventCard> {
                                 Text(
                                   widget.tag,
                                   style: TextStyle(
-                                    fontFamily: 'Roboto',
                                     color:
                                         Theme.of(context).colorScheme.primary,
                                     fontSize: 12,

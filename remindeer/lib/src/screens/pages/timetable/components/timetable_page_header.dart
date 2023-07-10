@@ -67,14 +67,12 @@ class _TimetablePageHeaderState extends State<TimetablePageHeader> {
                 ],
               ),
               IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const TimetableSettingsPage(),
-                    ),
-                  );
-                },
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const TimetableSettingsPage(),
+                  ),
+                ),
                 icon: const Icon(
                   Icons.edit_rounded,
                   color: Colors.white,

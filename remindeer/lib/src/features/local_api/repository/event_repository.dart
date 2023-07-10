@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 
 import '../models/event/event.dart';
@@ -20,13 +21,18 @@ class EventRepository {
     return _instance!;
   }
 
-  Future<void> addEvent(Event event) async {
+  Future<Event> createEvent(Event event) async {
     await _isar.writeTxn(() async {
       return await _isar.events.put(event);
     });
+    return (await _isar.events.where().sortByLastModifiedDesc().findFirst())!;
   }
 
   Future<List<Event>> getAllEvents() async {
     return await _isar.events.where().findAll();
+  }
+
+  Stream<void> watch() {
+    return _isar.events.watchLazy(fireImmediately: true);
   }
 }

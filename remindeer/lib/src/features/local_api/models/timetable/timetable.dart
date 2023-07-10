@@ -75,7 +75,8 @@ class Timetable extends Resource {
             context,
             MaterialPageRoute(
                 builder: (context) => TimetableHomePage(
-                      timetable: this,
+                      timetableId:
+                          id!, // every resource that calls this function has been fetched from the database, so it has an id
                     )));
       },
     );

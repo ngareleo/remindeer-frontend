@@ -82,7 +82,15 @@ const EventSchema = CollectionSchema(
   deserializeProp: _eventDeserializeProp,
   idName: r'id',
   indexes: {},
-  links: {},
+  links: {
+    r'timetables': LinkSchema(
+      id: 6298001693944084425,
+      name: r'timetables',
+      target: r'Timetable',
+      single: false,
+      linkName: r'events',
+    )
+  },
   embeddedSchemas: {r'EventWindow': EventWindowSchema},
   getId: _eventGetId,
   getLinks: _eventGetLinks,
@@ -250,11 +258,13 @@ Id _eventGetId(Event object) {
 }
 
 List<IsarLinkBase<dynamic>> _eventGetLinks(Event object) {
-  return [];
+  return [object.timetables];
 }
 
 void _eventAttach(IsarCollection<dynamic> col, Id id, Event object) {
   object.id = id;
+  object.timetables
+      .attach(col, col.isar.collection<Timetable>(), r'timetables', id);
 }
 
 extension EventQueryWhereSort on QueryBuilder<Event, Event, QWhere> {
@@ -1282,7 +1292,63 @@ extension EventQueryObject on QueryBuilder<Event, Event, QFilterCondition> {
   }
 }
 
-extension EventQueryLinks on QueryBuilder<Event, Event, QFilterCondition> {}
+extension EventQueryLinks on QueryBuilder<Event, Event, QFilterCondition> {
+  QueryBuilder<Event, Event, QAfterFilterCondition> timetables(
+      FilterQuery<Timetable> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'timetables');
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> timetablesLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'timetables', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> timetablesIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'timetables', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> timetablesIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'timetables', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> timetablesLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'timetables', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> timetablesLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'timetables', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> timetablesLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'timetables', lower, includeLower, upper, includeUpper);
+    });
+  }
+}
 
 extension EventQuerySortBy on QueryBuilder<Event, Event, QSortBy> {
   QueryBuilder<Event, Event, QAfterSortBy> sortByCreated() {

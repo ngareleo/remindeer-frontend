@@ -53,7 +53,7 @@ class _AddToTimetableFormState extends State<AddToTimetableForm> {
         await _timetableRepository.getTimetable(widget.timetableId);
 
     if (timetable == null) {
-      // ideally impossible
+      // ideally impossible but catastrophic
       // log here
       debugPrint("Timetable object came back null");
       popContext();

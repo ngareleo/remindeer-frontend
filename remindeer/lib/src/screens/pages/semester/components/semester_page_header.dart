@@ -73,10 +73,11 @@ class _SemesterPageHeaderState extends State<SemesterPageHeader> {
                     Text(
                       widget.email,
                       style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.normal,
-                        decoration: TextDecoration.underline,
-                      ),
+                          fontSize: 14,
+                          color: Colors.white,
+                          fontWeight: FontWeight.normal,
+                          decoration: TextDecoration.underline,
+                          decorationColor: Colors.white),
                     ),
                   ],
                 ),

@@ -17,7 +17,9 @@ class Lecture extends Resource {
   late String label;
   late String venue;
   String? description;
+
   final unit = IsarLink<Unit>();
+
   final timetable = IsarLink<Timetable>();
 
   @enumerated

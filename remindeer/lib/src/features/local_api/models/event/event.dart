@@ -4,7 +4,10 @@ import 'package:remindeer/src/common/components/cards/resource_card.dart';
 import 'package:remindeer/src/common/utils/values.dart';
 
 import '../resource.dart';
+import '../semester/semester.dart';
+import '../task/task.dart';
 import '../timetable/timetable.dart';
+import '../unit/unit.dart';
 part 'event.g.dart';
 
 const _resourceName = "Event";
@@ -24,8 +27,9 @@ class Event extends Resource {
   @enumerated
   RepeatFrequency repeat = RepeatFrequency.none;
 
-  @Backlink(to: "events")
-  final timetables = IsarLinks<Timetable>();
+  final unit = IsarLink<Unit>();
+  final semester = IsarLink<Semester>();
+  final timetable = IsarLink<Timetable>();
 
   @Name("repeat_to")
   DateTime? repeatTo;

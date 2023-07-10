@@ -25,7 +25,7 @@ class _CreateSemesterFormState extends State<CreateSemesterForm> {
       return;
     }
 
-    final semester = await _semesterRepository.addSemester(
+    final semester = await _semesterRepository.createSemester(
       Semester.fromNewSemesterForm(
         label: _semesterNameController.text,
         to: _semesterEndDate!,
@@ -39,13 +39,13 @@ class _CreateSemesterFormState extends State<CreateSemesterForm> {
   void setState(VoidCallback fn) {
     super.setState(fn);
     if (_semester != null) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => SemesterDashboardPage(
-            semester: _semester!,
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => SemesterDashboardPage(
+              semesterId: _semester!.id!, // what a shame
+            ),
           ),
-        ),
-      );
+          (route) => false);
     }
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:remindeer/src/common/components/cards/resource_card_expanded.dart';
+import 'package:remindeer/src/features/local_api/models/semester/semester.dart';
 
 import '../resource.dart';
 import '../unit/unit.dart';
@@ -16,7 +17,10 @@ class Homework extends Resource {
   late String label;
   String? description;
   DateTime due;
+
   final unit = IsarLink<Unit>();
+  final semester = IsarLink<Semester>();
+
   late DateTime created = DateTime.now();
   @Name("last_modified")
   late DateTime lastModified = DateTime.now();

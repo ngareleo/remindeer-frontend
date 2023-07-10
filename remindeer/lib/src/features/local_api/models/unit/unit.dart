@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
 
+import '../event/event.dart';
+import '../homework/homework.dart';
+import '../lecture/lecture.dart';
 import '../resource.dart';
+import '../semester/semester.dart';
+import '../task/task.dart';
 part 'unit.g.dart';
 
 const _resourceName = "Unit";
@@ -17,6 +22,21 @@ class Unit extends Resource {
   late String unitCode;
   String? description;
   late String lecturer;
+
+  final semester = IsarLink<Semester>();
+
+  @Backlink(to: "unit")
+  final homeworks = IsarLinks<Homework>();
+
+  @Backlink(to: "unit")
+  final lectures = IsarLinks<Lecture>();
+
+  @Backlink(to: "unit")
+  final tasks = IsarLinks<Task>();
+
+  @Backlink(to: "unit")
+  final events = IsarLinks<Event>();
+
   late DateTime created = DateTime.now();
 
   @Name("last_modified")

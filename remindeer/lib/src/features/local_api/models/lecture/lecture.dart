@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
+import 'package:remindeer/src/common/utils/helpers/datetime.dart';
 import 'package:remindeer/src/common/utils/values.dart';
 
 import '../resource.dart';
@@ -77,11 +78,13 @@ class Lecture extends Resource {
   String toString() => "[Lecture] ${toJson()}";
 
   @override
-  Widget toResourceItem(BuildContext context) => ResourceCard(
-        label: label,
-        tag: _resourceName,
-        lastModified: lastModified.toString(),
-      );
+  Widget toResourceItem(BuildContext context) {
+    return ResourceCard(
+      label: label,
+      tag: _resourceName,
+      trailingText: convertToReadableDifference(lastModified),
+    );
+  }
 }
 
 @embedded

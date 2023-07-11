@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/features/api/semesters_api.dart';
 import 'package:remindeer/src/models/semester.dart';
-import 'package:remindeer/src/models/unit.dart';
 
 class LinkToSemesterWidget extends StatefulWidget {
   final Function(Semester? semester) onLink;

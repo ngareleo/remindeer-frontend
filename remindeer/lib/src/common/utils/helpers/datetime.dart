@@ -56,3 +56,21 @@ String convertToReadableTime(int hours, int minutes) {
 TimeOfDay convertFromPersistenceFormat(int n) {
   return TimeOfDay(hour: (n / 100).floor(), minute: n % 100);
 }
+
+String convertToReadableDifference(DateTime lastModified) {
+  final String? time;
+  if (lastModified.difference(DateTime.now()).inMinutes.abs() < 60) {
+    time =
+        "${lastModified.difference(DateTime.now()).inMinutes.abs().toString()}min ago";
+  } else if (lastModified.difference(DateTime.now()).inHours.abs() < 24) {
+    time =
+        "${lastModified.difference(DateTime.now()).inHours.abs().toString()}h ago";
+  } else if (lastModified.difference(DateTime.now()).inDays.abs() < 30) {
+    time = "${lastModified.difference(DateTime.now()).inDays.abs()}d ago";
+  } else if (lastModified.difference(DateTime.now()).inDays.abs() < 365) {
+    time = "${lastModified.difference(DateTime.now()).inDays.abs() / 30}mo ago";
+  } else {
+    time = "${lastModified.difference(DateTime.now()).inDays.abs() / 365}y ago";
+  }
+  return time;
+}

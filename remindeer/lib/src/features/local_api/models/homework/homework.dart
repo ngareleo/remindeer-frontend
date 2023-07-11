@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:remindeer/src/common/components/cards/resource_card_expanded.dart';
+import 'package:remindeer/src/common/utils/helpers/datetime.dart';
 import 'package:remindeer/src/features/local_api/models/semester/semester.dart';
 
 import '../resource.dart';
@@ -43,7 +44,7 @@ class Homework extends Resource {
     return ResourceCardExpanded(
       label: label,
       tag: _resourceName,
-      lastModified: lastModified.toString(),
+      trailingText: convertToReadableDifference(lastModified),
       additionalText: '',
     );
   }

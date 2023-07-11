@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/common/utils/values.dart';
 import 'package:remindeer/src/features/api/timetables_api.dart';
 import 'package:remindeer/src/models/timetable.dart';
 

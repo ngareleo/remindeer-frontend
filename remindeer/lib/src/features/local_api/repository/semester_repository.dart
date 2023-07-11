@@ -80,6 +80,15 @@ class SemesterRepository {
     });
   }
 
+  Future<void> addTimetableToSemester(
+      int semesterId, Timetable timetable) async {
+    final semester = await getSemester(semesterId);
+    semester?.timetables.add(timetable);
+    await _isar.writeTxn(() async {
+      await semester?.timetables.save();
+    });
+  }
+
   Future<List<Resource>> getAllResources(int id) async {
     return [
       ...await getAllEvents(id),

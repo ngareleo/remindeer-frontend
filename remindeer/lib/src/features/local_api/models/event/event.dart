@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:isar/isar.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
+import 'package:remindeer/src/common/utils/helpers/datetime.dart';
 import 'package:remindeer/src/common/utils/values.dart';
 
 import '../resource.dart';
 import '../semester/semester.dart';
-import '../task/task.dart';
 import '../timetable/timetable.dart';
 import '../unit/unit.dart';
 part 'event.g.dart';
@@ -70,10 +70,12 @@ class Event extends Resource {
   String toString() => "[Event] ${toJson()}";
 
   @override
-  ResourceCard toResourceItem(BuildContext context) {
-    final timeBtwn = lastModified.difference(DateTime.now());
+  Widget toResourceItem(BuildContext context) {
     return ResourceCard(
-        label: label, tag: _resourceName, lastModified: timeBtwn.toString());
+      label: label,
+      tag: _resourceName,
+      trailingText: convertToReadableDifference(lastModified),
+    );
   }
 }
 

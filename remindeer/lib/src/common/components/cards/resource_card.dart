@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
 class ResourceCard extends StatefulWidget {
+  final String label;
+  final String? trailingText;
+  final String tag;
+  final Widget? trailing;
+  final Function? onTap;
+
   const ResourceCard(
       {Key? key,
       required this.label,
-      required this.lastModified,
+      this.trailingText,
       required this.tag,
+      this.trailing,
       this.onTap})
       : super(key: key);
-
-  final String label;
-  final String lastModified;
-  final String tag;
-  final Function? onTap;
 
   @override
   State<StatefulWidget> createState() => _ResourceCardState();
@@ -56,46 +58,11 @@ class _ResourceCardState extends State<ResourceCard> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Flexible(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  widget.tag,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(
-                                        color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                ),
-                              ),
-                              Text(
-                                widget.label,
-                                overflow: TextOverflow.fade,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        showTextSection(context),
                         const Spacer(
                           flex: 1,
                         ),
-                        Text(
-                          widget.lastModified,
-                          style: const TextStyle(
-                            fontSize: 12,
-                          ),
-                        ),
+                        widget.trailing ?? showTrailingText(),
                       ],
                     ),
                   ),
@@ -104,6 +71,43 @@ class _ResourceCardState extends State<ResourceCard> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Text showTrailingText() {
+    return Text(
+      widget.trailingText ?? "",
+      style: const TextStyle(
+        fontSize: 12,
+      ),
+    );
+  }
+
+  Flexible showTextSection(BuildContext context) {
+    return Flexible(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Flexible(
+            child: Text(
+              widget.tag,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ),
+          Text(
+            widget.label,
+            overflow: TextOverflow.fade,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontSize: 15,
+                  fontWeight: FontWeight.normal,
+                ),
+          ),
+        ],
       ),
     );
   }

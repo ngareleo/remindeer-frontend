@@ -62,7 +62,7 @@ class Unit extends Resource {
     return ResourceCard(
       label: name,
       tag: _name,
-      lastModified: timeBtwn.toString(),
+      trailingText: timeBtwn.toString(),
       onTap: () {},
     );
   }

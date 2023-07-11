@@ -87,7 +87,7 @@ class Lecture extends Event {
     return ResourceCard(
       label: label,
       tag: _name,
-      lastModified: lastModified.toString(),
+      trailingText: lastModified.toString(),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
+import 'package:remindeer/src/common/utils/helpers/datetime.dart';
 
 import '../event/event.dart';
 import '../homework/homework.dart';
@@ -84,11 +85,10 @@ class Unit extends Resource {
 
   @override
   Widget toResourceItem(BuildContext context) {
-    final timeBtwn = lastModified.difference(DateTime.now());
     return ResourceCard(
       label: name,
       tag: _resourceName,
-      lastModified: timeBtwn.toString(),
+      trailingText: convertToReadableDifference(lastModified),
       onTap: () => {},
     );
   }

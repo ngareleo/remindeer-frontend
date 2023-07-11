@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+import 'package:remindeer/src/features/local_api/models/semester/semester.dart';
 
 import '../models/unit/unit.dart';
 

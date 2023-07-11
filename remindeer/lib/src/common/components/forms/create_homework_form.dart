@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:remindeer/src/common/components/forms/form_widgets/date_pick_section.dart';
 import 'package:remindeer/src/common/components/forms/form_widgets/description_form_field.dart';
 import 'package:remindeer/src/common/components/forms/form_widgets/label_form_field.dart';
-import 'package:remindeer/src/common/components/links/link_to_semester.dart';
-import 'package:remindeer/src/common/components/links/link_to_timetable.dart';
 import 'package:remindeer/src/common/components/links/link_to_unit.dart';
 import 'package:remindeer/src/features/local_api/models/semester/semester.dart';
 import 'package:remindeer/src/features/local_api/models/task/task.dart';
@@ -13,16 +11,16 @@ import 'package:remindeer/src/features/local_api/repository/task_repository.dart
 
 enum TaskType { regular(), homework }
 
-class CreateTaskForm extends StatefulWidget {
-  const CreateTaskForm({
+class CreateHomeworkForm extends StatefulWidget {
+  const CreateHomeworkForm({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _CreateTaskFormState();
+  State<StatefulWidget> createState() => _CreateHomeworkFormState();
 }
 
-class _CreateTaskFormState extends State<CreateTaskForm> {
+class _CreateHomeworkFormState extends State<CreateHomeworkForm> {
   bool eventIsAllDay = false;
   var eventType = TaskType.regular;
 
@@ -46,7 +44,7 @@ class _CreateTaskFormState extends State<CreateTaskForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create new task'),
+        title: const Text('Add homework'),
         actions: [
           Padding(
             padding: const EdgeInsets.all(10),
@@ -58,7 +56,7 @@ class _CreateTaskFormState extends State<CreateTaskForm> {
                       description: _descriptionController.text,
                     ));
                     const SnackBar snackBar =
-                        SnackBar(content: Text('Task created'));
+                        SnackBar(content: Text('Homework added'));
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     Navigator.pop(context);
                   }
@@ -104,14 +102,6 @@ class _CreateTaskFormState extends State<CreateTaskForm> {
               _unit = unit;
             }),
           ),
-          LinkToTimetable(
-            onLink: (Timetable? timetable) => setState(() {
-              _timetable = timetable;
-            }),
-          ),
-          LinkToSemesterWidget(
-              onLink: (Semester? semester) =>
-                  setState(() => _semester = semester)),
         ],
       ),
     );

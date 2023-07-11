@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
 import 'package:remindeer/src/features/local_api/models/timetable/timetable.dart';
 import 'package:remindeer/src/features/local_api/repository/semester_repository.dart';
 import 'package:remindeer/src/features/local_api/repository/timetable_repository.dart';
@@ -82,46 +83,14 @@ class _TimetablesPageBodyState extends State<TimetablesPageBody> {
       height: 100,
       width: MediaQuery.of(context).size.width,
       alignment: AlignmentDirectional.center,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(5),
+        ),
+      ),
       child: FilledButton(
-        onPressed: () => showDialog(
-            context: context,
-            builder: (BuildContext context) => SimpleDialog(
-                  title: const Text('Link timetables'),
-                  children: unlinkedTimatables.isEmpty
-                      ? [
-                          Container(
-                            alignment: AlignmentDirectional.center,
-                            child: Text(
-                              'No timetables to link',
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          )
-                        ]
-                      : List.generate(
-                          unlinkedTimatables.length,
-                          (index) => SimpleDialogOption(
-                              onPressed: () => {
-                                    Navigator.pop(context),
-                                    semesterRepository
-                                        .addTimetableToSemester(
-                                      widget.id,
-                                      allTimetables
-                                          .where((element) =>
-                                              element.id ==
-                                              allTimetables.elementAt(index).id)
-                                          .first,
-                                    )
-                                        .then((value) async {
-                                      await _fetch();
-                                    })
-                                  },
-                              child: Text(allTimetables
-                                  .where((element) =>
-                                      element.id ==
-                                      allTimetables.elementAt(index).id)
-                                  .first
-                                  .label))),
-                )),
+        onPressed: () => showLinkDialog(unlinkedTimatables),
         child: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -137,5 +106,47 @@ class _TimetablesPageBodyState extends State<TimetablesPageBody> {
         ),
       ),
     );
+  }
+
+  Future<dynamic> showLinkDialog(Set<Id?> unlinkedTimatables) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) => SimpleDialog(
+              title: const Text('Link timetables'),
+              children: unlinkedTimatables.isEmpty
+                  ? [
+                      Container(
+                        alignment: AlignmentDirectional.center,
+                        child: Text(
+                          'No timetables to link',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      )
+                    ]
+                  : List.generate(
+                      unlinkedTimatables.length,
+                      (index) => SimpleDialogOption(
+                          onPressed: () => {
+                                Navigator.pop(context),
+                                semesterRepository
+                                    .addTimetableToSemester(
+                                  widget.id,
+                                  allTimetables
+                                      .where((element) =>
+                                          element.id ==
+                                          allTimetables.elementAt(index).id)
+                                      .first,
+                                )
+                                    .then((value) async {
+                                  await _fetch();
+                                })
+                              },
+                          child: Text(allTimetables
+                              .where((element) =>
+                                  element.id ==
+                                  allTimetables.elementAt(index).id)
+                              .first
+                              .label))),
+            ));
   }
 }

@@ -146,9 +146,7 @@ class _TimetableHomePageState extends State<TimetableHomePage> {
           builder: (BuildContext context) => Dialog.fullscreen(
                 child: AddToTimetableForm(
                   timetableId: widget.timetableId,
-                  onLink: () {
-                    _getResources();
-                  },
+                  onLink: () => _getResources(),
                 ),
               )),
       child: const Row(

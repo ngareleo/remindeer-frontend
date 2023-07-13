@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:remindeer/src/common/components/forms/form_widgets/description_form_field.dart';
 import 'package:remindeer/src/common/components/forms/form_widgets/label_form_field.dart';
 import 'package:remindeer/src/common/components/forms/form_widgets/venue_form_field.dart';
+import 'package:remindeer/src/common/components/links/link_to_unit.dart';
 import 'package:remindeer/src/common/utils/helpers/datetime.dart';
 import 'package:remindeer/src/common/utils/values.dart';
 import 'package:remindeer/src/features/local_api/models/event/event.dart';
 import 'package:remindeer/src/features/local_api/models/timetable/timetable.dart';
+import 'package:remindeer/src/features/local_api/models/unit/unit.dart';
 import 'package:remindeer/src/features/local_api/repository/event_repository.dart';
 import 'package:remindeer/src/features/local_api/repository/timetable_repository.dart';
 import 'package:remindeer/src/screens/pages/timetable/timetable_dashboard.dart';
@@ -34,11 +36,31 @@ class _AddToTimetableFormState extends State<AddToTimetableForm> {
   final _eventRepository = EventRepository.instance();
   final _timetableRepository = TimetableRepository.instance();
 
+  Timetable? _timetable;
+
   TimeOfDay? from;
   TimeOfDay? to;
   DaysOfWeek? dayOfWeek;
 
   EventCreationStatus status = EventCreationStatus.notStarted;
+
+  @override
+  void initState() {
+    getSemester();
+    super.initState();
+  }
+
+  void getSemester() async {
+    final result = await _timetableRepository.getTimetable(widget.timetableId);
+    if (result != null) {
+      setState(() => _timetable = result);
+    } else {
+      // ideally impossible but catastrophic
+      // log here
+      debugPrint("Timetable object came back null");
+      popContext();
+    }
+  }
 
   void popContext() {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -49,16 +71,6 @@ class _AddToTimetableFormState extends State<AddToTimetableForm> {
   }
 
   void addEvent() async {
-    final timetable =
-        await _timetableRepository.getTimetable(widget.timetableId);
-
-    if (timetable == null) {
-      // ideally impossible but catastrophic
-      // log here
-      debugPrint("Timetable object came back null");
-      popContext();
-    }
-
     final event = Event(
         label: labelController.text,
         description: descriptionController.text,
@@ -68,11 +80,11 @@ class _AddToTimetableFormState extends State<AddToTimetableForm> {
           to: to!.hour * 100 + to!.minute,
         ),
         repeat: RepeatFrequency.weekly,
-        repeatTo: timetable!.validUntil,
+        repeatTo: _timetable!.validUntil,
         dayOfWeek: dayOfWeek);
 
     final result = await _eventRepository.createEvent(event);
-    await _timetableRepository.addEventToTimetable(timetable.id!, result);
+    await _timetableRepository.addEventToTimetable(_timetable!.id!, result);
     setState(() => status = EventCreationStatus.completed);
   }
 
@@ -138,6 +150,10 @@ class _AddToTimetableFormState extends State<AddToTimetableForm> {
                         showDayofWeekPicker(),
                         EventDescriptionField(
                             descriptionController: descriptionController),
+                        LinkToUnitWidget(
+                          onLink: (Unit? unit) {},
+                          timetableId: _timetable!.id,
+                        ),
                       ],
                     ),
                   ),

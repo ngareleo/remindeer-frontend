@@ -21,7 +21,6 @@ class _TimetableSettingsPageState extends State<TimetableSettingsPage> {
         title: const Text(
           'Timetable settings',
           style: TextStyle(
-            fontFamily: 'Roboto',
             color: Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.w500,

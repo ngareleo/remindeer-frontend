@@ -15,7 +15,8 @@ import 'form_widgets/time_interval_section.dart';
 import 'form_widgets/type_form_field.dart';
 
 class CreateEventForm extends StatefulWidget {
-  const CreateEventForm({Key? key}) : super(key: key);
+  final int? semesterId;
+  const CreateEventForm({Key? key, this.semesterId}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _CreateEventFormState();
@@ -119,6 +120,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
                 color: Colors.black12,
               ),
               LinkToUnitWidget(
+                semesterId: widget.semesterId,
                 onLink: (Unit? unit) => setState(() => _unit = unit),
               ),
               LinkToTimetable(

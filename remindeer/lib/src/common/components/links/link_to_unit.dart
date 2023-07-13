@@ -6,7 +6,9 @@ import 'package:remindeer/src/features/local_api/repository/unit_repository.dart
 class LinkToUnitWidget extends StatefulWidget {
   final void Function(Unit? unit) onLink;
   final int? semesterId;
-  const LinkToUnitWidget({super.key, required this.onLink, this.semesterId});
+  final int? timetableId;
+  const LinkToUnitWidget(
+      {super.key, required this.onLink, this.semesterId, this.timetableId});
 
   @override
   State<StatefulWidget> createState() => _LinkToUnitWidget();
@@ -27,16 +29,24 @@ class _LinkToUnitWidget extends State<LinkToUnitWidget> {
 
   Future<void> _getUnits() async {
     if (widget.semesterId != null) {
-      final results = await semesterRepository.getAllUnits(widget.semesterId!);
+      final results =
+          await unitsRepository.getUnitsLinkedToSemester(widget.semesterId!);
       setState(() => units
         ..clear()
         ..addAll(results));
       return;
+    } else if (widget.timetableId != null) {
+      final results =
+          await unitsRepository.getUnitsLinkedToTimetable(widget.timetableId!);
+      setState(() => units
+        ..clear()
+        ..addAll(results));
+    } else {
+      final results = await unitsRepository.getAllUnits();
+      setState(() => units
+        ..clear()
+        ..addAll(results));
     }
-    final results = await unitsRepository.getAllUnits();
-    setState(() => units
-      ..clear()
-      ..addAll(results));
   }
 
   @override

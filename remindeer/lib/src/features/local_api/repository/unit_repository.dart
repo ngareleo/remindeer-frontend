@@ -31,4 +31,8 @@ class UnitRepository {
     });
     return _isar.units.where().sortByCreatedDesc().findFirst();
   }
+
+  Future<Unit?> getUnit(int id) async {
+    return await _isar.units.get(id);
+  }
 }

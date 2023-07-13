@@ -25,7 +25,7 @@ class EventLabelField extends StatelessWidget {
           },
           decoration: InputDecoration(
             border: const UnderlineInputBorder(),
-            labelText: 'Label',
+            labelText: 'Label*',
             labelStyle: TextStyle(color: Theme.of(context).primaryColor),
             floatingLabelBehavior: FloatingLabelBehavior.always,
           ),

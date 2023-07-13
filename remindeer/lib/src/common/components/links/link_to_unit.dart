@@ -27,16 +27,16 @@ class _LinkToUnitWidget extends State<LinkToUnitWidget> {
 
   Future<void> _getUnits() async {
     if (widget.semesterId != null) {
-      final units = await semesterRepository.getAllUnits(widget.semesterId!);
+      final results = await semesterRepository.getAllUnits(widget.semesterId!);
       setState(() => units
         ..clear()
-        ..addAll(units));
+        ..addAll(results));
       return;
     }
-    final units = await unitsRepository.getAllUnits();
+    final results = await unitsRepository.getAllUnits();
     setState(() => units
       ..clear()
-      ..addAll(units));
+      ..addAll(results));
   }
 
   @override

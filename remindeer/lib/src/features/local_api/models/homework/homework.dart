@@ -45,7 +45,7 @@ class Homework extends Resource {
       label: label,
       tag: _resourceName,
       trailingText: convertToReadableDifference(lastModified),
-      additionalText: '',
+      additionalText: getReadableDuration(due),
     );
   }
 }

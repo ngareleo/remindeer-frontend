@@ -74,3 +74,41 @@ String convertToReadableDifference(DateTime lastModified) {
   }
   return time;
 }
+
+String getReadableDuration(DateTime targetDateTime) {
+  final now = DateTime.now();
+  final duration = targetDateTime.difference(now);
+
+  if (duration.isNegative) {
+    return 'Overdue';
+  } else if (duration.inMinutes < 1) {
+    return 'Due soon';
+  } else if (duration.inMinutes < 60) {
+    return 'Due ${duration.inMinutes} mins';
+  } else if (duration.inHours < 24) {
+    return 'Due ${duration.inHours} hours';
+  } else {
+    final days = duration.inDays;
+    final hours = duration.inHours % 24;
+    final minutes = duration.inMinutes % 60;
+
+    String result = 'Due ';
+    if (days > 0) {
+      result += '$days day${days > 1 ? 's' : ''}';
+      if (hours > 0 || minutes > 0) {
+        result += ' ';
+      }
+    }
+    if (hours > 0) {
+      result += '$hours hour${hours > 1 ? 's' : ''}';
+      if (minutes > 0) {
+        result += ' ';
+      }
+    }
+    if (minutes > 0) {
+      result += '$minutes min${minutes > 1 ? 's' : ''}';
+    }
+
+    return result;
+  }
+}

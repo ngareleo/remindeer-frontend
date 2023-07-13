@@ -97,6 +97,26 @@ class SemesterRepository {
     });
   }
 
+  Future<Semester?> addHomeworkToSemester(
+      int semesterId, int homeworkId) async {
+    final homework = await _isar.homeworks.get(homeworkId);
+
+    if (homework == null) {
+      return null;
+    }
+
+    final semester = await getSemester(semesterId);
+    semester?.homeworks.add(homework);
+    semester?.lastModified = DateTime.now();
+
+    await _isar.writeTxn(() async {
+      await _isar.semesters.put(semester!);
+      await semester.homeworks.save();
+    });
+
+    return semester;
+  }
+
   Future<List<Resource>> getAllResources(int id) async {
     return [
       ...await getAllEvents(id),

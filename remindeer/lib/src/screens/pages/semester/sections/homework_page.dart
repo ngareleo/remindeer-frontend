@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/common/components/forms/create_homework_form.dart';
-import 'package:remindeer/src/common/components/forms/create_task_form.dart';
+import 'package:remindeer/src/screens/pages/semester/components/create_homework_form.dart';
 import 'package:remindeer/src/features/local_api/models/homework/homework.dart';
 import 'package:remindeer/src/features/local_api/repository/semester_repository.dart';
 
@@ -50,9 +49,10 @@ class _HomeworkPageBodyState extends State<HomeworkPageBody> {
       width: MediaQuery.of(context).size.width,
       child: Column(
         children: [
-          const SingleChildScrollView(
+          SingleChildScrollView(
             child: Column(
-              children: [],
+              children: List.generate(homework.length,
+                  (index) => homework[index].toResourceItem(context)),
             ),
           ),
           Container(
@@ -68,7 +68,14 @@ class _HomeworkPageBodyState extends State<HomeworkPageBody> {
             child: FilledButton(
                 onPressed: () => showDialog(
                     context: context,
-                    builder: (context) => const CreateHomeworkForm()),
+                    builder: (context) => CreateHomeworkForm(
+                          semesterId: widget.id,
+                          onStatusChange: (EventCreationStatus status) {
+                            if (status == EventCreationStatus.completed) {
+                              _fetch();
+                            }
+                          },
+                        )),
                 child: const Text('Add some homework')),
           )
         ],

@@ -32,7 +32,7 @@ class _NewSemesterPageState extends State<NewSemesterPage> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsetsDirectional.fromSTEB(2, 0, 0, 0),
+          padding: const EdgeInsets.only(left: 2),
           child: SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 1,

@@ -14,7 +14,7 @@ class SemesterPageHeader extends StatefulWidget {
 
 class _SemesterPageHeaderState extends State<SemesterPageHeader> {
   static const url =
-      "https://yt3.googleusercontent.com/_DiGCcjGwJQAZ3zmlyB8TCYuA8O9tDJ9zGNysq5sR0rxwYb6SP5fW8cb3LbfcRwfui0m27oIhA=s900-c-k-c0x00ffffff-no-rj";
+      "https://images.unsplash.com/photo-1689005046927-0aa9f398247a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80";
 
   @override
   Widget build(BuildContext context) {
@@ -73,10 +73,11 @@ class _SemesterPageHeaderState extends State<SemesterPageHeader> {
                     Text(
                       widget.email,
                       style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.normal,
-                        decoration: TextDecoration.underline,
-                      ),
+                          fontSize: 14,
+                          color: Colors.white,
+                          fontWeight: FontWeight.normal,
+                          decoration: TextDecoration.underline,
+                          decorationColor: Colors.white),
                     ),
                   ],
                 ),

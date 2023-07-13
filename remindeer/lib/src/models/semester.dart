@@ -67,7 +67,7 @@ class Semester extends Resource {
     final timeBtwn = lastModified?.difference(DateTime.now());
     return ResourceCard(
       label: name,
-      lastModified: timeBtwn.toString(),
+      trailingText: timeBtwn.toString(),
       tag: _name,
       onTap: () {},
     );

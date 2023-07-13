@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
 class ResourceCardExpanded extends StatefulWidget {
+  final String label;
+  final String tag;
+  final String? trailingText;
+  final Widget? trailing;
+  final String additionalText;
+
   const ResourceCardExpanded(
       {Key? key,
       required this.label,
       required this.tag,
-      required this.lastModified,
-      required this.additionalText})
+      this.trailingText,
+      required this.additionalText,
+      this.trailing})
       : super(key: key);
-
-  final String label;
-  final String tag;
-  final String lastModified;
-  final String additionalText;
 
   @override
   State<StatefulWidget> createState() => _ResourceCardExpandedState();
@@ -57,47 +59,8 @@ class _ResourceCardExpandedState extends State<ResourceCardExpanded> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.tag,
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: Theme.of(context).primaryColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                        ),
-                        Padding(
-                          padding:
-                              const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
-                          child: Text(
-                            widget.label,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                          ),
-                        ),
-                        Text(
-                          widget.additionalText,
-                          style: const TextStyle(
-                            fontSize: 11,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      widget.lastModified,
-                      style: const TextStyle(
-                        fontSize: 12,
-                      ),
-                    ),
+                    showTextSection(context),
+                    showTrailingSection(),
                   ],
                 ),
               ),
@@ -106,5 +69,48 @@ class _ResourceCardExpandedState extends State<ResourceCardExpanded> {
         ],
       ),
     );
+  }
+
+  Column showTextSection(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          widget.tag,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+        ),
+        Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
+          child: Text(
+            widget.label,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontSize: 18,
+                  fontWeight: FontWeight.normal,
+                ),
+          ),
+        ),
+        Text(
+          widget.additionalText,
+          style: const TextStyle(
+            fontSize: 11,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget showTrailingSection() {
+    return widget.trailing ??
+        Text(
+          widget.trailingText ?? "",
+          style: const TextStyle(
+            fontSize: 12,
+          ),
+        );
   }
 }

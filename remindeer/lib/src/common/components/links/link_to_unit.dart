@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/features/api/units_api.dart';
-import 'package:remindeer/src/models/unit.dart';
+import 'package:remindeer/src/features/local_api/models/unit/unit.dart';
+import 'package:remindeer/src/features/local_api/repository/semester_repository.dart';
+import 'package:remindeer/src/features/local_api/repository/unit_repository.dart';
 
 class LinkToUnitWidget extends StatefulWidget {
-  final Function(Unit? unit) onLink;
-  const LinkToUnitWidget({super.key, required this.onLink});
+  final void Function(Unit? unit) onLink;
+  final int? semesterId;
+  final int? timetableId;
+  const LinkToUnitWidget(
+      {super.key, required this.onLink, this.semesterId, this.timetableId});
 
   @override
   State<StatefulWidget> createState() => _LinkToUnitWidget();
 }
 
 class _LinkToUnitWidget extends State<LinkToUnitWidget> {
-  final api = UnitsAPI();
   final units = <Unit>[];
   String? selectedUnit;
+
+  final unitsRepository = UnitRepository.instance();
+  final semesterRepository = SemesterRepository.instance();
 
   @override
   void initState() {
@@ -22,10 +28,25 @@ class _LinkToUnitWidget extends State<LinkToUnitWidget> {
   }
 
   Future<void> _getUnits() async {
-    final units = await api.getAllUnits();
-    setState(() => units
-      ..clear()
-      ..addAll(units));
+    if (widget.semesterId != null) {
+      final results =
+          await unitsRepository.getUnitsLinkedToSemester(widget.semesterId!);
+      setState(() => units
+        ..clear()
+        ..addAll(results));
+      return;
+    } else if (widget.timetableId != null) {
+      final results =
+          await unitsRepository.getUnitsLinkedToTimetable(widget.timetableId!);
+      setState(() => units
+        ..clear()
+        ..addAll(results));
+    } else {
+      final results = await unitsRepository.getAllUnits();
+      setState(() => units
+        ..clear()
+        ..addAll(results));
+    }
   }
 
   @override
@@ -62,19 +83,26 @@ class _LinkToUnitWidget extends State<LinkToUnitWidget> {
                         )),
               );
             }),
-        child: Row(mainAxisSize: MainAxisSize.min, children: [
-          Icon(
-            Icons.link_rounded,
-            color: Theme.of(context).primaryColor,
-            size: 18,
-          ),
-          Text(
-            'Link to unit',
-            style: TextStyle(
+        child: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.link_rounded,
                 color: Theme.of(context).primaryColor,
-                fontWeight: FontWeight.w500),
-          ),
-        ]),
+                size: 18,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 5),
+                child: Text(
+                  'Link to unit',
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.w500),
+                ),
+              ),
+            ]),
       ),
     );
   }

@@ -54,6 +54,6 @@ class Event extends Resource {
   ResourceCard toResourceItem(BuildContext context) {
     final timeBtwn = lastModified?.difference(DateTime.now());
     return ResourceCard(
-        label: label, tag: _name, lastModified: timeBtwn.toString());
+        label: label, tag: _name, trailingText: timeBtwn.toString());
   }
 }

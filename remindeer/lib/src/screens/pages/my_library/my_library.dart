@@ -31,8 +31,8 @@ class _MyLibraryState extends State<MyLibrary> {
 
   @override
   void initState() {
-    super.initState();
     _filterResources();
+    super.initState();
   }
 
   void _onFilterChange(Set<ContentFilters> filters) {

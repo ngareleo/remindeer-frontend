@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/common/utils/values.dart';
 import 'package:remindeer/src/features/api/timetables_api.dart';
-import 'package:remindeer/src/models/timetable.dart';
+import 'package:remindeer/src/features/local_api/models/timetable/timetable.dart';
 
 class LinkToTimetable extends StatefulWidget {
   final Function(Timetable? timetable) onLink;

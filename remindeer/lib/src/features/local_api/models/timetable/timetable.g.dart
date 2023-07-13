@@ -55,11 +55,32 @@ const TimetableSchema = CollectionSchema(
   idName: r'id',
   indexes: {},
   links: {
+    r'semester': LinkSchema(
+      id: -733322945499868368,
+      name: r'semester',
+      target: r'Semester',
+      single: true,
+    ),
     r'events': LinkSchema(
-      id: 1522304355664472420,
+      id: 5139135354750300712,
       name: r'events',
       target: r'Event',
       single: false,
+      linkName: r'timetable',
+    ),
+    r'lectures': LinkSchema(
+      id: 7174633713539949509,
+      name: r'lectures',
+      target: r'Lecture',
+      single: false,
+      linkName: r'timetable',
+    ),
+    r'tasks': LinkSchema(
+      id: 289581010883785798,
+      name: r'tasks',
+      target: r'Task',
+      single: false,
+      linkName: r'timetable',
     )
   },
   embeddedSchemas: {},
@@ -145,12 +166,15 @@ Id _timetableGetId(Timetable object) {
 }
 
 List<IsarLinkBase<dynamic>> _timetableGetLinks(Timetable object) {
-  return [object.events];
+  return [object.semester, object.events, object.lectures, object.tasks];
 }
 
 void _timetableAttach(IsarCollection<dynamic> col, Id id, Timetable object) {
   object.id = id;
+  object.semester.attach(col, col.isar.collection<Semester>(), r'semester', id);
   object.events.attach(col, col.isar.collection<Event>(), r'events', id);
+  object.lectures.attach(col, col.isar.collection<Lecture>(), r'lectures', id);
+  object.tasks.attach(col, col.isar.collection<Task>(), r'tasks', id);
 }
 
 extension TimetableQueryWhereSort
@@ -761,6 +785,19 @@ extension TimetableQueryObject
 
 extension TimetableQueryLinks
     on QueryBuilder<Timetable, Timetable, QFilterCondition> {
+  QueryBuilder<Timetable, Timetable, QAfterFilterCondition> semester(
+      FilterQuery<Semester> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'semester');
+    });
+  }
+
+  QueryBuilder<Timetable, Timetable, QAfterFilterCondition> semesterIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'semester', 0, true, 0, true);
+    });
+  }
+
   QueryBuilder<Timetable, Timetable, QAfterFilterCondition> events(
       FilterQuery<Event> q) {
     return QueryBuilder.apply(this, (query) {
@@ -816,6 +853,123 @@ extension TimetableQueryLinks
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
           r'events', lower, includeLower, upper, includeUpper);
+    });
+  }
+
+  QueryBuilder<Timetable, Timetable, QAfterFilterCondition> lectures(
+      FilterQuery<Lecture> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'lectures');
+    });
+  }
+
+  QueryBuilder<Timetable, Timetable, QAfterFilterCondition>
+      lecturesLengthEqualTo(int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'lectures', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<Timetable, Timetable, QAfterFilterCondition> lecturesIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'lectures', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Timetable, Timetable, QAfterFilterCondition>
+      lecturesIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'lectures', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Timetable, Timetable, QAfterFilterCondition>
+      lecturesLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'lectures', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Timetable, Timetable, QAfterFilterCondition>
+      lecturesLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'lectures', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<Timetable, Timetable, QAfterFilterCondition>
+      lecturesLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'lectures', lower, includeLower, upper, includeUpper);
+    });
+  }
+
+  QueryBuilder<Timetable, Timetable, QAfterFilterCondition> tasks(
+      FilterQuery<Task> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'tasks');
+    });
+  }
+
+  QueryBuilder<Timetable, Timetable, QAfterFilterCondition> tasksLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tasks', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<Timetable, Timetable, QAfterFilterCondition> tasksIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tasks', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Timetable, Timetable, QAfterFilterCondition> tasksIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tasks', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Timetable, Timetable, QAfterFilterCondition> tasksLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tasks', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Timetable, Timetable, QAfterFilterCondition>
+      tasksLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tasks', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<Timetable, Timetable, QAfterFilterCondition> tasksLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'tasks', lower, includeLower, upper, includeUpper);
     });
   }
 }

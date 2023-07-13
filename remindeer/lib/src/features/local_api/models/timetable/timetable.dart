@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
+import 'package:remindeer/src/common/utils/helpers/datetime.dart';
 import 'package:remindeer/src/features/local_api/models/event/event.dart';
 import 'package:remindeer/src/screens/pages/timetable/timetable_dashboard.dart';
 
+import '../lecture/lecture.dart';
 import '../resource.dart';
+import '../semester/semester.dart';
+import '../task/task.dart';
 part 'timetable.g.dart';
 
 const _resourceName = "Timetable";
@@ -16,7 +20,16 @@ class Timetable extends Resource {
   late String label;
   String? description;
 
+  final semester = IsarLink<Semester>();
+
+  @Backlink(to: "timetable")
   final events = IsarLinks<Event>();
+
+  @Backlink(to: "timetable")
+  final lectures = IsarLinks<Lecture>();
+
+  @Backlink(to: "timetable")
+  final tasks = IsarLinks<Task>();
 
   @Name("valid_until")
   late DateTime validUntil;
@@ -65,11 +78,10 @@ class Timetable extends Resource {
   Widget toResourceItem(
     BuildContext context,
   ) {
-    final timeBtwn = lastModified.difference(DateTime.now());
     return ResourceCard(
       label: label,
       tag: _resourceName,
-      lastModified: timeBtwn.toString(),
+      trailingText: convertToReadableDifference(lastModified),
       onTap: () {
         Navigator.push(
             context,

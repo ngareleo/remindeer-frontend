@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
+import 'package:remindeer/src/common/utils/helpers/datetime.dart';
 import 'package:remindeer/src/screens/pages/semester/semester_dashboard.dart';
 
+import '../event/event.dart';
+import '../homework/homework.dart';
 import '../resource.dart';
+import '../task/task.dart';
+import '../timetable/timetable.dart';
+import '../unit/unit.dart';
 part 'semester.g.dart';
 
 const _resourceName = "Semester";
@@ -17,6 +23,21 @@ class Semester extends Resource {
   late DateTime from = DateTime.now();
   late DateTime to;
   late DateTime created = DateTime.now();
+
+  @Backlink(to: "semester")
+  final timetables = IsarLinks<Timetable>();
+
+  @Backlink(to: "semester")
+  final tasks = IsarLinks<Task>();
+
+  @Backlink(to: "semester")
+  final units = IsarLinks<Unit>();
+
+  @Backlink(to: "semester")
+  final events = IsarLinks<Event>();
+
+  @Backlink(to: "semester")
+  final homeworks = IsarLinks<Homework>();
 
   @Name("last_modified")
   late DateTime lastModified = DateTime.now();
@@ -37,7 +58,7 @@ class Semester extends Resource {
   }
 
   factory Semester.fromJson({
-    required String uid,
+    required String id,
     required Map<String, dynamic> json,
   }) {
     // var created = json["created"].toString();
@@ -73,17 +94,31 @@ class Semester extends Resource {
 
   @override
   Widget toResourceItem(BuildContext context) {
-    final timeBtwn = lastModified.difference(DateTime.now());
     return ResourceCard(
       label: label,
-      lastModified: timeBtwn.toString(),
+      trailingText: convertToReadableDifference(lastModified),
       tag: _resourceName,
       onTap: () {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => SemesterDashboardPage(
-                      semester: this,
+                      semesterId: id!,
+                    )));
+      },
+    );
+  }
+
+  Widget toSemesterPageCardItem(BuildContext context) {
+    return ResourceCard(
+      label: label,
+      tag: _resourceName,
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => SemesterDashboardPage(
+                      semesterId: id!,
                     )));
       },
     );

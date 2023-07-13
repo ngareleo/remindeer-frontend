@@ -1,36 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/common/components/sliding_tabs/sliding_tabs.dart';
+import 'package:remindeer/src/common/components/sliding_tabs/tabs.dart';
 import 'package:remindeer/src/features/local_api/models/semester/semester.dart';
+import 'package:remindeer/src/features/local_api/repository/semester_repository.dart';
+import 'package:remindeer/src/screens/pages/semester/sections/timetables_page.dart';
 import 'components/semester_page_header.dart';
-import 'sections/all_page.dart';
+import 'sections/overview_page.dart';
 import 'sections/approvals_page.dart';
-import 'sections/assignments_page.dart';
+import 'sections/homework_page.dart';
 import 'sections/units_page.dart';
 
 class SemesterDashboardPage extends StatefulWidget {
-  const SemesterDashboardPage({Key? key, required this.semester})
-      : super(key: key);
+  final int semesterId;
 
-  final Semester semester;
+  const SemesterDashboardPage({Key? key, required this.semesterId})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _SemesterDashboardPageState();
 }
 
 class _SemesterDashboardPageState extends State<SemesterDashboardPage> {
-  static const _headerTitle = "Semester";
+  final _headerTitle = "Semester";
+  final _semesterRepository = SemesterRepository.instance();
 
   var current = 0;
-  final pages = [AllPage(), ApprovalPage(), AssignmentsPage(), UnitsPage()];
+  Semester? semester;
 
   @override
   void initState() {
     super.initState();
     current = 0;
+    getSemester();
+  }
+
+  Future<void> getSemester() async {
+    final result = await _semesterRepository.getSemester(widget.semesterId);
+    setState(() => semester = result);
   }
 
   @override
   Widget build(BuildContext context) {
+    final pages = [
+      OverviewPage(widget.semesterId),
+      TimetablesPage(widget.semesterId),
+      ApprovalPage(),
+      HomeworkPage(widget.semesterId),
+      UnitsPage(widget.semesterId)
+    ];
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -53,8 +70,8 @@ class _SemesterDashboardPageState extends State<SemesterDashboardPage> {
             mainAxisSize: MainAxisSize.max,
             children: [
               SemesterPageHeader(
-                email: '',
-                label: widget.semester.label,
+                email: 'janedoe@gmail.com',
+                label: semester?.label ?? '',
               ),
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),
@@ -71,9 +88,7 @@ class _SemesterDashboardPageState extends State<SemesterDashboardPage> {
                   ),
                 ),
               ),
-              SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: pages[current].buildBody(context)),
+              Expanded(child: pages[current].buildBody(context)),
             ],
           ),
         ),

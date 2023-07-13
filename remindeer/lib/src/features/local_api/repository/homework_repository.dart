@@ -1,6 +1,7 @@
 import 'package:isar/isar.dart';
 
 import '../models/homework/homework.dart';
+import '../models/unit/unit.dart';
 
 class HomeworkRepository {
   static HomeworkRepository? _instance;
@@ -22,5 +23,30 @@ class HomeworkRepository {
 
   Future<List<Homework>> getAllHomework() async {
     return await _isar.homeworks.where().sortByCreatedDesc().findAll();
+  }
+
+  Future<Homework?> createHomework(Homework homework, int unitId) async {
+    final unit = await _isar.units.get(unitId);
+
+    if (unit == null) {
+      return null;
+    }
+
+    await _isar.writeTxn(() async {
+      return await _isar.homeworks.put(homework);
+    });
+
+    final result =
+        await _isar.homeworks.where().sortByCreatedDesc().findFirst();
+    result?.unit.value = unit;
+    result?.lastModified = DateTime.now();
+
+    await _isar.writeTxn(() async {
+      await _isar.homeworks.put(result!);
+      await _isar.units.put(unit);
+      await result.unit.save();
+    });
+
+    return await _isar.homeworks.where().sortByLastModifiedDesc().findFirst();
   }
 }

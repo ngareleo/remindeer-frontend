@@ -83,12 +83,23 @@ const EventSchema = CollectionSchema(
   idName: r'id',
   indexes: {},
   links: {
-    r'timetables': LinkSchema(
-      id: 6298001693944084425,
-      name: r'timetables',
+    r'unit': LinkSchema(
+      id: -6425711384105100011,
+      name: r'unit',
+      target: r'Unit',
+      single: true,
+    ),
+    r'semester': LinkSchema(
+      id: 5858876934849113603,
+      name: r'semester',
+      target: r'Semester',
+      single: true,
+    ),
+    r'timetable': LinkSchema(
+      id: 8986610906877385768,
+      name: r'timetable',
       target: r'Timetable',
-      single: false,
-      linkName: r'events',
+      single: true,
     )
   },
   embeddedSchemas: {r'EventWindow': EventWindowSchema},
@@ -258,13 +269,15 @@ Id _eventGetId(Event object) {
 }
 
 List<IsarLinkBase<dynamic>> _eventGetLinks(Event object) {
-  return [object.timetables];
+  return [object.unit, object.semester, object.timetable];
 }
 
 void _eventAttach(IsarCollection<dynamic> col, Id id, Event object) {
   object.id = id;
-  object.timetables
-      .attach(col, col.isar.collection<Timetable>(), r'timetables', id);
+  object.unit.attach(col, col.isar.collection<Unit>(), r'unit', id);
+  object.semester.attach(col, col.isar.collection<Semester>(), r'semester', id);
+  object.timetable
+      .attach(col, col.isar.collection<Timetable>(), r'timetable', id);
 }
 
 extension EventQueryWhereSort on QueryBuilder<Event, Event, QWhere> {
@@ -1293,59 +1306,41 @@ extension EventQueryObject on QueryBuilder<Event, Event, QFilterCondition> {
 }
 
 extension EventQueryLinks on QueryBuilder<Event, Event, QFilterCondition> {
-  QueryBuilder<Event, Event, QAfterFilterCondition> timetables(
+  QueryBuilder<Event, Event, QAfterFilterCondition> unit(FilterQuery<Unit> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'unit');
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> unitIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'unit', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> semester(
+      FilterQuery<Semester> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'semester');
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> semesterIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'semester', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> timetable(
       FilterQuery<Timetable> q) {
     return QueryBuilder.apply(this, (query) {
-      return query.link(q, r'timetables');
+      return query.link(q, r'timetable');
     });
   }
 
-  QueryBuilder<Event, Event, QAfterFilterCondition> timetablesLengthEqualTo(
-      int length) {
+  QueryBuilder<Event, Event, QAfterFilterCondition> timetableIsNull() {
     return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'timetables', length, true, length, true);
-    });
-  }
-
-  QueryBuilder<Event, Event, QAfterFilterCondition> timetablesIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'timetables', 0, true, 0, true);
-    });
-  }
-
-  QueryBuilder<Event, Event, QAfterFilterCondition> timetablesIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'timetables', 0, false, 999999, true);
-    });
-  }
-
-  QueryBuilder<Event, Event, QAfterFilterCondition> timetablesLengthLessThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'timetables', 0, true, length, include);
-    });
-  }
-
-  QueryBuilder<Event, Event, QAfterFilterCondition> timetablesLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'timetables', length, include, 999999, true);
-    });
-  }
-
-  QueryBuilder<Event, Event, QAfterFilterCondition> timetablesLengthBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(
-          r'timetables', lower, includeLower, upper, includeUpper);
+      return query.linkLength(r'timetable', 0, true, 0, true);
     });
   }
 }

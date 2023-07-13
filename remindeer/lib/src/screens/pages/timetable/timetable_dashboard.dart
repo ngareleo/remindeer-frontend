@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
-import 'package:isar/isar.dart';
-import 'package:remindeer/src/common/components/forms/add_to_timetable.dart';
 import 'package:remindeer/src/common/utils/helpers/datetime.dart';
 import 'package:remindeer/src/features/auth/auth.dart';
 import 'package:remindeer/src/features/local_api/models/event/event.dart';
@@ -11,6 +9,7 @@ import 'package:remindeer/src/features/local_api/repository/timetable_repository
 import 'package:remindeer/src/models/user.dart';
 import 'package:remindeer/src/screens/pages/timetable/components/no_events_card.dart';
 
+import 'components/add_to_timetable.dart';
 import 'components/timetable_event_group.dart';
 import 'components/timetable_page_header.dart';
 
@@ -147,9 +146,7 @@ class _TimetableHomePageState extends State<TimetableHomePage> {
           builder: (BuildContext context) => Dialog.fullscreen(
                 child: AddToTimetableForm(
                   timetableId: widget.timetableId,
-                  onLink: () {
-                    _getResources();
-                  },
+                  onLink: () => _getResources(),
                 ),
               )),
       child: const Row(

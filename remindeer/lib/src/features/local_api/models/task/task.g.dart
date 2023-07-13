@@ -74,7 +74,26 @@ const TaskSchema = CollectionSchema(
   deserializeProp: _taskDeserializeProp,
   idName: r'id',
   indexes: {},
-  links: {},
+  links: {
+    r'timetable': LinkSchema(
+      id: 7263165637083004414,
+      name: r'timetable',
+      target: r'Timetable',
+      single: true,
+    ),
+    r'unit': LinkSchema(
+      id: -524571362468523056,
+      name: r'unit',
+      target: r'Unit',
+      single: true,
+    ),
+    r'semester': LinkSchema(
+      id: 3619037712612318376,
+      name: r'semester',
+      target: r'Semester',
+      single: true,
+    )
+  },
   embeddedSchemas: {},
   getId: _taskGetId,
   getLinks: _taskGetLinks,
@@ -178,11 +197,15 @@ Id _taskGetId(Task object) {
 }
 
 List<IsarLinkBase<dynamic>> _taskGetLinks(Task object) {
-  return [];
+  return [object.timetable, object.unit, object.semester];
 }
 
 void _taskAttach(IsarCollection<dynamic> col, Id id, Task object) {
   object.id = id;
+  object.timetable
+      .attach(col, col.isar.collection<Timetable>(), r'timetable', id);
+  object.unit.attach(col, col.isar.collection<Unit>(), r'unit', id);
+  object.semester.attach(col, col.isar.collection<Semester>(), r'semester', id);
 }
 
 extension TaskQueryWhereSort on QueryBuilder<Task, Task, QWhere> {
@@ -1096,7 +1119,45 @@ extension TaskQueryFilter on QueryBuilder<Task, Task, QFilterCondition> {
 
 extension TaskQueryObject on QueryBuilder<Task, Task, QFilterCondition> {}
 
-extension TaskQueryLinks on QueryBuilder<Task, Task, QFilterCondition> {}
+extension TaskQueryLinks on QueryBuilder<Task, Task, QFilterCondition> {
+  QueryBuilder<Task, Task, QAfterFilterCondition> timetable(
+      FilterQuery<Timetable> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'timetable');
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterFilterCondition> timetableIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'timetable', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterFilterCondition> unit(FilterQuery<Unit> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'unit');
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterFilterCondition> unitIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'unit', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterFilterCondition> semester(
+      FilterQuery<Semester> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'semester');
+    });
+  }
+
+  QueryBuilder<Task, Task, QAfterFilterCondition> semesterIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'semester', 0, true, 0, true);
+    });
+  }
+}
 
 extension TaskQuerySortBy on QueryBuilder<Task, Task, QSortBy> {
   QueryBuilder<Task, Task, QAfterSortBy> sortByCompleted() {

@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
+import 'package:remindeer/src/common/utils/helpers/datetime.dart';
 
+import '../event/event.dart';
 import '../resource.dart';
+import '../semester/semester.dart';
+import '../timetable/timetable.dart';
+import '../unit/unit.dart';
 part 'task.g.dart';
 
 const _resourceName = "Task";
@@ -21,7 +26,11 @@ class Task extends Resource {
   DateTime? due;
   DateTime? completed;
   final DateTime created = DateTime.now();
-  
+
+  final timetable = IsarLink<Timetable>();
+  final unit = IsarLink<Unit>();
+  final semester = IsarLink<Semester>();
+
   @Name("last_modified")
   final DateTime lastModified = DateTime.now();
 
@@ -37,11 +46,10 @@ class Task extends Resource {
 
   @override
   Widget toResourceItem(BuildContext context) {
-    final timeBtwn = lastModified.difference(DateTime.now());
     return ResourceCard(
       label: label,
       tag: _resourceName,
-      lastModified: timeBtwn.toString(),
+      trailingText: convertToReadableDifference(lastModified),
     );
   }
 }

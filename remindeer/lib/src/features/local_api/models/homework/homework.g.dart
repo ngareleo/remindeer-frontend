@@ -60,6 +60,12 @@ const HomeworkSchema = CollectionSchema(
       name: r'unit',
       target: r'Unit',
       single: true,
+    ),
+    r'semester': LinkSchema(
+      id: -3846072160562024765,
+      name: r'semester',
+      target: r'Semester',
+      single: true,
     )
   },
   embeddedSchemas: {},
@@ -145,12 +151,13 @@ Id _homeworkGetId(Homework object) {
 }
 
 List<IsarLinkBase<dynamic>> _homeworkGetLinks(Homework object) {
-  return [object.unit];
+  return [object.unit, object.semester];
 }
 
 void _homeworkAttach(IsarCollection<dynamic> col, Id id, Homework object) {
   object.id = id;
   object.unit.attach(col, col.isar.collection<Unit>(), r'unit', id);
+  object.semester.attach(col, col.isar.collection<Semester>(), r'semester', id);
 }
 
 extension HomeworkQueryWhereSort on QueryBuilder<Homework, Homework, QWhere> {
@@ -763,6 +770,19 @@ extension HomeworkQueryLinks
   QueryBuilder<Homework, Homework, QAfterFilterCondition> unitIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'unit', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> semester(
+      FilterQuery<Semester> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'semester');
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> semesterIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'semester', 0, true, 0, true);
     });
   }
 }

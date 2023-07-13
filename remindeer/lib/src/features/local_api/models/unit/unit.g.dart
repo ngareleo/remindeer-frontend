@@ -59,7 +59,42 @@ const UnitSchema = CollectionSchema(
   deserializeProp: _unitDeserializeProp,
   idName: r'id',
   indexes: {},
-  links: {},
+  links: {
+    r'semester': LinkSchema(
+      id: -4583038522236921128,
+      name: r'semester',
+      target: r'Semester',
+      single: true,
+    ),
+    r'homeworks': LinkSchema(
+      id: 2974671064750950926,
+      name: r'homeworks',
+      target: r'Homework',
+      single: false,
+      linkName: r'unit',
+    ),
+    r'lectures': LinkSchema(
+      id: -6728276536492020352,
+      name: r'lectures',
+      target: r'Lecture',
+      single: false,
+      linkName: r'unit',
+    ),
+    r'tasks': LinkSchema(
+      id: -3818543080939394942,
+      name: r'tasks',
+      target: r'Task',
+      single: false,
+      linkName: r'unit',
+    ),
+    r'events': LinkSchema(
+      id: -8378457140929436676,
+      name: r'events',
+      target: r'Event',
+      single: false,
+      linkName: r'unit',
+    )
+  },
   embeddedSchemas: {},
   getId: _unitGetId,
   getLinks: _unitGetLinks,
@@ -149,11 +184,23 @@ Id _unitGetId(Unit object) {
 }
 
 List<IsarLinkBase<dynamic>> _unitGetLinks(Unit object) {
-  return [];
+  return [
+    object.semester,
+    object.homeworks,
+    object.lectures,
+    object.tasks,
+    object.events
+  ];
 }
 
 void _unitAttach(IsarCollection<dynamic> col, Id id, Unit object) {
   object.id = id;
+  object.semester.attach(col, col.isar.collection<Semester>(), r'semester', id);
+  object.homeworks
+      .attach(col, col.isar.collection<Homework>(), r'homeworks', id);
+  object.lectures.attach(col, col.isar.collection<Lecture>(), r'lectures', id);
+  object.tasks.attach(col, col.isar.collection<Task>(), r'tasks', id);
+  object.events.attach(col, col.isar.collection<Event>(), r'events', id);
 }
 
 extension UnitQueryWhereSort on QueryBuilder<Unit, Unit, QWhere> {
@@ -951,7 +998,242 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
 
 extension UnitQueryObject on QueryBuilder<Unit, Unit, QFilterCondition> {}
 
-extension UnitQueryLinks on QueryBuilder<Unit, Unit, QFilterCondition> {}
+extension UnitQueryLinks on QueryBuilder<Unit, Unit, QFilterCondition> {
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> semester(
+      FilterQuery<Semester> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'semester');
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> semesterIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'semester', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> homeworks(
+      FilterQuery<Homework> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'homeworks');
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> homeworksLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'homeworks', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> homeworksIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'homeworks', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> homeworksIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'homeworks', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> homeworksLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'homeworks', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> homeworksLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'homeworks', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> homeworksLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'homeworks', lower, includeLower, upper, includeUpper);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> lectures(
+      FilterQuery<Lecture> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'lectures');
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> lecturesLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'lectures', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> lecturesIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'lectures', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> lecturesIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'lectures', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> lecturesLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'lectures', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> lecturesLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'lectures', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> lecturesLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'lectures', lower, includeLower, upper, includeUpper);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> tasks(FilterQuery<Task> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'tasks');
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> tasksLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tasks', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> tasksIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tasks', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> tasksIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tasks', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> tasksLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tasks', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> tasksLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'tasks', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> tasksLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'tasks', lower, includeLower, upper, includeUpper);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> events(FilterQuery<Event> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'events');
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> eventsLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'events', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> eventsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'events', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> eventsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'events', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> eventsLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'events', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> eventsLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'events', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> eventsLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'events', lower, includeLower, upper, includeUpper);
+    });
+  }
+}
 
 extension UnitQuerySortBy on QueryBuilder<Unit, Unit, QSortBy> {
   QueryBuilder<Unit, Unit, QAfterSortBy> sortByCreated() {

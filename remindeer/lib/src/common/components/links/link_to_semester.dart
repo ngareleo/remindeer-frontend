@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/features/api/semesters_api.dart';
-import 'package:remindeer/src/models/semester.dart';
-import 'package:remindeer/src/models/unit.dart';
+import 'package:remindeer/src/features/local_api/models/semester/semester.dart';
 
 class LinkToSemesterWidget extends StatefulWidget {
   final Function(Semester? semester) onLink;
@@ -42,7 +41,7 @@ class _LinkToSemester extends State<LinkToSemesterWidget> {
               setState(() => selectedSemester = null);
               widget.onLink(null);
             },
-            label: Text((selectedSemester?.name)!),
+            label: Text((selectedSemester?.label)!),
             avatar: const Icon(Icons.close_rounded))
         : Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
@@ -63,7 +62,7 @@ class _LinkToSemester extends State<LinkToSemesterWidget> {
                                     });
                                     Navigator.pop(context);
                                   },
-                                  child: Text(semesters[index].name),
+                                  child: Text(semesters[index].label),
                                 )),
                       );
                     });

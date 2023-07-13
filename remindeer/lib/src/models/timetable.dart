@@ -64,7 +64,7 @@ class Timetable extends Resource {
     return ResourceCard(
       label: label,
       tag: _name,
-      lastModified: timeBtwn.toString(),
+      trailingText: timeBtwn.toString(),
       onTap: () {},
     );
   }

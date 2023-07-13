@@ -89,6 +89,14 @@ class SemesterRepository {
     });
   }
 
+  Future<void> addUnitToSemester(int semesterId, Unit unit) async {
+    final semester = await getSemester(semesterId);
+    semester?.units.add(unit);
+    await _isar.writeTxn(() async {
+      await semester?.units.save();
+    });
+  }
+
   Future<List<Resource>> getAllResources(int id) async {
     return [
       ...await getAllEvents(id),

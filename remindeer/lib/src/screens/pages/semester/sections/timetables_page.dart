@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
+import 'package:remindeer/src/common/components/sliding_tabs/tabs.dart';
 import 'package:remindeer/src/features/local_api/models/timetable/timetable.dart';
 import 'package:remindeer/src/features/local_api/repository/semester_repository.dart';
 import 'package:remindeer/src/features/local_api/repository/timetable_repository.dart';
@@ -8,10 +9,35 @@ import 'default.dart';
 
 class TimetablesPage extends SemesterPage {
   final int id;
+  int _pending = 0;
+
+  void _setPending(int value) {
+    _pending = value;
+  }
+
   TimetablesPage(this.id) : super(label: 'Timetables');
   @override
   Widget buildBody(BuildContext context) {
-    return TimetablesPageBody(setPending: super.setPending, id: id);
+    return TimetablesPageBody(setPending: _setPending, id: id);
+  }
+
+  @override
+  Widget buildHeader(
+    BuildContext context,
+    bool isActive,
+    Function onPressed,
+  ) {
+    return GestureDetector(
+        onTap: () => onPressed(),
+        child: isActive
+            ? ActiveTab(
+                label: label,
+                pending: _pending.toString(),
+              )
+            : InactiveTab(
+                label: label,
+                pending: _pending.toString(),
+              ));
   }
 }
 
@@ -37,7 +63,6 @@ class _TimetablesPageBodyState extends State<TimetablesPageBody> {
     super.initState();
     widget.setPending(0);
     _fetch();
-    widget.setPending(timetables.length);
   }
 
   Future<void> _fetch() async {
@@ -50,7 +75,7 @@ class _TimetablesPageBodyState extends State<TimetablesPageBody> {
     setState(() => allTimetables
       ..clear()
       ..addAll(allResults));
-
+    debugPrint('timetables: ${timetables.length}');
     widget.setPending(timetables.length);
   }
 

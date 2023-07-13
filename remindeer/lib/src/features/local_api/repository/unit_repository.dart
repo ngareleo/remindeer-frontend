@@ -24,4 +24,11 @@ class UnitRepository {
   Future<List<Unit>> getAllUnits() async {
     return await _isar.units.where().sortByCreatedDesc().findAll();
   }
+
+  Future<Unit?> createUnit(Unit unit) {
+    _isar.writeTxn(() async {
+      return await _isar.units.put(unit);
+    });
+    return _isar.units.where().sortByCreatedDesc().findFirst();
+  }
 }

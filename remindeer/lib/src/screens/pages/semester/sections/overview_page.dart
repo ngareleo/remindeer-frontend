@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/common/components/sliding_tabs/active_tab.dart';
-import 'package:remindeer/src/common/components/sliding_tabs/inactive_tab.dart';
+import 'package:remindeer/src/common/components/sliding_tabs/tabs.dart';
 import 'package:remindeer/src/features/local_api/models/resource.dart';
 import 'package:remindeer/src/features/local_api/repository/semester_repository.dart';
 

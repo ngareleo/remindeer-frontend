@@ -11,7 +11,7 @@ import 'package:remindeer/src/features/local_api/models/timetable/timetable.dart
 import 'package:remindeer/src/features/local_api/models/unit/unit.dart';
 import 'package:remindeer/src/features/local_api/repository/task_repository.dart';
 
-enum TaskType { regular(), homework }
+enum TaskType { regular(), homework() }
 
 class CreateTaskForm extends StatefulWidget {
   const CreateTaskForm({
@@ -100,14 +100,11 @@ class _CreateTaskFormState extends State<CreateTaskForm> {
             color: Colors.black12,
           ),
           LinkToUnitWidget(
-            onLink: (Unit? unit) => setState(() {
-              _unit = unit;
-            }),
+            onLink: (Unit? unit) => setState(() => _unit = unit),
           ),
           LinkToTimetable(
-            onLink: (Timetable? timetable) => setState(() {
-              _timetable = timetable;
-            }),
+            onLink: (Timetable? timetable) =>
+                setState(() => _timetable = timetable),
           ),
           LinkToSemesterWidget(
               onLink: (Semester? semester) =>

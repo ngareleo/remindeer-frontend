@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/common/components/sliding_tabs/sliding_tabs.dart';
+import 'package:remindeer/src/common/components/sliding_tabs/tabs.dart';
 import 'package:remindeer/src/features/local_api/models/semester/semester.dart';
 import 'package:remindeer/src/features/local_api/repository/semester_repository.dart';
 import 'package:remindeer/src/screens/pages/semester/sections/timetables_page.dart';
@@ -88,9 +88,7 @@ class _SemesterDashboardPageState extends State<SemesterDashboardPage> {
                   ),
                 ),
               ),
-              SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: pages[current].buildBody(context)),
+              Expanded(child: pages[current].buildBody(context)),
             ],
           ),
         ),

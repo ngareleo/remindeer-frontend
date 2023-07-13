@@ -9,7 +9,7 @@ import 'package:remindeer/src/features/local_api/models/timetable/timetable.dart
 import 'package:remindeer/src/features/local_api/models/unit/unit.dart';
 import 'package:remindeer/src/features/local_api/repository/task_repository.dart';
 
-enum TaskType { regular(), homework }
+enum TaskType { regular(), homework() }
 
 class CreateHomeworkForm extends StatefulWidget {
   const CreateHomeworkForm({

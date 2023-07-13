@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/models/lecture.dart';
 
 class DashboardResourceItemCard extends StatelessWidget {
-  const DashboardResourceItemCard({super.key, required this.lecture});
-
-  final Lecture lecture;
+  final String label;
+  final String leftText;
+  final String rightText;
+  const DashboardResourceItemCard(
+      {super.key,
+      required this.label,
+      required this.leftText,
+      required this.rightText});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +28,7 @@ class DashboardResourceItemCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                lecture.label,
+                label,
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.normal,
@@ -36,7 +40,7 @@ class DashboardResourceItemCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      lecture.unit?.name ?? "",
+                      leftText,
                       style: const TextStyle(
                         color: Color(0xFF6B6B6B),
                         fontWeight: FontWeight.normal,
@@ -55,7 +59,7 @@ class DashboardResourceItemCard extends StatelessWidget {
                     ),
                     Flexible(
                       child: Text(
-                        lecture.unit?.lecturer ?? "",
+                        rightText,
                         style: const TextStyle(
                           color: Color(0xFF6B6B6B),
                           fontWeight: FontWeight.normal,

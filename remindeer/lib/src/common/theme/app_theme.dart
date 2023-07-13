@@ -4,6 +4,7 @@ const _primaryColor = Color(0xFF5E5ADB);
 
 final appTheme = ThemeData(
     primaryColor: _primaryColor,
+    fontFamily: 'Lato',
     colorScheme: const ColorScheme.light(
         primary: _primaryColor,
         secondary: Color(0xFFDB5A98),

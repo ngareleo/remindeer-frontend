@@ -3,7 +3,6 @@ import 'package:isar/isar.dart';
 import 'package:remindeer/src/common/components/cards/resource_card.dart';
 import 'package:remindeer/src/common/utils/helpers/datetime.dart';
 
-import '../event/event.dart';
 import '../resource.dart';
 import '../semester/semester.dart';
 import '../timetable/timetable.dart';

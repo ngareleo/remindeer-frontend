@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/models/lecture.dart';
-import 'package:remindeer/src/screens/pages/dashboard/components/dashboard_group_item.dart';
 
 class DashboardGroup extends StatelessWidget {
-  const DashboardGroup({Key? key, required this.lectures}) : super(key: key);
-  final List<Lecture> lectures;
+  final String label;
+  final Widget child;
+  const DashboardGroup({
+    Key? key,
+    required this.child,
+    required this.label,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,27 +17,18 @@ class DashboardGroup extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20),
             child: Text(
-              'Today\'s Lectures',
-              style: TextStyle(
-                fontFamily: 'Roboto',
+              label,
+              style: const TextStyle(
                 color: Color(0xFF797979),
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),
           ),
-          Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: List.generate(
-                lectures.length,
-                (index) => GestureDetector(
-                      child: DashboardGroupItem(lecture: lectures[index]),
-                    )),
-          ),
+          child
         ],
       ),
     );

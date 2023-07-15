@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/features/api/semesters_api.dart';
 import 'package:remindeer/src/features/local_api/models/semester/semester.dart';
 
 class LinkToSemesterWidget extends StatefulWidget {
@@ -14,7 +13,6 @@ class LinkToSemesterWidget extends StatefulWidget {
 }
 
 class _LinkToSemester extends State<LinkToSemesterWidget> {
-  final api = SemestersAPI();
   final semesters = <Semester>[];
   Semester? selectedSemester;
 
@@ -25,7 +23,6 @@ class _LinkToSemester extends State<LinkToSemesterWidget> {
   }
 
   Future<void> _getSemesters() async {
-    final semesters = await api.getAllSemesters();
     setState(() {
       semesters
         ..clear()

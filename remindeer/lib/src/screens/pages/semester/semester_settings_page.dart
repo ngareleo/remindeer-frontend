@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/common/components/cards/member_group.dart';
-import 'package:remindeer/src/common/components/links/action_links_group.dart';
 import 'package:remindeer/src/features/local_api/models/semester/semester.dart';
 import 'package:remindeer/src/features/local_api/repository/semester_repository.dart';
 import 'package:remindeer/src/screens/pages/semester/components/semester_action_links_group.dart';

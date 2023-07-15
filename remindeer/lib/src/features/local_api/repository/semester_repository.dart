@@ -127,6 +127,8 @@ class SemesterRepository {
   }
 
   Future<void> deleteSemester(int id) async {
-    await _isar.semesters.delete(id);
+    await _isar.writeTxn(() async {
+      await _isar.semesters.delete(id);
+    });
   }
 }

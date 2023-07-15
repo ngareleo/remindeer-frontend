@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/common/components/links/signup_link.dart';
-import 'package:remindeer/src/features/auth/auth.dart';
+import 'package:remindeer/src/features/authentication/auth.dart';
 import 'package:remindeer/src/screens/home.dart';
 import 'package:remindeer/src/screens/pages/signup/components/form/password_field.dart';
 

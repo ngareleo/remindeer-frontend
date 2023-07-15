@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:remindeer/src/common/theme/app_theme.dart';
-import 'package:remindeer/src/features/auth/auth.dart';
+import 'package:remindeer/src/features/authentication/auth.dart';
 import 'package:remindeer/src/features/local_api/models/event/event.dart';
 import 'package:remindeer/src/screens/home.dart';
 import 'package:isar/isar.dart';

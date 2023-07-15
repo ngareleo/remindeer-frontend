@@ -49,4 +49,9 @@ class HomeworkRepository {
 
     return await _isar.homeworks.where().sortByLastModifiedDesc().findFirst();
   }
+
+  Future<Unit?> getLinkedUnit(int homeworkId) async {
+    final homework = await _isar.homeworks.get(homeworkId);
+    return homework!.unit.value;
+  }
 }

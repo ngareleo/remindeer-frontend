@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/models/lecture.dart';
 import 'package:remindeer/src/screens/pages/dashboard/components/dashboard_resource_item_card.dart';
 
 class DashboardGroupItem extends StatelessWidget {
-  const DashboardGroupItem({Key? key, required this.lecture}) : super(key: key);
+  final String labelLeadingText;
+  final String labelTrailingText;
+  final String label;
+  final String leftText;
+  final String rightText;
 
-  final Lecture lecture;
+  const DashboardGroupItem(
+      {Key? key,
+      required this.labelLeadingText,
+      required this.labelTrailingText,
+      required this.label,
+      required this.leftText,
+      required this.rightText})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -20,14 +31,11 @@ class DashboardGroupItem extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
-                const Text(
-                  'In about ',
-                  style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                  ),
+                Text(
+                  labelLeadingText,
                 ),
                 Text(
-                  '30 min',
+                  labelTrailingText,
                   style: TextStyle(
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.w500,
@@ -37,7 +45,11 @@ class DashboardGroupItem extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            child: DashboardResourceItemCard(lecture: lecture),
+            child: DashboardResourceItemCard(
+              label: label,
+              leftText: leftText,
+              rightText: rightText,
+            ),
           ),
         ],
       ),

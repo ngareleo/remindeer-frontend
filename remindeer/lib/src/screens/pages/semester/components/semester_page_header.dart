@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/screens/pages/semester/semester_settings_page.dart';
 
-class SemesterPageHeader extends StatefulWidget {
-  const SemesterPageHeader({Key? key, required this.label, required this.email})
-      : super(key: key);
-
+class SemesterPageHeader extends StatelessWidget {
   final String label;
   final String email;
+  final int id;
 
-  @override
-  State<StatefulWidget> createState() => _SemesterPageHeaderState();
-}
-
-class _SemesterPageHeaderState extends State<SemesterPageHeader> {
+  const SemesterPageHeader(
+      {Key? key, required this.label, required this.email, required this.id})
+      : super(key: key);
   static const url =
       "https://images.unsplash.com/photo-1689005046927-0aa9f398247a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80";
 
@@ -23,7 +19,9 @@ class _SemesterPageHeaderState extends State<SemesterPageHeader> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => const SemesterSettingsPage()))
+                builder: (context) => SemesterSettingsPage(
+                      id: id,
+                    )))
       },
       child: Container(
         height: 100,
@@ -64,14 +62,14 @@ class _SemesterPageHeaderState extends State<SemesterPageHeader> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.label,
+                      label,
                       style: Theme.of(context)
                           .textTheme
                           .headlineMedium
                           ?.copyWith(color: Colors.white),
                     ),
                     Text(
-                      widget.email,
+                      email,
                       style: const TextStyle(
                           fontSize: 14,
                           color: Colors.white,

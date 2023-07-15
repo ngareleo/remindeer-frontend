@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 
-class SemesterSettingsPageHeader extends StatefulWidget {
-  const SemesterSettingsPageHeader({Key? key}) : super(key: key);
+class SemesterSettingsPageHeader extends StatelessWidget {
+  final String title;
+  final String emailAddress;
+  final String? imageUrl;
 
-  @override
-  State<StatefulWidget> createState() => _SemesterSettingsPageHeaderState();
-}
+  const SemesterSettingsPageHeader(
+      {Key? key,
+      required this.title,
+      required this.emailAddress,
+      this.imageUrl})
+      : super(key: key);
 
-class _SemesterSettingsPageHeaderState
-    extends State<SemesterSettingsPageHeader> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,24 +31,23 @@ class _SemesterSettingsPageHeaderState
                 shape: BoxShape.circle,
               ),
               child: Image.network(
-                'https://picsum.photos/seed/326/600',
+                imageUrl ?? 'https://picsum.photos/seed/326/600',
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          const Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
             child: Text(
-              'Computer science 2022/23',
-              style: TextStyle(
-                fontFamily: 'Roboto',
+              title,
+              style: const TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.w500,
               ),
             ),
           ),
           Text(
-            'jandode@gmail.com',
+            emailAddress,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ],

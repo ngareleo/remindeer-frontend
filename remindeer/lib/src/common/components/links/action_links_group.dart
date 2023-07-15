@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'action_link.dart';
 
 class SemesterPageLinksGroup extends StatefulWidget {
-  const SemesterPageLinksGroup({Key? key}) : super(key: key);
+  final int id;
+  const SemesterPageLinksGroup({Key? key, required this.id}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _SemesterPageLinksGroupState();
 }
 
 class _SemesterPageLinksGroupState extends State<SemesterPageLinksGroup> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(

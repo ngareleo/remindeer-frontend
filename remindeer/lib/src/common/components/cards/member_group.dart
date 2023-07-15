@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'member_card.dart';
+class MemberGroupWidget extends StatelessWidget {
+  final String title;
+  final List<Widget> children;
 
-class MemberGroupWidget extends StatefulWidget {
-  const MemberGroupWidget({Key? key}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _MemberGroupWidgetState();
-}
-
-class _MemberGroupWidgetState extends State<MemberGroupWidget> {
+  const MemberGroupWidget(
+      {Key? key, required this.title, required this.children})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -21,24 +18,29 @@ class _MemberGroupWidgetState extends State<MemberGroupWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
+              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
               child: Text(
-                'Moderators',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
+                title,
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                 ),
               ),
             ),
-            Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                child: MemberCard()),
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-              child: MemberCard(),
-            ),
+            Column(
+              mainAxisSize: MainAxisSize.max,
+              children: List.generate(
+                children.length,
+                (childrenIndex) {
+                  final child = children[childrenIndex];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: child,
+                  );
+                },
+              ),
+            )
           ],
         ),
       ),

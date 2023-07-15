@@ -125,4 +125,8 @@ class SemesterRepository {
       ...await getAllHomeworks(id),
     ];
   }
+
+  Future<void> deleteSemester(int id) async {
+    await _isar.semesters.delete(id);
+  }
 }

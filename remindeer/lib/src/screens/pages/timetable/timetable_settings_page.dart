@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/common/components/cards/member_group.dart';
 import 'package:remindeer/src/common/components/links/action_links_group.dart';
 import '../semester/components/semester_settings_page_header.dart';
 
@@ -44,10 +43,14 @@ class _TimetableSettingsPageState extends State<TimetableSettingsPage> {
               children: [
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                  child: SemesterSettingsPageHeader(),
+                  child: SemesterSettingsPageHeader(
+                    emailAddress: '',
+                    title: '',
+                  ),
                 ),
-                SemesterPageLinksGroup(),
-                MemberGroupWidget()
+                SemesterPageLinksGroup(
+                  id: 0,
+                ),
               ],
             ),
           ),

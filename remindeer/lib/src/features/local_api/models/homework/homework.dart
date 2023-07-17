@@ -19,9 +19,15 @@ class Homework extends Resource {
   String? description;
   DateTime due;
 
+  @Name("object_id")
+  late String objectID;
+
+  String? owner;
+
   final unit = IsarLink<Unit>();
   final semester = IsarLink<Semester>();
 
+  DateTime? completed;
   late DateTime created = DateTime.now();
   @Name("last_modified")
   late DateTime lastModified = DateTime.now();
@@ -32,12 +38,27 @@ class Homework extends Resource {
     required this.due,
   });
 
-  factory Homework.fromJson() => Homework(label: '', due: DateTime.now());
+  factory Homework.fromJson(Map<String, dynamic> json) {
+    final objectID = json["_id"].toString();
+    final owner = json["owner"].toString();
+    final label = json["label"].toString();
+    final description = json["description"].toString();
+    final created = json["created"].toString();
+    final lastModified = json["last_modified"].toString();
+    final due = json["due"].toString();
+    final completed = json["completed"].toString();
 
-  factory Homework.fromForm() => Homework(
-        label: '',
-        due: DateTime.now(),
-      );
+    return Homework(
+      label: label,
+      description: description,
+      due: DateTime.parse(due),
+    )
+      ..completed = DateTime.parse(completed)
+      ..objectID = objectID
+      ..owner = owner
+      ..created = DateTime.parse(created)
+      ..lastModified = DateTime.parse(lastModified);
+  }
 
   @override
   Widget toResourceItem(BuildContext context) {
@@ -48,4 +69,16 @@ class Homework extends Resource {
       additionalText: getReadableDuration(due),
     );
   }
+
+  @override
+  dynamic toJson() => {
+        "_id": objectID,
+        "label": label,
+        "description": description,
+        "due": due.toIso8601String(),
+        "completed": completed?.toIso8601String(),
+        "owner": owner,
+        "created_at": created.toIso8601String(),
+        "updated_at": lastModified.toIso8601String(),
+      };
 }

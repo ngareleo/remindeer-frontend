@@ -72,6 +72,7 @@ class _SemesterDashboardPageState extends State<SemesterDashboardPage> {
               SemesterPageHeader(
                 email: 'janedoe@gmail.com',
                 label: semester?.label ?? '',
+                id: widget.semesterId,
               ),
               Padding(
                 padding: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 0),

@@ -17,35 +17,50 @@ const HomeworkSchema = CollectionSchema(
   name: r'Homework',
   id: -6707939081481351317,
   properties: {
-    r'created': PropertySchema(
+    r'completed': PropertySchema(
       id: 0,
+      name: r'completed',
+      type: IsarType.dateTime,
+    ),
+    r'created': PropertySchema(
+      id: 1,
       name: r'created',
       type: IsarType.dateTime,
     ),
     r'description': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'description',
       type: IsarType.string,
     ),
     r'due': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'due',
       type: IsarType.dateTime,
     ),
     r'hasListeners': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'hasListeners',
       type: IsarType.bool,
     ),
     r'label': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'label',
       type: IsarType.string,
     ),
     r'last_modified': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'last_modified',
       type: IsarType.dateTime,
+    ),
+    r'object_id': PropertySchema(
+      id: 7,
+      name: r'object_id',
+      type: IsarType.string,
+    ),
+    r'owner': PropertySchema(
+      id: 8,
+      name: r'owner',
+      type: IsarType.string,
     )
   },
   estimateSize: _homeworkEstimateSize,
@@ -88,6 +103,13 @@ int _homeworkEstimateSize(
     }
   }
   bytesCount += 3 + object.label.length * 3;
+  bytesCount += 3 + object.objectID.length * 3;
+  {
+    final value = object.owner;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -97,12 +119,15 @@ void _homeworkSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDateTime(offsets[0], object.created);
-  writer.writeString(offsets[1], object.description);
-  writer.writeDateTime(offsets[2], object.due);
-  writer.writeBool(offsets[3], object.hasListeners);
-  writer.writeString(offsets[4], object.label);
-  writer.writeDateTime(offsets[5], object.lastModified);
+  writer.writeDateTime(offsets[0], object.completed);
+  writer.writeDateTime(offsets[1], object.created);
+  writer.writeString(offsets[2], object.description);
+  writer.writeDateTime(offsets[3], object.due);
+  writer.writeBool(offsets[4], object.hasListeners);
+  writer.writeString(offsets[5], object.label);
+  writer.writeDateTime(offsets[6], object.lastModified);
+  writer.writeString(offsets[7], object.objectID);
+  writer.writeString(offsets[8], object.owner);
 }
 
 Homework _homeworkDeserialize(
@@ -112,13 +137,16 @@ Homework _homeworkDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = Homework(
-    description: reader.readStringOrNull(offsets[1]),
-    due: reader.readDateTime(offsets[2]),
-    label: reader.readString(offsets[4]),
+    description: reader.readStringOrNull(offsets[2]),
+    due: reader.readDateTime(offsets[3]),
+    label: reader.readString(offsets[5]),
   );
-  object.created = reader.readDateTime(offsets[0]);
+  object.completed = reader.readDateTimeOrNull(offsets[0]);
+  object.created = reader.readDateTime(offsets[1]);
   object.id = id;
-  object.lastModified = reader.readDateTime(offsets[5]);
+  object.lastModified = reader.readDateTime(offsets[6]);
+  object.objectID = reader.readString(offsets[7]);
+  object.owner = reader.readStringOrNull(offsets[8]);
   return object;
 }
 
@@ -130,17 +158,23 @@ P _homeworkDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 1:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 2:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 3:
-      return (reader.readBool(offset)) as P;
-    case 4:
-      return (reader.readString(offset)) as P;
-    case 5:
       return (reader.readDateTime(offset)) as P;
+    case 4:
+      return (reader.readBool(offset)) as P;
+    case 5:
+      return (reader.readString(offset)) as P;
+    case 6:
+      return (reader.readDateTime(offset)) as P;
+    case 7:
+      return (reader.readString(offset)) as P;
+    case 8:
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -237,6 +271,75 @@ extension HomeworkQueryWhere on QueryBuilder<Homework, Homework, QWhereClause> {
 
 extension HomeworkQueryFilter
     on QueryBuilder<Homework, Homework, QFilterCondition> {
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> completedIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'completed',
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> completedIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'completed',
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> completedEqualTo(
+      DateTime? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'completed',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> completedGreaterThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'completed',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> completedLessThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'completed',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> completedBetween(
+    DateTime? lower,
+    DateTime? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'completed',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Homework, Homework, QAfterFilterCondition> createdEqualTo(
       DateTime value) {
     return QueryBuilder.apply(this, (query) {
@@ -753,6 +856,282 @@ extension HomeworkQueryFilter
       ));
     });
   }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> objectIDEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> objectIDGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> objectIDLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> objectIDBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'object_id',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> objectIDStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> objectIDEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> objectIDContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> objectIDMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'object_id',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> objectIDIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'object_id',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> objectIDIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'object_id',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> ownerIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'owner',
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> ownerIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'owner',
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> ownerEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> ownerGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> ownerLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> ownerBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'owner',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> ownerStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> ownerEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> ownerContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> ownerMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'owner',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> ownerIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'owner',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> ownerIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'owner',
+        value: '',
+      ));
+    });
+  }
 }
 
 extension HomeworkQueryObject
@@ -788,6 +1167,18 @@ extension HomeworkQueryLinks
 }
 
 extension HomeworkQuerySortBy on QueryBuilder<Homework, Homework, QSortBy> {
+  QueryBuilder<Homework, Homework, QAfterSortBy> sortByCompleted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'completed', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterSortBy> sortByCompletedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'completed', Sort.desc);
+    });
+  }
+
   QueryBuilder<Homework, Homework, QAfterSortBy> sortByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'created', Sort.asc);
@@ -859,10 +1250,46 @@ extension HomeworkQuerySortBy on QueryBuilder<Homework, Homework, QSortBy> {
       return query.addSortBy(r'last_modified', Sort.desc);
     });
   }
+
+  QueryBuilder<Homework, Homework, QAfterSortBy> sortByObjectID() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'object_id', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterSortBy> sortByObjectIDDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'object_id', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterSortBy> sortByOwner() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'owner', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterSortBy> sortByOwnerDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'owner', Sort.desc);
+    });
+  }
 }
 
 extension HomeworkQuerySortThenBy
     on QueryBuilder<Homework, Homework, QSortThenBy> {
+  QueryBuilder<Homework, Homework, QAfterSortBy> thenByCompleted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'completed', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterSortBy> thenByCompletedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'completed', Sort.desc);
+    });
+  }
+
   QueryBuilder<Homework, Homework, QAfterSortBy> thenByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'created', Sort.asc);
@@ -946,10 +1373,40 @@ extension HomeworkQuerySortThenBy
       return query.addSortBy(r'last_modified', Sort.desc);
     });
   }
+
+  QueryBuilder<Homework, Homework, QAfterSortBy> thenByObjectID() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'object_id', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterSortBy> thenByObjectIDDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'object_id', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterSortBy> thenByOwner() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'owner', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterSortBy> thenByOwnerDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'owner', Sort.desc);
+    });
+  }
 }
 
 extension HomeworkQueryWhereDistinct
     on QueryBuilder<Homework, Homework, QDistinct> {
+  QueryBuilder<Homework, Homework, QDistinct> distinctByCompleted() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'completed');
+    });
+  }
+
   QueryBuilder<Homework, Homework, QDistinct> distinctByCreated() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'created');
@@ -987,6 +1444,20 @@ extension HomeworkQueryWhereDistinct
       return query.addDistinctBy(r'last_modified');
     });
   }
+
+  QueryBuilder<Homework, Homework, QDistinct> distinctByObjectID(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'object_id', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QDistinct> distinctByOwner(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'owner', caseSensitive: caseSensitive);
+    });
+  }
 }
 
 extension HomeworkQueryProperty
@@ -994,6 +1465,12 @@ extension HomeworkQueryProperty
   QueryBuilder<Homework, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<Homework, DateTime?, QQueryOperations> completedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'completed');
     });
   }
 
@@ -1030,6 +1507,18 @@ extension HomeworkQueryProperty
   QueryBuilder<Homework, DateTime, QQueryOperations> lastModifiedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'last_modified');
+    });
+  }
+
+  QueryBuilder<Homework, String, QQueryOperations> objectIDProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'object_id');
+    });
+  }
+
+  QueryBuilder<Homework, String?, QQueryOperations> ownerProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'owner');
     });
   }
 }

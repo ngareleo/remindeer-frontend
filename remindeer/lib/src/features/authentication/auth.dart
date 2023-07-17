@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:remindeer/src/models/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum AuthStatus {
   unknown,
@@ -15,8 +18,9 @@ class AuthProvider extends ChangeNotifier {
   late Dio? _dio;
 
   AuthProvider._() {
+    _getUserDetailsFromPersist();
     _dio = Dio(BaseOptions(
-      baseUrl: "http://localhost:8080/app",
+      baseUrl: "http://localhost:3000",
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
       headers: {
@@ -36,13 +40,14 @@ class AuthProvider extends ChangeNotifier {
     return _loggedInUser != null;
   }
 
-  Future<AuthStatus> login(String email, String password) async {
-    final response = await _dio?.post("http://localhost:8080/app/login",
-        data: {
-          "username": email,
-          "password": password,
-        },
-        options: Options(contentType: Headers.formUrlEncodedContentType));
+  Future<AuthStatus> login(String username, String password) async {
+    final response = await _dio?.post(
+      "/app/auth/login",
+      data: {
+        "username": username,
+        "password": password,
+      },
+    );
 
     if (response?.statusCode != 200) {
       return AuthStatus.unauthenticated;
@@ -50,19 +55,20 @@ class AuthProvider extends ChangeNotifier {
 
     final user = User.fromApi(json: response?.data);
     _loggedInUser = user;
+    await _writeUserDetailsToPersist(user);
     notifyListeners();
     return AuthStatus.authenticated;
   }
 
   Future<(bool, bool)?> validateUserDetails(
       {required String username, required String email}) async {
-    final response =
-        await _dio?.get("http://localhost:8080/app/check/user-details",
-            data: {
-              "username": username,
-              "email": email,
-            },
-            options: Options(contentType: Headers.formUrlEncodedContentType));
+    final response = await _dio?.get(
+      "/app/check/user-details",
+      data: {
+        "username": username,
+        "email": email,
+      },
+    );
 
     if (response?.statusCode != 200) return null;
 
@@ -74,7 +80,7 @@ class AuthProvider extends ChangeNotifier {
 
   Future<bool?> validatePhonenumber(String phonenumber) async {
     final response = await _dio?.get(
-      "http://localhost:8080/app/check/phone-number/$phonenumber",
+      "/app/check/phone-number/$phonenumber",
     );
 
     if (response?.statusCode != 200) return null;
@@ -84,6 +90,8 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> logout() async {
     _loggedInUser = null;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove("user");
     notifyListeners();
   }
 
@@ -93,8 +101,8 @@ class AuthProvider extends ChangeNotifier {
       required String username,
       required String phonenumber,
       required String password}) async {
-    final response = await _dio?.put(
-      "http://localhost:8080/api/user",
+    final response = await _dio?.post(
+      "/api/user",
       data: {
         "email": email,
         "name": name,
@@ -102,13 +110,27 @@ class AuthProvider extends ChangeNotifier {
         "phone_number": phonenumber,
         "password": password,
       },
-      options: Options(contentType: Headers.formUrlEncodedContentType),
     );
 
     if (response?.statusCode != 200) return null;
     var user = User.fromApi(json: response?.data);
     _loggedInUser = user;
+    await _writeUserDetailsToPersist(user);
     notifyListeners();
     return user;
+  }
+
+  void _getUserDetailsFromPersist() async {
+    final prefs = await SharedPreferences.getInstance();
+    final claims = prefs.getString("user");
+    if (claims != null) {
+      _loggedInUser = User.fromJson(json: jsonDecode(claims));
+      notifyListeners();
+    }
+  }
+
+  Future<void> _writeUserDetailsToPersist(User user) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString("user", jsonEncode(user.toJson()));
   }
 }

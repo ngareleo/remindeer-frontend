@@ -48,18 +48,28 @@ const LectureSchema = CollectionSchema(
       name: r'last_modified',
       type: IsarType.dateTime,
     ),
-    r'repeat_to': PropertySchema(
+    r'object_id': PropertySchema(
       id: 6,
+      name: r'object_id',
+      type: IsarType.string,
+    ),
+    r'owner': PropertySchema(
+      id: 7,
+      name: r'owner',
+      type: IsarType.string,
+    ),
+    r'repeat_to': PropertySchema(
+      id: 8,
       name: r'repeat_to',
       type: IsarType.dateTime,
     ),
     r'venue': PropertySchema(
-      id: 7,
+      id: 9,
       name: r'venue',
       type: IsarType.string,
     ),
     r'window': PropertySchema(
-      id: 8,
+      id: 10,
       name: r'window',
       type: IsarType.object,
       target: r'LectureWindow',
@@ -105,6 +115,13 @@ int _lectureEstimateSize(
     }
   }
   bytesCount += 3 + object.label.length * 3;
+  bytesCount += 3 + object.objectID.length * 3;
+  {
+    final value = object.owner;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.venue.length * 3;
   bytesCount += 3 +
       LectureWindowSchema.estimateSize(
@@ -124,10 +141,12 @@ void _lectureSerialize(
   writer.writeBool(offsets[3], object.hasListeners);
   writer.writeString(offsets[4], object.label);
   writer.writeDateTime(offsets[5], object.lastModified);
-  writer.writeDateTime(offsets[6], object.repeatTo);
-  writer.writeString(offsets[7], object.venue);
+  writer.writeString(offsets[6], object.objectID);
+  writer.writeString(offsets[7], object.owner);
+  writer.writeDateTime(offsets[8], object.repeatTo);
+  writer.writeString(offsets[9], object.venue);
   writer.writeObject<LectureWindow>(
-    offsets[8],
+    offsets[10],
     allOffsets,
     LectureWindowSchema.serialize,
     object.window,
@@ -146,10 +165,10 @@ Lecture _lectureDeserialize(
             DaysOfWeek.monday,
     description: reader.readStringOrNull(offsets[2]),
     label: reader.readString(offsets[4]),
-    repeatTo: reader.readDateTime(offsets[6]),
-    venue: reader.readString(offsets[7]),
+    repeatTo: reader.readDateTime(offsets[8]),
+    venue: reader.readString(offsets[9]),
     window: reader.readObjectOrNull<LectureWindow>(
-          offsets[8],
+          offsets[10],
           LectureWindowSchema.deserialize,
           allOffsets,
         ) ??
@@ -158,6 +177,8 @@ Lecture _lectureDeserialize(
   object.created = reader.readDateTime(offsets[0]);
   object.id = id;
   object.lastModified = reader.readDateTime(offsets[5]);
+  object.objectID = reader.readString(offsets[6]);
+  object.owner = reader.readStringOrNull(offsets[7]);
   return object;
 }
 
@@ -182,10 +203,14 @@ P _lectureDeserializeProp<P>(
     case 5:
       return (reader.readDateTime(offset)) as P;
     case 6:
-      return (reader.readDateTime(offset)) as P;
-    case 7:
       return (reader.readString(offset)) as P;
+    case 7:
+      return (reader.readStringOrNull(offset)) as P;
     case 8:
+      return (reader.readDateTime(offset)) as P;
+    case 9:
+      return (reader.readString(offset)) as P;
+    case 10:
       return (reader.readObjectOrNull<LectureWindow>(
             offset,
             LectureWindowSchema.deserialize,
@@ -822,6 +847,282 @@ extension LectureQueryFilter
     });
   }
 
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> objectIDEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> objectIDGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> objectIDLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> objectIDBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'object_id',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> objectIDStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> objectIDEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> objectIDContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> objectIDMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'object_id',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> objectIDIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'object_id',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> objectIDIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'object_id',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> ownerIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'owner',
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> ownerIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'owner',
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> ownerEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> ownerGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> ownerLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> ownerBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'owner',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> ownerStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> ownerEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> ownerContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> ownerMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'owner',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> ownerIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'owner',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> ownerIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'owner',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<Lecture, Lecture, QAfterFilterCondition> repeatToEqualTo(
       DateTime value) {
     return QueryBuilder.apply(this, (query) {
@@ -1118,6 +1419,30 @@ extension LectureQuerySortBy on QueryBuilder<Lecture, Lecture, QSortBy> {
     });
   }
 
+  QueryBuilder<Lecture, Lecture, QAfterSortBy> sortByObjectID() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'object_id', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterSortBy> sortByObjectIDDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'object_id', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterSortBy> sortByOwner() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'owner', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterSortBy> sortByOwnerDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'owner', Sort.desc);
+    });
+  }
+
   QueryBuilder<Lecture, Lecture, QAfterSortBy> sortByRepeatTo() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'repeat_to', Sort.asc);
@@ -1229,6 +1554,30 @@ extension LectureQuerySortThenBy
     });
   }
 
+  QueryBuilder<Lecture, Lecture, QAfterSortBy> thenByObjectID() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'object_id', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterSortBy> thenByObjectIDDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'object_id', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterSortBy> thenByOwner() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'owner', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterSortBy> thenByOwnerDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'owner', Sort.desc);
+    });
+  }
+
   QueryBuilder<Lecture, Lecture, QAfterSortBy> thenByRepeatTo() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'repeat_to', Sort.asc);
@@ -1294,6 +1643,20 @@ extension LectureQueryWhereDistinct
     });
   }
 
+  QueryBuilder<Lecture, Lecture, QDistinct> distinctByObjectID(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'object_id', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QDistinct> distinctByOwner(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'owner', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Lecture, Lecture, QDistinct> distinctByRepeatTo() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'repeat_to');
@@ -1349,6 +1712,18 @@ extension LectureQueryProperty
   QueryBuilder<Lecture, DateTime, QQueryOperations> lastModifiedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'last_modified');
+    });
+  }
+
+  QueryBuilder<Lecture, String, QQueryOperations> objectIDProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'object_id');
+    });
+  }
+
+  QueryBuilder<Lecture, String?, QQueryOperations> ownerProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'owner');
     });
   }
 

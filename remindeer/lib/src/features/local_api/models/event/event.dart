@@ -8,6 +8,7 @@ import '../resource.dart';
 import '../semester/semester.dart';
 import '../timetable/timetable.dart';
 import '../unit/unit.dart';
+
 part 'event.g.dart';
 
 const _resourceName = "Event";
@@ -20,6 +21,11 @@ class Event extends Resource {
   String? venue;
   String? description;
   late EventWindow window;
+
+  @Name("object_id")
+  String? objectID;
+
+  String? owner;
 
   @Enumerated(EnumType.name)
   DaysOfWeek? dayOfWeek;
@@ -37,10 +43,10 @@ class Event extends Resource {
   @Name("event_date")
   DateTime? eventDate;
 
-  final DateTime created = DateTime.now();
+  DateTime created = DateTime.now();
 
   @Name("last_modified")
-  final DateTime lastModified = DateTime.now();
+  DateTime lastModified = DateTime.now();
 
   Event({
     required this.label,
@@ -53,17 +59,55 @@ class Event extends Resource {
     this.repeat = RepeatFrequency.none,
   });
 
+  factory Event.fromJson(Map<String, dynamic> json) {
+    final objectID = json["_id"].toString();
+    final created = json["created_at"].toString();
+    final lastModified = json["updated_at"].toString();
+    final from = json["from"].toString();
+    final to = json["to"].toString();
+    final isAllDay = json["is_all_day"].toString();
+    final label = json["label"].toString();
+    final description = json["description"].toString();
+    final venue = json["venue"].toString();
+    final repeatTo = json["repeat_to"].toString();
+    final eventDate = json["event_date"].toString();
+    final owner = json["owner"].toString();
+
+    var event = Event(
+      label: label,
+      description: description,
+      venue: venue,
+      repeatTo: DateTime.parse(repeatTo),
+      eventDate: DateTime.parse(eventDate),
+      window: EventWindow(
+          from: int.parse(from),
+          to: int.parse(to),
+          isAllDay: bool.parse(isAllDay)),
+    )
+      ..created = DateTime.parse(created)
+      ..lastModified = DateTime.parse(lastModified)
+      ..objectID = objectID
+      ..owner = owner;
+
+    return event;
+  }
+
+  @override
   dynamic toJson() => {
         "venue": venue,
         "label": label,
         "description": description,
-        "window": window.toJson(),
+        "to": window.to,
+        "from": window.from,
+        "day": dayOfWeek?.fullValue ?? "",
+        "is_all_day": window.isAllDay,
         "repeat": repeat,
-        "repeat_to": repeatTo.toString(),
+        "repeat_to": repeatTo?.toIso8601String(),
         "day_of_week": dayOfWeek,
-        "event_date": eventDate.toString(),
-        "created": created.toString(),
-        "last_modified": lastModified.toString()
+        "event_date": eventDate?.toIso8601String(),
+        "created_at": created.toIso8601String(),
+        "updated_at": lastModified.toIso8601String(),
+        "_id": objectID,
       };
 
   @override

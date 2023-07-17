@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:remindeer/src/common/utils/helpers/datetime.dart';
-import 'package:remindeer/src/features/auth/auth.dart';
+import 'package:remindeer/src/features/authentication/auth.dart';
 import 'package:remindeer/src/features/local_api/models/event/event.dart';
 import 'package:remindeer/src/features/local_api/models/timetable/timetable.dart';
 import 'package:remindeer/src/features/local_api/repository/event_repository.dart';

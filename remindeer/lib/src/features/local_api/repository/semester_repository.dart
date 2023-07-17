@@ -106,13 +106,15 @@ class SemesterRepository {
     }
 
     final semester = await getSemester(semesterId);
-    semester?.homeworks.add(homework);
-    semester?.lastModified = DateTime.now();
+    if (semester != null) {
+      semester.homeworks.add(homework);
+      semester.lastModified = DateTime.now();
 
-    await _isar.writeTxn(() async {
-      await _isar.semesters.put(semester!);
-      await semester.homeworks.save();
-    });
+      await _isar.writeTxn(() async {
+        await _isar.semesters.put(semester);
+        await semester.homeworks.save();
+      });
+    }
 
     return semester;
   }
@@ -123,6 +125,13 @@ class SemesterRepository {
       ...await getAllTasks(id),
       ...await getAllUnits(id),
       ...await getAllHomeworks(id),
+      ...await getAllTimetables(id)
     ];
+  }
+
+  Future<void> deleteSemester(int id) async {
+    await _isar.writeTxn(() async {
+      await _isar.semesters.delete(id);
+    });
   }
 }

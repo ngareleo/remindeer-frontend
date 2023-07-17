@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/features/api/timetables_api.dart';
 import 'package:remindeer/src/features/local_api/models/timetable/timetable.dart';
 
 class LinkToTimetable extends StatefulWidget {
@@ -14,7 +13,6 @@ class LinkToTimetable extends StatefulWidget {
 }
 
 class _LinkToTimetableState extends State<LinkToTimetable> {
-  final api = TimetableAPI();
   final timetables = <Timetable>[];
   Timetable? selectedTimetable;
 
@@ -25,7 +23,6 @@ class _LinkToTimetableState extends State<LinkToTimetable> {
   }
 
   Future<void> _getTimetables() async {
-    final timetables = await api.getAllTimetables();
     setState(() {
       timetables
         ..clear()

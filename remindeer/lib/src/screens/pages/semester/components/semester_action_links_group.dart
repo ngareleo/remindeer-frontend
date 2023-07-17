@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:remindeer/src/common/components/links/action_link.dart';
 import 'package:remindeer/src/features/local_api/models/semester/semester.dart';
 import 'package:remindeer/src/features/local_api/repository/semester_repository.dart';
+import 'package:remindeer/src/features/remote_api/sharing.dart';
 import 'package:remindeer/src/screens/pages/my_library/my_library.dart';
 
 class SemesterSettingsPageActionLinksGroup extends StatefulWidget {
@@ -18,6 +19,7 @@ class _SemesterSettingsPageActionLinksGroupState
     extends State<SemesterSettingsPageActionLinksGroup> {
   Semester? semester;
   final semesterRepository = SemesterRepository.instance();
+  final sharingProvider = SharingProvider.instance();
 
   @override
   void initState() {
@@ -34,6 +36,13 @@ class _SemesterSettingsPageActionLinksGroupState
     await semesterRepository.deleteSemester(widget.id);
   }
 
+  void shareResource() async {
+    if (semester == null) return;
+    await sharingProvider.shareSemester(semester!, semesterRepository);
+  }
+
+  void showMoreInformation() {}
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -46,25 +55,27 @@ class _SemesterSettingsPageActionLinksGroupState
             const SemesterPageLinkWidget(
               label: 'Invite someone',
               icon: Icon(
-                Icons.add,
+                Icons.add_rounded,
               ),
             ),
-            const SemesterPageLinkWidget(
+            SemesterPageLinkWidget(
               label: 'Share invite',
-              icon: Icon(
-                Icons.share,
+              icon: const Icon(
+                Icons.share_rounded,
               ),
+              onTap: () => shareResource(),
             ),
-            const SemesterPageLinkWidget(
+            SemesterPageLinkWidget(
               label: 'More information',
-              icon: Icon(
+              icon: const Icon(
                 Icons.info_rounded,
               ),
+              onTap: () => showMoreInformation(),
             ),
             SemesterPageLinkWidget(
                 label: 'Delete semester',
                 icon: const Icon(
-                  Icons.delete,
+                  Icons.delete_rounded,
                 ),
                 onTap: () => showDeleteDialog()),
           ],

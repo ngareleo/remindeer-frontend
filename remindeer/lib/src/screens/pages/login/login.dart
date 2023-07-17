@@ -17,11 +17,30 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
   final _authProvider = AuthProvider.instance();
 
+  var authStatus = AuthStatus.unknown;
+
   void logUserInAndValidate() async {
     if (_formKey.currentState!.validate()) {
-      await _authProvider.login(
+      final status = await _authProvider.login(
           _usernameController.text, _passwordController.text);
+      if (status == AuthStatus.unauthenticated) {
+        _showErrorMessage();
+      } else {
+        _showSuccessMessage();
+      }
     }
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const AppHomePage(),
+      ),
+      (r) => false,
+    );
+    super.setState(fn);
   }
 
   @override
@@ -66,40 +85,6 @@ class _LoginPageState extends State<LoginPage> {
       child: FilledButton(
         onPressed: () {
           logUserInAndValidate();
-
-          if (_authProvider.isLoggedIn()) {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const AppHomePage(),
-              ),
-              (r) => false,
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Row(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Icon(
-                      Icons.info_rounded,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Flexible(
-                    child: Text(
-                      'Trouble logging you in, please check you password, email combination',
-                      overflow: TextOverflow.fade,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.white,
-                          ),
-                    ),
-                  ),
-                ],
-              ),
-              backgroundColor: Colors.redAccent,
-            ));
-          }
         },
         child: const Text('Next'),
       ),
@@ -158,6 +143,41 @@ class _LoginPageState extends State<LoginPage> {
           style: Theme.of(context).textTheme.bodyMedium,
           keyboardType: TextInputType.name,
         ),
+      ),
+    );
+  }
+
+  void _showErrorMessage() {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Row(
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(right: 10),
+            child: Icon(
+              Icons.info_rounded,
+              color: Colors.white,
+            ),
+          ),
+          Flexible(
+            child: Text(
+              'Trouble logging you in, please check you password, email combination',
+              overflow: TextOverflow.fade,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Colors.white,
+                  ),
+            ),
+          ),
+        ],
+      ),
+      backgroundColor: Colors.redAccent,
+    ));
+  }
+
+  void _showSuccessMessage() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Login successful'),
+        backgroundColor: Colors.green,
       ),
     );
   }

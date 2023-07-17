@@ -19,8 +19,14 @@ class Unit extends Resource {
   Id? id;
   late String name;
 
+  @Name("object_id")
+  late String objectID;
+
+  String? owner;
+
   @Name("unit_code")
   late String unitCode;
+
   String? description;
   late String lecturer;
 
@@ -53,30 +59,38 @@ class Unit extends Resource {
 
   factory Unit.fromJson(
       {required String uid, required Map<String, dynamic> json}) {
+    final objectID = json["_id"].toString();
     final name = json["name"].toString();
     final unitCode = json["unit_code"].toString();
     final description = json["descrption"].toString();
     final lecturer = json["lecturer"].toString();
-    // final created = json["created"].toString();
-    // final lastModified = json["last_modified"].toString();
+    final created = json["created"].toString();
+    final lastModified = json["last_modified"].toString();
+    final owner = json["owner"].toString();
+
     return Unit(
       name: name,
       description: description,
       unitCode: unitCode,
       lecturer: lecturer,
-    );
+    )
+      ..objectID = objectID
+      ..created = DateTime.parse(created)
+      ..lastModified = DateTime.parse(lastModified)
+      ..owner = owner;
   }
 
-  dynamic toJson() {
-    return {
-      "name": name,
-      "unit_code": unitCode,
-      "description": description,
-      "lecturer": lecturer,
-      "created": created.toString(),
-      "last_modified": lastModified.toString()
-    };
-  }
+  @override
+  dynamic toJson() => {
+        "_id": objectID,
+        "name": name,
+        "unit_code": unitCode,
+        "description": description,
+        "lecturer": lecturer,
+        "created": created.toIso8601String(),
+        "last_modified": lastModified.toIso8601String(),
+        "owner": owner,
+      };
 
   @override
   String toString() {

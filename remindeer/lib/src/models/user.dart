@@ -1,43 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:remindeer/src/models/resource.dart';
 
-class User extends Resource {
+class User {
+  final String id;
   final String username;
   final String email;
   final String name;
-  final String? photoUrl;
+  final String? photo;
   final String? phonenumber;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   User(
-      {required String uid,
+      {required this.id,
       required this.name,
       required this.username,
       required this.email,
       this.phonenumber,
-      this.photoUrl,
-      required DateTime created,
-      required DateTime lastModified})
-      : super(uid: uid, created: created, lastModified: lastModified);
+      this.photo,
+      required this.createdAt,
+      required this.updatedAt});
 
   factory User.fromJson({
-    required String uid,
     required Map<String, dynamic> json,
   }) {
-    var name = json["name"].toString();
-    var created = json["created"].toString();
-    var lastModified = json["last_modified"].toString();
-    var username = json["username"].toString();
-    var email = json["email"].toString();
-    var photoUrl = json["photo_url"].toString();
+    final id = json["uid"].toString();
+    final name = json["name"].toString();
+    final created = json["created_at"].toString();
+    final lastModified = json["updated_at"].toString();
+    final username = json["username"].toString();
+    final email = json["email"].toString();
+    final photoUrl = json["photo"].toString();
+    final phoneNumber = json["phone_number"].toString();
 
     return User(
-        uid: uid,
+        id: id,
         name: name,
         username: username,
         email: email,
-        photoUrl: photoUrl,
-        created: DateTime.parse(created),
-        lastModified: DateTime.parse(lastModified));
+        photo: photoUrl,
+        phonenumber: phoneNumber,
+        createdAt: DateTime.parse(created),
+        updatedAt: DateTime.parse(lastModified));
   }
 
   factory User.fromApi({required Map<String, dynamic> json}) {
@@ -47,27 +50,28 @@ class User extends Resource {
     final email = json["email"].toString();
     final createdAt = json["created_at"].toString();
     final phonenumber = json["phone_number"].toString();
-    final lastModified = json["last_modified"].toString();
+    final lastModified = json["updated_at"].toString();
 
     return User(
-        uid: id,
+        id: id,
         name: name,
         username: username,
         email: email,
         phonenumber: phonenumber,
-        created: DateTime.parse(createdAt),
-        lastModified: DateTime.parse(lastModified));
+        createdAt: DateTime.parse(createdAt),
+        updatedAt: DateTime.parse(lastModified));
   }
 
   dynamic toJson() {
     return {
-      uid: {
-        "username": username,
-        "email": email,
-        "photo_url": photoUrl,
-        "created": created.toString(),
-        "last_modified": lastModified.toString(),
-      }
+      "id": id,
+      "name": name,
+      "username": username,
+      "email": email,
+      "phone_number": phonenumber,
+      "photo": photo,
+      "created_at": createdAt.toString(),
+      "updated_at": updatedAt.toString(),
     };
   }
 
@@ -76,7 +80,6 @@ class User extends Resource {
     return "[User] ${toJson()}";
   }
 
-  @override
   Widget toResourceItem(BuildContext context) {
     return const CircleAvatar();
   }

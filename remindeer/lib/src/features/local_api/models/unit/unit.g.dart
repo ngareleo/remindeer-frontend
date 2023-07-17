@@ -47,8 +47,18 @@ const UnitSchema = CollectionSchema(
       name: r'name',
       type: IsarType.string,
     ),
-    r'unit_code': PropertySchema(
+    r'object_id': PropertySchema(
       id: 6,
+      name: r'object_id',
+      type: IsarType.string,
+    ),
+    r'owner': PropertySchema(
+      id: 7,
+      name: r'owner',
+      type: IsarType.string,
+    ),
+    r'unit_code': PropertySchema(
+      id: 8,
       name: r'unit_code',
       type: IsarType.string,
     )
@@ -116,6 +126,13 @@ int _unitEstimateSize(
   }
   bytesCount += 3 + object.lecturer.length * 3;
   bytesCount += 3 + object.name.length * 3;
+  bytesCount += 3 + object.objectID.length * 3;
+  {
+    final value = object.owner;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.unitCode.length * 3;
   return bytesCount;
 }
@@ -132,7 +149,9 @@ void _unitSerialize(
   writer.writeDateTime(offsets[3], object.lastModified);
   writer.writeString(offsets[4], object.lecturer);
   writer.writeString(offsets[5], object.name);
-  writer.writeString(offsets[6], object.unitCode);
+  writer.writeString(offsets[6], object.objectID);
+  writer.writeString(offsets[7], object.owner);
+  writer.writeString(offsets[8], object.unitCode);
 }
 
 Unit _unitDeserialize(
@@ -146,10 +165,12 @@ Unit _unitDeserialize(
     id: id,
     lecturer: reader.readString(offsets[4]),
     name: reader.readString(offsets[5]),
-    unitCode: reader.readString(offsets[6]),
+    unitCode: reader.readString(offsets[8]),
   );
   object.created = reader.readDateTime(offsets[0]);
   object.lastModified = reader.readDateTime(offsets[3]);
+  object.objectID = reader.readString(offsets[6]);
+  object.owner = reader.readStringOrNull(offsets[7]);
   return object;
 }
 
@@ -173,6 +194,10 @@ P _unitDeserializeProp<P>(
     case 5:
       return (reader.readString(offset)) as P;
     case 6:
+      return (reader.readString(offset)) as P;
+    case 7:
+      return (reader.readStringOrNull(offset)) as P;
+    case 8:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -866,6 +891,279 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> objectIDEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> objectIDGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> objectIDLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> objectIDBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'object_id',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> objectIDStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> objectIDEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> objectIDContains(String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> objectIDMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'object_id',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> objectIDIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'object_id',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> objectIDIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'object_id',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> ownerIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'owner',
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> ownerIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'owner',
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> ownerEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> ownerGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> ownerLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> ownerBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'owner',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> ownerStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> ownerEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> ownerContains(String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> ownerMatches(String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'owner',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> ownerIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'owner',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> ownerIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'owner',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<Unit, Unit, QAfterFilterCondition> unitCodeEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -1308,6 +1606,30 @@ extension UnitQuerySortBy on QueryBuilder<Unit, Unit, QSortBy> {
     });
   }
 
+  QueryBuilder<Unit, Unit, QAfterSortBy> sortByObjectID() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'object_id', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterSortBy> sortByObjectIDDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'object_id', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterSortBy> sortByOwner() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'owner', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterSortBy> sortByOwnerDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'owner', Sort.desc);
+    });
+  }
+
   QueryBuilder<Unit, Unit, QAfterSortBy> sortByUnitCode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'unit_code', Sort.asc);
@@ -1406,6 +1728,30 @@ extension UnitQuerySortThenBy on QueryBuilder<Unit, Unit, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Unit, Unit, QAfterSortBy> thenByObjectID() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'object_id', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterSortBy> thenByObjectIDDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'object_id', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterSortBy> thenByOwner() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'owner', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterSortBy> thenByOwnerDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'owner', Sort.desc);
+    });
+  }
+
   QueryBuilder<Unit, Unit, QAfterSortBy> thenByUnitCode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'unit_code', Sort.asc);
@@ -1459,6 +1805,20 @@ extension UnitQueryWhereDistinct on QueryBuilder<Unit, Unit, QDistinct> {
     });
   }
 
+  QueryBuilder<Unit, Unit, QDistinct> distinctByObjectID(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'object_id', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QDistinct> distinctByOwner(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'owner', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Unit, Unit, QDistinct> distinctByUnitCode(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1507,6 +1867,18 @@ extension UnitQueryProperty on QueryBuilder<Unit, Unit, QQueryProperty> {
   QueryBuilder<Unit, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
+    });
+  }
+
+  QueryBuilder<Unit, String, QQueryOperations> objectIDProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'object_id');
+    });
+  }
+
+  QueryBuilder<Unit, String?, QQueryOperations> ownerProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'owner');
     });
   }
 

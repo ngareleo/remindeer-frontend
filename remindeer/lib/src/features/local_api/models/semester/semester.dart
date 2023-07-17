@@ -19,6 +19,12 @@ const _resourceName = "Semester";
 class Semester extends Resource {
   Id? id;
   late String label;
+
+  @Name("object_id")
+  late String objectID;
+
+  String? owner;
+
   String? descrption;
   late DateTime from = DateTime.now();
   late DateTime to;
@@ -57,35 +63,39 @@ class Semester extends Resource {
     );
   }
 
-  factory Semester.fromJson({
-    required String id,
-    required Map<String, dynamic> json,
-  }) {
-    // var created = json["created"].toString();
-    // var lastModified = json["last_modified"].toString();
-    var from = json["from"].toString();
-    var to = json["to"].toString();
-    var name = json["name"].toString();
-    var description = json["description"].toString();
+  factory Semester.fromJson(Map<String, dynamic> json) {
+    final objectID = json["_id"].toString();
+    final created = json["created_at"].toString();
+    final lastModified = json["updated_at"].toString();
+    final from = json["from"].toString();
+    final to = json["to"].toString();
+    final label = json["label"].toString();
+    final description = json["description"].toString();
+    final owner = json["owner"].toString();
 
     return Semester(
-      label: name,
+      label: label,
       descrption: description,
       from: DateTime.parse(from),
       to: DateTime.parse(to),
-    );
+    )
+      ..created = DateTime.parse(created)
+      ..lastModified = DateTime.parse(lastModified)
+      ..objectID = objectID
+      ..owner = owner;
   }
 
-  dynamic toJson() {
-    return {
-      "name": label,
-      "description": descrption,
-      "from": from.toString(),
-      "to": to.toString(),
-      "created": created.toString(),
-      "last_modified": lastModified.toString()
-    };
-  }
+  @override
+  dynamic toJson() => {
+        "_id": objectID,
+        "label": label,
+        "description": descrption,
+        "from": from.toIso8601String(),
+        "to": to.toIso8601String(),
+        "created_at": created.toIso8601String(),
+        "updated_at": lastModified.toIso8601String(),
+        "owner": owner,
+      };
 
   @override
   String toString() {

@@ -53,24 +53,34 @@ const EventSchema = CollectionSchema(
       name: r'last_modified',
       type: IsarType.dateTime,
     ),
-    r'repeat': PropertySchema(
+    r'object_id': PropertySchema(
       id: 7,
+      name: r'object_id',
+      type: IsarType.string,
+    ),
+    r'owner': PropertySchema(
+      id: 8,
+      name: r'owner',
+      type: IsarType.string,
+    ),
+    r'repeat': PropertySchema(
+      id: 9,
       name: r'repeat',
       type: IsarType.byte,
       enumMap: _EventrepeatEnumValueMap,
     ),
     r'repeat_to': PropertySchema(
-      id: 8,
+      id: 10,
       name: r'repeat_to',
       type: IsarType.dateTime,
     ),
     r'venue': PropertySchema(
-      id: 9,
+      id: 11,
       name: r'venue',
       type: IsarType.string,
     ),
     r'window': PropertySchema(
-      id: 10,
+      id: 12,
       name: r'window',
       type: IsarType.object,
       target: r'EventWindow',
@@ -129,6 +139,18 @@ int _eventEstimateSize(
   }
   bytesCount += 3 + object.label.length * 3;
   {
+    final value = object.objectID;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.owner;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.venue;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -153,11 +175,13 @@ void _eventSerialize(
   writer.writeBool(offsets[4], object.hasListeners);
   writer.writeString(offsets[5], object.label);
   writer.writeDateTime(offsets[6], object.lastModified);
-  writer.writeByte(offsets[7], object.repeat.index);
-  writer.writeDateTime(offsets[8], object.repeatTo);
-  writer.writeString(offsets[9], object.venue);
+  writer.writeString(offsets[7], object.objectID);
+  writer.writeString(offsets[8], object.owner);
+  writer.writeByte(offsets[9], object.repeat.index);
+  writer.writeDateTime(offsets[10], object.repeatTo);
+  writer.writeString(offsets[11], object.venue);
   writer.writeObject<EventWindow>(
-    offsets[10],
+    offsets[12],
     allOffsets,
     EventWindowSchema.serialize,
     object.window,
@@ -175,18 +199,22 @@ Event _eventDeserialize(
     description: reader.readStringOrNull(offsets[2]),
     eventDate: reader.readDateTimeOrNull(offsets[3]),
     label: reader.readString(offsets[5]),
-    repeat: _EventrepeatValueEnumMap[reader.readByteOrNull(offsets[7])] ??
+    repeat: _EventrepeatValueEnumMap[reader.readByteOrNull(offsets[9])] ??
         RepeatFrequency.none,
-    repeatTo: reader.readDateTimeOrNull(offsets[8]),
-    venue: reader.readStringOrNull(offsets[9]),
+    repeatTo: reader.readDateTimeOrNull(offsets[10]),
+    venue: reader.readStringOrNull(offsets[11]),
     window: reader.readObjectOrNull<EventWindow>(
-          offsets[10],
+          offsets[12],
           EventWindowSchema.deserialize,
           allOffsets,
         ) ??
         EventWindow(),
   );
+  object.created = reader.readDateTime(offsets[0]);
   object.id = id;
+  object.lastModified = reader.readDateTime(offsets[6]);
+  object.objectID = reader.readStringOrNull(offsets[7]);
+  object.owner = reader.readStringOrNull(offsets[8]);
   return object;
 }
 
@@ -213,13 +241,17 @@ P _eventDeserializeProp<P>(
     case 6:
       return (reader.readDateTime(offset)) as P;
     case 7:
+      return (reader.readStringOrNull(offset)) as P;
+    case 8:
+      return (reader.readStringOrNull(offset)) as P;
+    case 9:
       return (_EventrepeatValueEnumMap[reader.readByteOrNull(offset)] ??
           RepeatFrequency.none) as P;
-    case 8:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 9:
-      return (reader.readStringOrNull(offset)) as P;
     case 10:
+      return (reader.readDateTimeOrNull(offset)) as P;
+    case 11:
+      return (reader.readStringOrNull(offset)) as P;
+    case 12:
       return (reader.readObjectOrNull<EventWindow>(
             offset,
             EventWindowSchema.deserialize,
@@ -1029,6 +1061,296 @@ extension EventQueryFilter on QueryBuilder<Event, Event, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Event, Event, QAfterFilterCondition> objectIDIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'object_id',
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> objectIDIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'object_id',
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> objectIDEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> objectIDGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> objectIDLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> objectIDBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'object_id',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> objectIDStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> objectIDEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> objectIDContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'object_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> objectIDMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'object_id',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> objectIDIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'object_id',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> objectIDIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'object_id',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> ownerIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'owner',
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> ownerIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'owner',
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> ownerEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> ownerGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> ownerLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> ownerBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'owner',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> ownerStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> ownerEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> ownerContains(String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'owner',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> ownerMatches(String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'owner',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> ownerIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'owner',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterFilterCondition> ownerIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'owner',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<Event, Event, QAfterFilterCondition> repeatEqualTo(
       RepeatFrequency value) {
     return QueryBuilder.apply(this, (query) {
@@ -1430,6 +1752,30 @@ extension EventQuerySortBy on QueryBuilder<Event, Event, QSortBy> {
     });
   }
 
+  QueryBuilder<Event, Event, QAfterSortBy> sortByObjectID() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'object_id', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByObjectIDDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'object_id', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByOwner() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'owner', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> sortByOwnerDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'owner', Sort.desc);
+    });
+  }
+
   QueryBuilder<Event, Event, QAfterSortBy> sortByRepeat() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'repeat', Sort.asc);
@@ -1564,6 +1910,30 @@ extension EventQuerySortThenBy on QueryBuilder<Event, Event, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Event, Event, QAfterSortBy> thenByObjectID() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'object_id', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByObjectIDDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'object_id', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByOwner() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'owner', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Event, Event, QAfterSortBy> thenByOwnerDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'owner', Sort.desc);
+    });
+  }
+
   QueryBuilder<Event, Event, QAfterSortBy> thenByRepeat() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'repeat', Sort.asc);
@@ -1647,6 +2017,20 @@ extension EventQueryWhereDistinct on QueryBuilder<Event, Event, QDistinct> {
     });
   }
 
+  QueryBuilder<Event, Event, QDistinct> distinctByObjectID(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'object_id', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Event, Event, QDistinct> distinctByOwner(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'owner', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Event, Event, QDistinct> distinctByRepeat() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'repeat');
@@ -1713,6 +2097,18 @@ extension EventQueryProperty on QueryBuilder<Event, Event, QQueryProperty> {
   QueryBuilder<Event, DateTime, QQueryOperations> lastModifiedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'last_modified');
+    });
+  }
+
+  QueryBuilder<Event, String?, QQueryOperations> objectIDProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'object_id');
+    });
+  }
+
+  QueryBuilder<Event, String?, QQueryOperations> ownerProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'owner');
     });
   }
 

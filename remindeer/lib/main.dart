@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:remindeer/src/common/theme/app_theme.dart';
 import 'package:remindeer/src/features/authentication/auth.dart';
 import 'package:remindeer/src/features/local_api/models/event/event.dart';
+import 'package:remindeer/src/features/remote_api/sharing.dart';
 import 'package:remindeer/src/screens/home.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
@@ -19,6 +20,7 @@ import 'package:remindeer/src/features/local_api/repository/semester_repository.
 import 'package:remindeer/src/features/local_api/repository/task_repository.dart';
 import 'package:remindeer/src/features/local_api/repository/timetable_repository.dart';
 import 'package:remindeer/src/features/local_api/repository/unit_repository.dart';
+import 'package:remindeer/src/screens/pages/login/login.dart';
 
 // This widget is the root of your application.
 void main() async {
@@ -40,6 +42,7 @@ void main() async {
   UnitRepository(isar);
   HomeworkRepository(isar);
   LectureRepository(isar);
+  SharingProvider.build();
   runApp(ChangeNotifierProvider(
       create: (context) => AuthProvider.instance(), child: const MyApp()));
 }
@@ -59,9 +62,8 @@ class _MyApp extends State<MyApp> {
         title: 'Remindeer',
         theme: appTheme,
         debugShowCheckedModeBanner: false,
-        home: authProvider.isLoggedIn()
-            ? const AppHomePage()
-            : const AppHomePage(),
+        home:
+            authProvider.isLoggedIn() ? const AppHomePage() : const LoginPage(),
       );
     });
   }

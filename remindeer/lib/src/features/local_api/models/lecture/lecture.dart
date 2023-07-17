@@ -19,8 +19,12 @@ class Lecture extends Resource {
   late String venue;
   String? description;
 
-  final unit = IsarLink<Unit>();
+  @Name("object_id")
+  late String objectID;
 
+  String? owner;
+
+  final unit = IsarLink<Unit>();
   final timetable = IsarLink<Timetable>();
 
   @enumerated
@@ -43,36 +47,47 @@ class Lecture extends Resource {
     required this.repeatTo,
   });
 
-  factory Lecture.fromJson(
-      {required String uid,
-      required Map<String, dynamic> json,
-      required Unit? unit,
-      required Timetable? timetable}) {
-    // final created = json["created"].toString();
-    // final lastModified = json["last_modified"].toString();
+  factory Lecture.fromJson(Map<String, dynamic> json) {
+    final created = json["created_at"].toString();
+    final lastModified = json["updated_at"].toString();
     final repeatTo = json["repeat_to"].toString();
     final from = json["from"].toString();
     final to = json["to"].toString();
     final dayOfWeek = json["day_of_week"].toString();
     final venue = json["venue"].toString();
+    final label = json["label"].toString();
+    final objectID = json["_id"].toString();
+    final descriptions = json["description"].toString();
+    final owner = json["owner"].toString();
+
     return Lecture(
-      label: "",
+      label: label,
+      description: descriptions,
       venue: venue,
       window: LectureWindow(from: int.parse(from), to: int.parse(to)),
       repeatTo: DateTime.parse(repeatTo),
       dayOfWeek: mapToDayOfWeek(int.parse(dayOfWeek)),
-    );
+    )
+      ..created = DateTime.parse(created)
+      ..lastModified = DateTime.parse(lastModified)
+      ..objectID = objectID
+      ..owner = owner;
   }
 
+  @override
   dynamic toJson() => {
-        "unit": unit.load(),
-        "timetable": timetable.load(),
+        "_id": objectID,
+        "label": label,
+        "description": description ?? "",
+        "from": window.from,
+        "to": window.to,
         "venue": venue,
-        "repeat_to": repeatTo.toString(),
-        "created": created.toString(),
-        "last_modified": lastModified.toString(),
-        "day_of_week": dayOfWeek.index
-      }..addEntries(window.toJson());
+        "repeat_to": repeatTo.toIso8601String(),
+        "day": dayOfWeek.fullValue,
+        "owner": owner,
+        "created_at": created..toIso8601String(),
+        "updated_at": lastModified.toIso8601String(),
+      };
 
   @override
   String toString() => "[Lecture] ${toJson()}";

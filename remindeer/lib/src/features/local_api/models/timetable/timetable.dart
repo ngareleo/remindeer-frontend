@@ -9,6 +9,7 @@ import '../lecture/lecture.dart';
 import '../resource.dart';
 import '../semester/semester.dart';
 import '../task/task.dart';
+
 part 'timetable.g.dart';
 
 const _resourceName = "Timetable";
@@ -19,6 +20,11 @@ class Timetable extends Resource {
   Id? id;
   late String label;
   String? description;
+
+  @Name("object_id")
+  late String objectID;
+
+  String? owner;
 
   final semester = IsarLink<Semester>();
 
@@ -44,30 +50,35 @@ class Timetable extends Resource {
     this.description,
   });
 
-  factory Timetable.fromJson(
-      {required String uid, required Map<String, dynamic> json}) {
+  factory Timetable.fromJson(Map<String, dynamic> json) {
+    final objectID = json["_id"].toString();
+    final owner = json["owner"].toString();
     final label = json["label"].toString();
     final description = json["description"].toString();
     final validUntil = json["valid_until"].toString();
-    // final created = json["created"].toString();
-    // final lastModified = json["last_modified"].toString();
+    final created = json["created_at"].toString();
+    final lastModified = json["updated_at"].toString();
     return Timetable(
       label: label,
       description: description,
       validUntil: DateTime.parse(validUntil),
-    );
+    )
+      ..created = DateTime.parse(created)
+      ..lastModified = DateTime.parse(lastModified)
+      ..objectID = objectID
+      ..owner = owner;
   }
 
-  dynamic toJson() {
-    return {
-      "id": id,
-      "label": label,
-      "description": description,
-      "valid_until": validUntil.toString(),
-      "created": created.toString(),
-      "last_modified": lastModified.toString()
-    };
-  }
+  @override
+  dynamic toJson() => {
+        "_id": objectID,
+        "owner": owner,
+        "label": label,
+        "description": description,
+        "valid_until": validUntil.toIso8601String(),
+        "created_at": created.toIso8601String(),
+        "updated_at": lastModified.toIso8601String(),
+      };
 
   @override
   String toString() {

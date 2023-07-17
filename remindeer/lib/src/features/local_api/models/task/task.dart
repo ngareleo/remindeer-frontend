@@ -20,18 +20,25 @@ class Task extends Resource {
   String? description;
   bool? repeat;
 
+  @Name("object_id")
+  late String objectID;
+
+  String? owner;
+
   @Name("repeat_to")
-  int? repeatTo;
+  DateTime? repeatTo;
+
   DateTime? due;
   DateTime? completed;
-  final DateTime created = DateTime.now();
 
   final timetable = IsarLink<Timetable>();
   final unit = IsarLink<Unit>();
   final semester = IsarLink<Semester>();
 
+  DateTime created = DateTime.now();
+
   @Name("last_modified")
-  final DateTime lastModified = DateTime.now();
+  DateTime lastModified = DateTime.now();
 
   Task({
     required this.label,
@@ -43,6 +50,34 @@ class Task extends Resource {
     this.completed,
   });
 
+  factory Task.fromJson(Map<String, dynamic> json) {
+    final objectID = json["_id"].toString();
+    final label = json["label"].toString();
+    final description = json["description"].toString();
+    final venue = json["venue"].toString();
+    final created = json["created"].toString();
+    final lastModified = json["last_modified"].toString();
+    final due = json["due"].toString();
+    final completed = json["completed"].toString();
+    final repeat = json["repeat"].toString();
+    final repeatTo = json["repeat_to"].toString();
+    final owner = json["owner"].toString();
+
+    return Task(
+      label: label,
+      description: description,
+      venue: venue,
+      due: DateTime.parse(due),
+      repeat: bool.parse(repeat),
+      repeatTo: DateTime.parse(repeatTo),
+    )
+      ..completed = DateTime.parse(completed)
+      ..objectID = objectID
+      ..created = DateTime.parse(created)
+      ..lastModified = DateTime.parse(lastModified)
+      ..owner = owner;
+  }
+
   @override
   Widget toResourceItem(BuildContext context) {
     return ResourceCard(
@@ -51,4 +86,19 @@ class Task extends Resource {
       trailingText: convertToReadableDifference(lastModified),
     );
   }
+
+  @override
+  dynamic toJson() => {
+        "_id": objectID,
+        "label": label,
+        "description": description,
+        "venue": venue,
+        "due": due?.toIso8601String(),
+        "repeat": repeat,
+        "repeat_to": repeatTo?.toIso8601String(),
+        "completed": completed?.toIso8601String(),
+        "created": created.toIso8601String(),
+        "last_modified": lastModified.toIso8601String(),
+        "owner": owner,
+      };
 }

@@ -6,19 +6,17 @@ import 'package:remindeer/src/features/local_api/repository/homework_repository.
 import 'package:remindeer/src/screens/pages/dashboard/components/dashboard_group.dart';
 import 'package:remindeer/src/screens/pages/dashboard/components/dashboard_group_item.dart';
 
-class HomeworkDueThisWeekSection extends StatefulWidget {
+class OverdueHomework extends StatefulWidget {
   final List<Homework> homework;
   final DateTime today;
-  const HomeworkDueThisWeekSection(
+  const OverdueHomework(
       {super.key, required this.homework, required this.today});
 
   @override
-  State<HomeworkDueThisWeekSection> createState() =>
-      _HomeworkDueThisWeekSectionState();
+  State<OverdueHomework> createState() => _OverdueHomeworkState();
 }
 
-class _HomeworkDueThisWeekSectionState
-    extends State<HomeworkDueThisWeekSection> {
+class _OverdueHomeworkState extends State<OverdueHomework> {
   final _homework = <Homework>[];
   final _unitHomeworkMap = <Homework, Unit>{};
 
@@ -34,8 +32,7 @@ class _HomeworkDueThisWeekSectionState
     final homework = await _homeworkRepository.getAllHomework();
     setState(() => _homework
       ..clear()
-      ..addAll(getHomeworkDueThisWeek(homework, widget.today)));
-
+      ..addAll(getOverdueHomework(homework, widget.today)));
     await _fillUnitHomeworkMap();
   }
 
@@ -55,7 +52,7 @@ class _HomeworkDueThisWeekSectionState
         children: List.generate(
             _homework.length,
             (index) => DashboardGroupItem(
-                labelLeadingText: "In",
+                labelLeadingText: "By",
                 labelTrailingText:
                     "${widget.today.difference(map[index].key.due).inDays} days",
                 label: map[index].value.name,
@@ -63,7 +60,7 @@ class _HomeworkDueThisWeekSectionState
                 rightText: map[index].value.lecturer)));
 
     return DashboardGroup(
-      label: "Homework due this week",
+      label: "Overdue homework",
       child: children,
     );
   }

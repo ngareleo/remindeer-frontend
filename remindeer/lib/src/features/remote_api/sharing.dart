@@ -9,6 +9,7 @@ class SharingProvider {
 
   SharingProvider._() {
     _dio = Dio(BaseOptions(
+      baseUrl: "http://localhost:3000/api/share",
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
       headers: {
@@ -33,9 +34,8 @@ class SharingProvider {
   }
 
   Future<void> shareSemester(
-      Semester semester, SemesterRepository semesterRepository) async {
-    int id = semester.id!;
-
+      int id, SemesterRepository semesterRepository) async {
+    var semester = await semesterRepository.getSemester(id);
     var data = await Future.wait([
       semesterRepository.getAllTimetables(id),
       semesterRepository.getAllEvents(id),
@@ -50,9 +50,10 @@ class SharingProvider {
       "homeworks": data[2].map((e) => e.toJson()).toList(),
       "tasks": data[3].map((e) => e.toJson()).toList(),
       "units": data[4].map((e) => e.toJson()).toList(),
+      "semester": semester?.toJson(),
     };
 
-    final response = await _dio?.post("/api/semester/share", data: payload);
+    final response = await _dio?.post("/semester", data: payload);
     debugPrint(response?.data.toString());
   }
 }

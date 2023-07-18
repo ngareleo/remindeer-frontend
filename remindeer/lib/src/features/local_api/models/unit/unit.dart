@@ -62,7 +62,7 @@ class Unit extends Resource {
     final objectID = json["_id"].toString();
     final name = json["name"].toString();
     final unitCode = json["unit_code"].toString();
-    final description = json["descrption"].toString();
+    final description = json["description"].toString();
     final lecturer = json["lecturer"].toString();
     final created = json["created"].toString();
     final lastModified = json["last_modified"].toString();

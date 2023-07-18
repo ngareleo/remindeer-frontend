@@ -21,7 +21,7 @@ class Task extends Resource {
   bool? repeat;
 
   @Name("object_id")
-  late String objectID;
+  String? objectID;
 
   String? owner;
 
@@ -101,4 +101,28 @@ class Task extends Resource {
         "last_modified": lastModified.toIso8601String(),
         "owner": owner,
       };
+
+  dynamic toJsonWithAssociation({
+    String? timetableObjectID,
+    String? unitObjectID,
+    String? semesterObjectID,
+  }) =>
+      Map.from(toJson()).addAll({
+        "timetable_id": timetableObjectID,
+        "unit_id": unitObjectID,
+        "semester_id": semesterObjectID,
+      });
+
+  void updateFromServerCopy(Task newCopy) {
+    label = newCopy.label;
+    description = newCopy.description;
+    venue = newCopy.venue;
+    due = newCopy.due;
+    repeat = newCopy.repeat;
+    repeatTo = newCopy.repeatTo;
+    completed = newCopy.completed;
+    lastModified = newCopy.lastModified;
+    owner = newCopy.owner;
+    objectID = newCopy.objectID;
+  }
 }

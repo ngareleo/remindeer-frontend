@@ -20,7 +20,7 @@ class Unit extends Resource {
   late String name;
 
   @Name("object_id")
-  late String objectID;
+  String? objectID;
 
   String? owner;
 
@@ -57,8 +57,7 @@ class Unit extends Resource {
     required this.lecturer,
   });
 
-  factory Unit.fromJson(
-      {required String uid, required Map<String, dynamic> json}) {
+  factory Unit.fromJson(Map<String, dynamic> json) {
     final objectID = json["_id"].toString();
     final name = json["name"].toString();
     final unitCode = json["unit_code"].toString();
@@ -87,10 +86,23 @@ class Unit extends Resource {
         "unit_code": unitCode,
         "description": description,
         "lecturer": lecturer,
-        "created": created.toIso8601String(),
-        "last_modified": lastModified.toIso8601String(),
+        "created_at": created.toIso8601String(),
+        "updated_at": lastModified.toIso8601String(),
         "owner": owner,
       };
+
+  void updateFromServerCopy(Unit unit) {
+    objectID = unit.objectID;
+    owner = unit.owner;
+    name = unit.name;
+    unitCode = unit.unitCode;
+    description = unit.description;
+    lecturer = unit.lecturer;
+    lastModified = unit.lastModified;
+  }
+
+  dynamic toJsonWithAssociation(String semesterObjectID) =>
+      Map.from(toJson()).addAll({"semester_id": semesterObjectID});
 
   @override
   String toString() {

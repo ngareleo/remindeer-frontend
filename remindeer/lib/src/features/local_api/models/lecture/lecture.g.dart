@@ -115,7 +115,12 @@ int _lectureEstimateSize(
     }
   }
   bytesCount += 3 + object.label.length * 3;
-  bytesCount += 3 + object.objectID.length * 3;
+  {
+    final value = object.objectID;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   {
     final value = object.owner;
     if (value != null) {
@@ -177,7 +182,7 @@ Lecture _lectureDeserialize(
   object.created = reader.readDateTime(offsets[0]);
   object.id = id;
   object.lastModified = reader.readDateTime(offsets[5]);
-  object.objectID = reader.readString(offsets[6]);
+  object.objectID = reader.readStringOrNull(offsets[6]);
   object.owner = reader.readStringOrNull(offsets[7]);
   return object;
 }
@@ -203,7 +208,7 @@ P _lectureDeserializeProp<P>(
     case 5:
       return (reader.readDateTime(offset)) as P;
     case 6:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 7:
       return (reader.readStringOrNull(offset)) as P;
     case 8:
@@ -847,8 +852,24 @@ extension LectureQueryFilter
     });
   }
 
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> objectIDIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'object_id',
+      ));
+    });
+  }
+
+  QueryBuilder<Lecture, Lecture, QAfterFilterCondition> objectIDIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'object_id',
+      ));
+    });
+  }
+
   QueryBuilder<Lecture, Lecture, QAfterFilterCondition> objectIDEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -861,7 +882,7 @@ extension LectureQueryFilter
   }
 
   QueryBuilder<Lecture, Lecture, QAfterFilterCondition> objectIDGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -876,7 +897,7 @@ extension LectureQueryFilter
   }
 
   QueryBuilder<Lecture, Lecture, QAfterFilterCondition> objectIDLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -891,8 +912,8 @@ extension LectureQueryFilter
   }
 
   QueryBuilder<Lecture, Lecture, QAfterFilterCondition> objectIDBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -1715,7 +1736,7 @@ extension LectureQueryProperty
     });
   }
 
-  QueryBuilder<Lecture, String, QQueryOperations> objectIDProperty() {
+  QueryBuilder<Lecture, String?, QQueryOperations> objectIDProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'object_id');
     });

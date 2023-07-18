@@ -22,7 +22,7 @@ class Timetable extends Resource {
   String? description;
 
   @Name("object_id")
-  late String objectID;
+  String? objectID;
 
   String? owner;
 
@@ -79,6 +79,18 @@ class Timetable extends Resource {
         "created_at": created.toIso8601String(),
         "updated_at": lastModified.toIso8601String(),
       };
+
+  dynamic toJsonWithAssociation(String semesterObjectID) =>
+      Map.from(toJson())..addAll({"semester_id": semesterObjectID});
+
+  dynamic updateFromServerCopy(Timetable newTimetable) {
+    objectID = newTimetable.objectID;
+    owner = newTimetable.owner;
+    label = newTimetable.label;
+    description = newTimetable.description;
+    validUntil = newTimetable.validUntil;
+    lastModified = newTimetable.lastModified;
+  }
 
   @override
   String toString() {

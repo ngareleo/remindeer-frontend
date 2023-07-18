@@ -20,7 +20,7 @@ class AuthProvider extends ChangeNotifier {
   AuthProvider._() {
     _getUserDetailsFromPersist();
     _dio = Dio(BaseOptions(
-      baseUrl: "http://localhost:3000",
+      baseUrl: "http://d74b-41-84-131-94.ngrok-free.app",
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
       headers: {

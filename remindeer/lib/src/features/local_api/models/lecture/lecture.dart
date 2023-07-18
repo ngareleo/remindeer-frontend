@@ -20,7 +20,7 @@ class Lecture extends Resource {
   String? description;
 
   @Name("object_id")
-  late String objectID;
+  String? objectID;
 
   String? owner;
 
@@ -88,6 +88,26 @@ class Lecture extends Resource {
         "created_at": created..toIso8601String(),
         "updated_at": lastModified.toIso8601String(),
       };
+
+  dynamic toJsonWithAssociation(
+          {required String unitObjectID, required String timetableObjectID}) =>
+      Map.from(toJson())
+        ..addAll({
+          "unitId": unitObjectID,
+          "timetableId": timetableObjectID,
+        });
+
+  void updateFromServerCopy(Lecture newCopy) {
+    label = newCopy.label;
+    venue = newCopy.venue;
+    description = newCopy.description;
+    window = newCopy.window;
+    repeatTo = newCopy.repeatTo;
+    dayOfWeek = newCopy.dayOfWeek;
+    owner = newCopy.owner;
+    lastModified = newCopy.lastModified;
+    objectID = newCopy.objectID;
+  }
 
   @override
   String toString() => "[Lecture] ${toJson()}";

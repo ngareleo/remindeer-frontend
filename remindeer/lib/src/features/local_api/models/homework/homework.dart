@@ -20,7 +20,7 @@ class Homework extends Resource {
   DateTime due;
 
   @Name("object_id")
-  late String objectID;
+  String? objectID;
 
   String? owner;
 
@@ -81,4 +81,20 @@ class Homework extends Resource {
         "created_at": created.toIso8601String(),
         "updated_at": lastModified.toIso8601String(),
       };
+
+  dynamic toJsonWithAssociation(
+          {String? unitObjectID, String? semesterObjectID}) =>
+      Map.from(toJson()).addAll({
+        "unit_id": unitObjectID,
+        "semester_id": semesterObjectID,
+      });
+
+  void updateFromServerCopy(Homework newCopy) {
+    objectID = newCopy.objectID;
+    owner = newCopy.owner;
+    label = newCopy.label;
+    description = newCopy.description;
+    due = newCopy.due;
+    completed = newCopy.completed;
+  }
 }

@@ -21,7 +21,7 @@ class Semester extends Resource {
   late String label;
 
   @Name("object_id")
-  late String objectID;
+  String? objectID;
 
   String? owner;
 
@@ -61,6 +61,17 @@ class Semester extends Resource {
       to: to,
       from: DateTime.now(),
     );
+  }
+
+  void updateFromServerCopy(Semester newSemester) {
+    label = newSemester.label;
+    to = newSemester.to;
+    from = newSemester.from;
+    descrption = newSemester.descrption;
+    lastModified = newSemester.lastModified;
+    objectID = newSemester.objectID;
+    owner = newSemester.owner;
+    lastModified = newSemester.lastModified;
   }
 
   factory Semester.fromJson(Map<String, dynamic> json) {

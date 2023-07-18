@@ -103,7 +103,12 @@ int _homeworkEstimateSize(
     }
   }
   bytesCount += 3 + object.label.length * 3;
-  bytesCount += 3 + object.objectID.length * 3;
+  {
+    final value = object.objectID;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   {
     final value = object.owner;
     if (value != null) {
@@ -145,7 +150,7 @@ Homework _homeworkDeserialize(
   object.created = reader.readDateTime(offsets[1]);
   object.id = id;
   object.lastModified = reader.readDateTime(offsets[6]);
-  object.objectID = reader.readString(offsets[7]);
+  object.objectID = reader.readStringOrNull(offsets[7]);
   object.owner = reader.readStringOrNull(offsets[8]);
   return object;
 }
@@ -172,7 +177,7 @@ P _homeworkDeserializeProp<P>(
     case 6:
       return (reader.readDateTime(offset)) as P;
     case 7:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 8:
       return (reader.readStringOrNull(offset)) as P;
     default:
@@ -857,8 +862,24 @@ extension HomeworkQueryFilter
     });
   }
 
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> objectIDIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'object_id',
+      ));
+    });
+  }
+
+  QueryBuilder<Homework, Homework, QAfterFilterCondition> objectIDIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'object_id',
+      ));
+    });
+  }
+
   QueryBuilder<Homework, Homework, QAfterFilterCondition> objectIDEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -871,7 +892,7 @@ extension HomeworkQueryFilter
   }
 
   QueryBuilder<Homework, Homework, QAfterFilterCondition> objectIDGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -886,7 +907,7 @@ extension HomeworkQueryFilter
   }
 
   QueryBuilder<Homework, Homework, QAfterFilterCondition> objectIDLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -901,8 +922,8 @@ extension HomeworkQueryFilter
   }
 
   QueryBuilder<Homework, Homework, QAfterFilterCondition> objectIDBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -1510,7 +1531,7 @@ extension HomeworkQueryProperty
     });
   }
 
-  QueryBuilder<Homework, String, QQueryOperations> objectIDProperty() {
+  QueryBuilder<Homework, String?, QQueryOperations> objectIDProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'object_id');
     });

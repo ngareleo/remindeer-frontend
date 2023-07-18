@@ -26,7 +26,7 @@ class TimetableRepository {
     return await _isar.timetables.get(id);
   }
 
-  Future<Timetable> createTimetable(Timetable timetable) async {
+  Future<Timetable?> createTimetable(Timetable timetable) async {
     // TODO: add error handling
     // TODO: In the case an insert fails, the return value is null
 

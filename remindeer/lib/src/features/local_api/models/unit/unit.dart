@@ -86,8 +86,8 @@ class Unit extends Resource {
         "unit_code": unitCode,
         "description": description,
         "lecturer": lecturer,
-        "created": created.toIso8601String(),
-        "last_modified": lastModified.toIso8601String(),
+        "created_at": created.toIso8601String(),
+        "updated_at": lastModified.toIso8601String(),
         "owner": owner,
       };
 
@@ -102,7 +102,7 @@ class Unit extends Resource {
   }
 
   dynamic toJsonWithAssociation(String semesterObjectID) =>
-      Map.from(toJson()).addAll({"semesterId": semesterObjectID});
+      Map.from(toJson()).addAll({"semester_id": semesterObjectID});
 
   @override
   String toString() {

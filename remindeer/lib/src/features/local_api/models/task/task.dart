@@ -103,14 +103,14 @@ class Task extends Resource {
       };
 
   dynamic toJsonWithAssociation({
-    required String timetableObjectID,
-    required String unitObjectID,
-    required String semesterObjectID,
+    String? timetableObjectID,
+    String? unitObjectID,
+    String? semesterObjectID,
   }) =>
       Map.from(toJson()).addAll({
-        "timetableId": timetableObjectID,
-        "unitId": unitObjectID,
-        "semesterId": semesterObjectID,
+        "timetable_id": timetableObjectID,
+        "unit_id": unitObjectID,
+        "semester_id": semesterObjectID,
       });
 
   void updateFromServerCopy(Task newCopy) {

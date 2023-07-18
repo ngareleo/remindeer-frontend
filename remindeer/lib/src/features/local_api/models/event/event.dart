@@ -125,15 +125,15 @@ class Event extends Resource {
       };
 
   dynamic toJsonWithAssociations({
-    required String unitObjectID,
-    required String semesterObjectID,
-    required String timetableObjectID,
+    String? unitObjectID,
+    String? semesterObjectID,
+    String? timetableObjectID,
   }) =>
       Map.from(toJson())
         ..addAll({
-          "unitId": unitObjectID,
-          "semesterId": semesterObjectID,
-          "timetableId": timetableObjectID
+          "unit_id": unitObjectID,
+          "semester_id": semesterObjectID,
+          "timetable_id": timetableObjectID
         });
 
   @override

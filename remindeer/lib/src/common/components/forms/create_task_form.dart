@@ -53,7 +53,7 @@ class _CreateTaskFormState extends State<CreateTaskForm> {
             child: FilledButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    _taskRepository.addTask(Task(
+                    _taskRepository.createTask(Task(
                       label: _labelController.text,
                       description: _descriptionController.text,
                     ));

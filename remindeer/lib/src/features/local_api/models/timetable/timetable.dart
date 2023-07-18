@@ -81,7 +81,7 @@ class Timetable extends Resource {
       };
 
   dynamic toJsonWithAssociation(String semesterObjectID) =>
-      Map.from(toJson())..addAll({"semesterId": semesterObjectID});
+      Map.from(toJson())..addAll({"semester_id": semesterObjectID});
 
   dynamic updateFromServerCopy(Timetable newTimetable) {
     objectID = newTimetable.objectID;

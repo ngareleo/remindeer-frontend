@@ -20,7 +20,7 @@ class TaskRepository {
     return _instance!;
   }
 
-  Future<void> addTask(Task task) async {
+  Future<void> createTask(Task task) async {
     await _isar.writeTxn(() async {
       return await _isar.tasks.put(task);
     });

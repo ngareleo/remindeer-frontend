@@ -83,10 +83,10 @@ class Homework extends Resource {
       };
 
   dynamic toJsonWithAssociation(
-          {required String unitObjectID, required String semesterObjectID}) =>
+          {String? unitObjectID, String? semesterObjectID}) =>
       Map.from(toJson()).addAll({
-        "unitId": unitObjectID,
-        "semesterId": semesterObjectID,
+        "unit_id": unitObjectID,
+        "semester_id": semesterObjectID,
       });
 
   void updateFromServerCopy(Homework newCopy) {

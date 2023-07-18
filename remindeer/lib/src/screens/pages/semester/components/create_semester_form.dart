@@ -162,9 +162,7 @@ class _CreateSemesterFormState extends State<CreateSemesterForm> {
           firstDate: DateTime.now(),
           lastDate: DateTime.now().add(const Duration(days: 365)),
         );
-        setState(() {
-          _semesterEndDate = temp;
-        });
+        setState(() => _semesterEndDate = temp);
       },
       child: _semesterEndDate == null
           ? const Text('Choose semester end date')

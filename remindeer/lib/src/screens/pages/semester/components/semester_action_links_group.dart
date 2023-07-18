@@ -38,7 +38,9 @@ class _SemesterSettingsPageActionLinksGroupState
 
   void shareResource() async {
     if (semester == null) return;
-    await sharingProvider.shareSemester(widget.id, semesterRepository);
+    await sharingProvider.shareSemester(
+      widget.id,
+    );
   }
 
   void showMoreInformation() {}

@@ -113,7 +113,12 @@ int _timetableEstimateSize(
     }
   }
   bytesCount += 3 + object.label.length * 3;
-  bytesCount += 3 + object.objectID.length * 3;
+  {
+    final value = object.objectID;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   {
     final value = object.owner;
     if (value != null) {
@@ -153,7 +158,7 @@ Timetable _timetableDeserialize(
   object.created = reader.readDateTime(offsets[0]);
   object.id = id;
   object.lastModified = reader.readDateTime(offsets[4]);
-  object.objectID = reader.readString(offsets[5]);
+  object.objectID = reader.readStringOrNull(offsets[5]);
   object.owner = reader.readStringOrNull(offsets[6]);
   return object;
 }
@@ -176,7 +181,7 @@ P _timetableDeserializeProp<P>(
     case 4:
       return (reader.readDateTime(offset)) as P;
     case 5:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 6:
       return (reader.readStringOrNull(offset)) as P;
     case 7:
@@ -750,8 +755,25 @@ extension TimetableQueryFilter
     });
   }
 
+  QueryBuilder<Timetable, Timetable, QAfterFilterCondition> objectIDIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'object_id',
+      ));
+    });
+  }
+
+  QueryBuilder<Timetable, Timetable, QAfterFilterCondition>
+      objectIDIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'object_id',
+      ));
+    });
+  }
+
   QueryBuilder<Timetable, Timetable, QAfterFilterCondition> objectIDEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -764,7 +786,7 @@ extension TimetableQueryFilter
   }
 
   QueryBuilder<Timetable, Timetable, QAfterFilterCondition> objectIDGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -779,7 +801,7 @@ extension TimetableQueryFilter
   }
 
   QueryBuilder<Timetable, Timetable, QAfterFilterCondition> objectIDLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -794,8 +816,8 @@ extension TimetableQueryFilter
   }
 
   QueryBuilder<Timetable, Timetable, QAfterFilterCondition> objectIDBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -1578,7 +1600,7 @@ extension TimetableQueryProperty
     });
   }
 
-  QueryBuilder<Timetable, String, QQueryOperations> objectIDProperty() {
+  QueryBuilder<Timetable, String?, QQueryOperations> objectIDProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'object_id');
     });

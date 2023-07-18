@@ -92,6 +92,20 @@ class Event extends Resource {
     return event;
   }
 
+  void updateFromServerCopy(Event newEvent) {
+    owner = newEvent.owner;
+    objectID = newEvent.objectID;
+    label = newEvent.label;
+    description = newEvent.description;
+    venue = newEvent.venue;
+    window = newEvent.window;
+    repeatTo = newEvent.repeatTo;
+    eventDate = newEvent.eventDate;
+    dayOfWeek = newEvent.dayOfWeek;
+    repeat = newEvent.repeat;
+    lastModified = newEvent.lastModified;
+  }
+
   @override
   dynamic toJson() => {
         "venue": venue,
@@ -109,6 +123,18 @@ class Event extends Resource {
         "updated_at": lastModified.toIso8601String(),
         "_id": objectID,
       };
+
+  dynamic toJsonWithAssociations({
+    required String unitObjectID,
+    required String semesterObjectID,
+    required String timetableObjectID,
+  }) =>
+      Map.from(toJson())
+        ..addAll({
+          "unitId": unitObjectID,
+          "semesterId": semesterObjectID,
+          "timetableId": timetableObjectID
+        });
 
   @override
   String toString() => "[Event] ${toJson()}";

@@ -42,6 +42,12 @@ class SemesterRepository {
     return await _isar.semesters.where().sortByCreatedDesc().findAll();
   }
 
+  Future<Semester?> updateSemester(int semesterID, Semester newSemester) async {
+    final semester = await _isar.semesters.get(semesterID);
+    if (semester == null) return semester;
+    semester.label = newSemester.label;
+  }
+
   Future<List<Event>> getAllEvents(int id) async {
     final semester = await _isar.semesters.get(id);
     semester?.events.load();

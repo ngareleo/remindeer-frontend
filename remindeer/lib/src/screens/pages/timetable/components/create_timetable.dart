@@ -25,7 +25,7 @@ class _CreateTimetableFormState extends State<CreateTimetableForm> {
       return;
     }
 
-    final timetable = await _timetableRepository.addTimetable(
+    final timetable = await _timetableRepository.createTimetable(
       Timetable(
         label: _labelController.text,
         validUntil: _endDate!,

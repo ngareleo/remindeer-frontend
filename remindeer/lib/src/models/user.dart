@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class User {
-  final String id;
+  final String objectID;
   final String username;
   final String email;
   final String name;
@@ -11,7 +11,7 @@ class User {
   final DateTime updatedAt;
 
   User(
-      {required this.id,
+      {required this.objectID,
       required this.name,
       required this.username,
       required this.email,
@@ -23,7 +23,7 @@ class User {
   factory User.fromJson({
     required Map<String, dynamic> json,
   }) {
-    final id = json["uid"].toString();
+    final id = json["_id"].toString();
     final name = json["name"].toString();
     final created = json["created_at"].toString();
     final lastModified = json["updated_at"].toString();
@@ -33,7 +33,7 @@ class User {
     final phoneNumber = json["phone_number"].toString();
 
     return User(
-        id: id,
+        objectID: id,
         name: name,
         username: username,
         email: email,
@@ -44,7 +44,7 @@ class User {
   }
 
   factory User.fromApi({required Map<String, dynamic> json}) {
-    final id = json["id"].toString();
+    final id = json["_id"].toString();
     final name = json["name"].toString();
     final username = json["username"].toString();
     final email = json["email"].toString();
@@ -53,7 +53,7 @@ class User {
     final lastModified = json["updated_at"].toString();
 
     return User(
-        id: id,
+        objectID: id,
         name: name,
         username: username,
         email: email,
@@ -62,18 +62,16 @@ class User {
         updatedAt: DateTime.parse(lastModified));
   }
 
-  dynamic toJson() {
-    return {
-      "id": id,
-      "name": name,
-      "username": username,
-      "email": email,
-      "phone_number": phonenumber,
-      "photo": photo,
-      "created_at": createdAt.toString(),
-      "updated_at": updatedAt.toString(),
-    };
-  }
+  dynamic toJson() => {
+        "_id": objectID,
+        "name": name,
+        "username": username,
+        "email": email,
+        "phone_number": phonenumber,
+        "photo": photo,
+        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt.toIso8601String(),
+      };
 
   @override
   String toString() {

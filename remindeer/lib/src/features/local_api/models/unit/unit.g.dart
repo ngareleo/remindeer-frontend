@@ -126,7 +126,12 @@ int _unitEstimateSize(
   }
   bytesCount += 3 + object.lecturer.length * 3;
   bytesCount += 3 + object.name.length * 3;
-  bytesCount += 3 + object.objectID.length * 3;
+  {
+    final value = object.objectID;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   {
     final value = object.owner;
     if (value != null) {
@@ -169,7 +174,7 @@ Unit _unitDeserialize(
   );
   object.created = reader.readDateTime(offsets[0]);
   object.lastModified = reader.readDateTime(offsets[3]);
-  object.objectID = reader.readString(offsets[6]);
+  object.objectID = reader.readStringOrNull(offsets[6]);
   object.owner = reader.readStringOrNull(offsets[7]);
   return object;
 }
@@ -194,7 +199,7 @@ P _unitDeserializeProp<P>(
     case 5:
       return (reader.readString(offset)) as P;
     case 6:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 7:
       return (reader.readStringOrNull(offset)) as P;
     case 8:
@@ -891,8 +896,24 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> objectIDIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'object_id',
+      ));
+    });
+  }
+
+  QueryBuilder<Unit, Unit, QAfterFilterCondition> objectIDIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'object_id',
+      ));
+    });
+  }
+
   QueryBuilder<Unit, Unit, QAfterFilterCondition> objectIDEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -905,7 +926,7 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
   }
 
   QueryBuilder<Unit, Unit, QAfterFilterCondition> objectIDGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -920,7 +941,7 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
   }
 
   QueryBuilder<Unit, Unit, QAfterFilterCondition> objectIDLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -935,8 +956,8 @@ extension UnitQueryFilter on QueryBuilder<Unit, Unit, QFilterCondition> {
   }
 
   QueryBuilder<Unit, Unit, QAfterFilterCondition> objectIDBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -1870,7 +1891,7 @@ extension UnitQueryProperty on QueryBuilder<Unit, Unit, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Unit, String, QQueryOperations> objectIDProperty() {
+  QueryBuilder<Unit, String?, QQueryOperations> objectIDProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'object_id');
     });

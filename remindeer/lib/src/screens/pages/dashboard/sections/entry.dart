@@ -10,6 +10,7 @@ import 'package:remindeer/src/features/local_api/repository/lecture_repository.d
 import 'package:remindeer/src/features/local_api/repository/task_repository.dart';
 import 'package:remindeer/src/screens/pages/dashboard/components/dashboard_group.dart';
 import 'package:remindeer/src/screens/pages/dashboard/sections/homework_due_this_week_section.dart';
+import 'package:remindeer/src/screens/pages/dashboard/sections/overdue_homework_section.dart';
 
 class TodaysLecturesSection extends StatefulWidget {
   const TodaysLecturesSection({super.key, required this.date});
@@ -47,10 +48,14 @@ class _TodaysLecturesSectionState extends State<TodaysLecturesSection> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        HomeworkDueThisWeekSection(
-          homework: _homework,
-          today: widget.date,
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: HomeworkDueThisWeekSection(
+            homework: _homework,
+            today: widget.date,
+          ),
         ),
+        OverdueHomework(homework: _homework, today: widget.date),
       ],
     );
   }
@@ -60,6 +65,8 @@ class _TodaysLecturesSectionState extends State<TodaysLecturesSection> {
     final events = await eventRepository.getAllEvents();
     final tasks = await taskRepository.getAllTasks();
     final homework = await homeworkRepository.getAllHomework();
+
+    debugPrint('homeworks $homework');
 
     final allResources = [
       ...lectures,

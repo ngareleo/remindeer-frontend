@@ -10,3 +10,7 @@ List<Homework> getHomeworkDueThisWeek(List<Homework> homework, DateTime today) {
           element.due.isBefore(sundayThatWeek))
       .toList();
 }
+
+List<Homework> getOverdueHomework(List<Homework> homework, DateTime today) {
+  return homework.where((element) => element.due.isBefore(today)).toList();
+}

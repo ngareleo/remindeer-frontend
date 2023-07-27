@@ -23,10 +23,18 @@ class _HomeworkDueThisWeekSectionState
   final _unitHomeworkMap = <Homework, Unit>{};
 
   final _homeworkRepository = HomeworkRepository.instance();
+  DateTime? today;
 
   @override
   void initState() {
+    today = widget.today;
     super.initState();
+    _getEvents();
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    super.setState(fn);
     _getEvents();
   }
 
@@ -34,7 +42,7 @@ class _HomeworkDueThisWeekSectionState
     final homework = await _homeworkRepository.getAllHomework();
     setState(() => _homework
       ..clear()
-      ..addAll(getHomeworkDueThisWeek(homework, widget.today)));
+      ..addAll(getHomeworkDueThisWeek(homework, today!)));
 
     await _fillUnitHomeworkMap();
   }

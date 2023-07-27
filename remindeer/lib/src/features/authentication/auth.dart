@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:remindeer/config.dart';
 import 'package:remindeer/src/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,7 +21,7 @@ class AuthProvider extends ChangeNotifier {
   AuthProvider._() {
     _getUserDetailsFromPersist();
     _dio = Dio(BaseOptions(
-      baseUrl: "http://d74b-41-84-131-94.ngrok-free.app",
+      baseUrl: Config.backendUrl,
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
       headers: {

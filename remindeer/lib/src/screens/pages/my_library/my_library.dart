@@ -43,29 +43,22 @@ class _MyLibraryState extends State<MyLibrary> {
   }
 
   Future<void> _getAllResources() async {
-    final units = await unitsApi.getAllUnits();
     final semesters = await semestersApi.getAllSemesters();
     final timetables = await timetablesApi.getAllTimetables();
-    final lectures = await lecturesAPI.getAllLectures();
-    final homework = await homeworkApi.getAllHomework();
-    final tasks = await taskApi.getAllTasks();
-    final events = await eventsApi.getAllEvents();
 
     setState(() => resources
       ..clear()
       ..addAll(semesters)
-      ..addAll(timetables)
-      ..addAll(units)
-      ..addAll(lectures)
-      ..addAll(homework)
-      ..addAll(tasks)
-      ..addAll(events));
+      ..addAll(timetables));
   }
 
   Future<void> _filterResources() async {
     final filteredResources = <Resource>{};
 
     if (activeFilters.isEmpty) {
+      _getAllResources();
+      return;
+    } else {
       _getAllResources();
       return;
     }
@@ -146,13 +139,13 @@ class _MyLibraryState extends State<MyLibrary> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              MyLibrarySelectionPillGroup(
-                onFilterChange: _onFilterChange,
-              ),
-              const Divider(
-                thickness: 1,
-                color: Colors.black12,
-              ),
+              // MyLibrarySelectionPillGroup(
+              //   onFilterChange: _onFilterChange,
+              // ),
+              // const Divider(
+              //   thickness: 1,
+              //   color: Colors.black12,
+              // ),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(

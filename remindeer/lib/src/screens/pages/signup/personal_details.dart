@@ -52,13 +52,13 @@ class _PersonalDetailsPageState extends State<PersonalDetailsPage>
   }
 
   void validateDetailsInServer() async {
-    final valid = await _authProvider.validateUserDetails(
+    final taken = await _authProvider.validateUserDetails(
         username: _usernameController.text, email: _emailController.text);
-    debugPrint('valid: $valid');
-    if (valid != null) {
+    debugPrint('valid: $taken');
+    if (taken != null) {
       setState(() {
-        usernameTaken = valid.$1;
-        emailTaken = valid.$2;
+        usernameTaken = !taken.$1;
+        emailTaken = !taken.$2;
       });
     }
   }

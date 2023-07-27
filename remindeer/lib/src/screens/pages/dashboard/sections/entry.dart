@@ -8,7 +8,6 @@ import 'package:remindeer/src/features/local_api/repository/event_repository.dar
 import 'package:remindeer/src/features/local_api/repository/homework_repository.dart';
 import 'package:remindeer/src/features/local_api/repository/lecture_repository.dart';
 import 'package:remindeer/src/features/local_api/repository/task_repository.dart';
-import 'package:remindeer/src/screens/pages/dashboard/components/dashboard_group.dart';
 import 'package:remindeer/src/screens/pages/dashboard/sections/homework_due_this_week_section.dart';
 import 'package:remindeer/src/screens/pages/dashboard/sections/overdue_homework_section.dart';
 
